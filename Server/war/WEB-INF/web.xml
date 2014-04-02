@@ -36,6 +36,15 @@
 	</servlet-mapping>
 	
 	<servlet>
+		<servlet-name>Send</servlet-name>
+		<servlet-class>com.appsrox.messenger.server.SendServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Send</servlet-name>
+		<url-pattern>/send</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 		<servlet-name>Init</servlet-name>
 		<servlet-class>com.appsrox.messenger.server.InitServlet</servlet-class>
 	</servlet>

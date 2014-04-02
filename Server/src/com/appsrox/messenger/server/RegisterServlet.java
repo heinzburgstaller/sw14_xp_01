@@ -26,7 +26,7 @@ public class RegisterServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String chatId = req.getParameter(Constants.FROM);
 		String regId = req.getParameter(Constants.REG_ID);
-		//logger.log(Level.WARNING, "RegisterServlet: chatId=" + chatId+", regId="+regId);
+		logger.log(Level.WARNING, "RegisterServlet: chatId=" + chatId+", regId="+regId);
 		
 		EntityManager em = EMFService.get().createEntityManager();
 		Contact contact;
@@ -50,7 +50,7 @@ public class RegisterServlet extends HttpServlet {
 			}
 			
 			em.persist(contact);
-			//logger.log(Level.WARNING, "Registered: " + chatId);
+			logger.log(Level.WARNING, "Registered: " + chatId);
 		} finally {
 			em.close();
 		}
