@@ -2,6 +2,8 @@ package at.tugraz.sw14_xp_01;
 
 import java.io.IOException;
 
+import util.GcmUtil;
+import util.ServerUtilities;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -21,10 +23,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import at.tugraz.sw14_xp_01.DataProvider.MessageType;
-import at.tugraz.sw14_xp_01.client.GcmUtil;
-import at.tugraz.sw14_xp_01.client.ServerUtilities;
 import at.tugraz.sw14_xp_01.R;
 
 public class ChatActivity extends ActionBarActivity implements MessagesFragment.OnFragmentInteractionListener, 

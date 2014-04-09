@@ -3,14 +3,13 @@ package at.tugraz.sw14_xp_01;
 import java.util.ArrayList;
 import java.util.List;
 
+import util.Constants;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Patterns;
-
-import at.tugraz.sw14_xp_01.client.Constants;
 
 public class Common extends Application {
 	

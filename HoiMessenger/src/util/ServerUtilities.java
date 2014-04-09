@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package at.tugraz.sw14_xp_01.client;
+package util;
 
 import java.io.IOException;
 import java.io.OutputStream;

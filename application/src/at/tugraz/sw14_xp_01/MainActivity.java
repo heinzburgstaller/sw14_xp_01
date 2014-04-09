@@ -46,7 +46,7 @@ public class MainActivity extends ActionBarActivity implements
     actionBar = getSupportActionBar();
     actionBar.setDisplayShowTitleEnabled(true);
     actionBar.show();
-    photoCache = new PhotoCache(this);
+    //photoCache = new PhotoCache(this);
     actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME,
         ActionBar.DISPLAY_SHOW_CUSTOM);
     actionBar.setTitle("You are");
