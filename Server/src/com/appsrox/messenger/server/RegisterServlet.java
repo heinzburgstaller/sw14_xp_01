@@ -1,5 +1,7 @@
 package com.appsrox.messenger.server;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,6 +26,18 @@ public class RegisterServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//		Map params = req.getParameterMap();
+//		Iterator i = params.keySet().iterator();
+//
+//		while (i.hasNext()) {
+//			String key = (String) i.next();
+//			String value = ((String[]) params.get(key))[0];
+//
+//			logger.log(Level.WARNING, "Parameter: " + key + "=" + value);
+//		}
+//
+//		logger.log(Level.WARNING, SendServlet.getBody(req));
+		
 		String chatId = req.getParameter(Constants.FROM);
 		String regId = req.getParameter(Constants.REG_ID);
 		logger.log(Level.WARNING, "RegisterServlet: chatId=" + chatId+", regId="+regId);
