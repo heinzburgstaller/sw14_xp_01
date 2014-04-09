@@ -7,7 +7,12 @@
 	<classpathentry kind="lib" path="libs/mockito-all-1.9.5.jar"/>
 	<classpathentry kind="lib" path="libs/appengine-testing.jar"/>
 	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
+<<<<<<< HEAD
 	<classpathentry kind="lib" path="libs/appengine-api-labs.jar"/>
 	<classpathentry kind="lib" path="libs/appengine-api-stubs.jar"/>
+=======
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="libs/mockito-all-1.9.5.jar"/>
+>>>>>>> 0bdc9f9275e831b73cfe93ea0baeb5fc277e24ac
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
