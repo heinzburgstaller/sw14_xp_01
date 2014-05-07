@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import at.tugraz.sw.hoi.TestConstants;
 import at.tugraz.sw.hoi.model.Contact;
 import at.tugraz.sw.hoi.model.EMFService;
 
@@ -25,6 +26,8 @@ public class TestChatServlet {
 	private final LocalServiceTestHelper helper = new LocalServiceTestHelper(
 			new LocalDatastoreServiceTestConfig());
 
+	private Contact to;
+
 	@SuppressWarnings("static-access")
 	@Before
 	public void setUp() {
@@ -35,7 +38,7 @@ public class TestChatServlet {
 
 		EntityManager em = EMFService.get().createEntityManager();
 
-		Contact to = new Contact("sender@gmail.com", "sender");
+		to = new Contact("sender@gmail.com", TestConstants.REG_ID);
 		Contact from = new Contact("receiver@gmail.com", "receiver");
 
 		em.persist(to);
@@ -60,9 +63,9 @@ public class TestChatServlet {
 		Mockito.when(response.getWriter()).thenReturn(writer);
 
 		Mockito.when(request.getParameter(Configuration.FROM)).thenReturn(
-				"sender@gmail.com");
+				to.getEmail());
 		Mockito.when(request.getParameter(Configuration.TO)).thenReturn(
-				"receiver@gmail.com");
+				to.getEmail());
 		Mockito.when(request.getParameter(Configuration.MSG)).thenReturn(
 				"This is a message.");
 
@@ -82,9 +85,9 @@ public class TestChatServlet {
 		Mockito.when(response.getWriter()).thenReturn(writer);
 
 		Mockito.when(request.getParameter(Configuration.FROM)).thenReturn(
-				"sender@gmail.com");
+				to.getEmail());
 		Mockito.when(request.getParameter(Configuration.TO)).thenReturn(
-				"receiver@gmail.com");
+				to.getEmail());
 		Mockito.when(request.getParameter(Configuration.MSG)).thenReturn(
 				"This is a message.");
 
