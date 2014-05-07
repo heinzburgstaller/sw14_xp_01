@@ -21,10 +21,12 @@ import com.google.appengine.api.datastore.dev.LocalDatastoreService;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 
-public class TestRegisterServlet {
+public class TestUnregisterServlet {
 
 	private final LocalServiceTestHelper helper = new LocalServiceTestHelper(
 			new LocalDatastoreServiceTestConfig());
+
+	private static final String EMAIL = "unreg@gmail.com";
 
 	@SuppressWarnings("static-access")
 	@Before
@@ -33,6 +35,10 @@ public class TestRegisterServlet {
 		LocalDatastoreService dsService = (LocalDatastoreService) helper
 				.getLocalService(LocalDatastoreService.PACKAGE);
 		dsService.setNoStorage(true);
+
+		EntityManager em = EMFService.get().createEntityManager();
+		em.persist(new Contact(EMAIL, "XXX"));
+		em.close();
 	}
 
 	@After
@@ -49,19 +55,17 @@ public class TestRegisterServlet {
 		Mockito.when(response.getWriter()).thenReturn(writer);
 
 		Mockito.when(request.getParameter(Configuration.EMAIL)).thenReturn(
-				"JUnitTest@gmail.com");
-		Mockito.when(request.getParameter(Configuration.REG_ID)).thenReturn(
-				"xxx");
+				EMAIL);
 
-		new RegisterServlet().doPost(request, response);
+		new UnregisterServlet().doPost(request, response);
 		writer.flush();
 		writer.close();
-		Assert.assertTrue(sr.toString().equals(Configuration.SUCCESS));
+		Assert.assertTrue(sr.toString().startsWith(Configuration.SUCCESS));
 
 		EntityManager em = EMFService.get().createEntityManager();
-		Contact contact = Contact.findByEmail("JUnitTest@gmail.com", em);
+		Contact contact = Contact.findByEmail(EMAIL, em);
 		em.close();
-		Assert.assertNotNull(contact);
+		Assert.assertNull(contact);
 	}
 
 	@Test
@@ -71,7 +75,10 @@ public class TestRegisterServlet {
 		StringWriter sr = new StringWriter();
 		PrintWriter writer = new PrintWriter(sr);
 		Mockito.when(response.getWriter()).thenReturn(writer);
-		new RegisterServlet().doPost(request, response);
+
+		new UnregisterServlet().doPost(request, response);
+		writer.flush();
+		writer.close();
 		Assert.assertTrue(sr.toString().startsWith(Configuration.FAILURE));
 	}
 }

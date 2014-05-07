@@ -54,6 +54,12 @@ public class ChatServlet extends HttpServlet {
 				.addData(Configuration.MSG, msg).build();
 		try {
 			Result result = sender.send(message, toContact.getRegId(), 5);
+			if (result.getErrorCodeName() != null) {
+				logger.log(Level.WARNING, result.getErrorCodeName());
+				resp.getWriter().print(Configuration.FAILURE);
+				resp.getWriter().print(result.getErrorCodeName());
+				return;
+			}
 		} catch (IOException e) {
 			logger.log(Level.WARNING, e.getMessage());
 			resp.getWriter().print(Configuration.FAILURE);

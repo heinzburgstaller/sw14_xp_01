@@ -54,9 +54,6 @@ public class TestChatServlet {
 		writer.flush();
 		writer.close();
 
-		Assert.assertTrue(sr.toString().equals(Configuration.FAILURE));
-
+		Assert.assertTrue(sr.toString().startsWith(Configuration.FAILURE));
 	}
-	
-	
 }

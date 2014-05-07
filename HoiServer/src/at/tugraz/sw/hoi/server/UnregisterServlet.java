@@ -13,8 +13,9 @@ import at.tugraz.sw.hoi.model.Contact;
 import at.tugraz.sw.hoi.model.EMFService;
 import at.tugraz.sw.hoi.util.Util;
 
-@SuppressWarnings("serial")
-public class RegisterServlet extends HttpServlet {
+public class UnregisterServlet extends HttpServlet {
+
+	private static final long serialVersionUID = 1L;
 
 	private static final Logger logger = Logger.getLogger(RegisterServlet.class
 			.getCanonicalName());
@@ -24,11 +25,10 @@ public class RegisterServlet extends HttpServlet {
 		resp.setContentType("text/plain");
 
 		String email = req.getParameter(Configuration.EMAIL);
-		String regId = req.getParameter(Configuration.REG_ID);
 
-		if (Util.isEmpty(email) || Util.isEmpty(regId)) {
+		if (Util.isEmpty(email)) {
 			resp.getWriter().print(Configuration.FAILURE);
-			resp.getWriter().print("Email and regId have to specified...");
+			resp.getWriter().print("Email has to specified...");
 			return;
 		}
 
@@ -36,23 +36,16 @@ public class RegisterServlet extends HttpServlet {
 		Contact contact = Contact.findByEmail(email, em);
 
 		if (contact == null) {
-			contact = new Contact(email, regId);
-			em.persist(contact);
-
-			logger.log(Level.INFO,
-					"Contact registered with email={0} and regId={1}",
-					new Object[] { email, regId });
+			logger.log(
+					Level.INFO,
+					"Contact with email={0} already unregistered - nothing to do!",
+					email);
 		} else {
-			contact.setRegId(regId);
-			contact = em.merge(contact);
-
-			logger.log(Level.INFO,
-					"Contact updated with email={0} and regId={1}",
-					new Object[] { email, regId });
+			em.remove(contact);
+			logger.log(Level.INFO, "Contact with email={0} unregistered", email);
 		}
 
 		em.close();
 		resp.getWriter().print(Configuration.SUCCESS);
 	}
-
 }
