@@ -3,4 +3,6 @@
     android:id="@+id/pager"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="at.tugraz.sw.hoi.messenger.MainActivity" />
+    tools:context="at.tugraz.sw.hoi.messenger.MainActivity">
+    
+</android.support.v4.view.ViewPager>
