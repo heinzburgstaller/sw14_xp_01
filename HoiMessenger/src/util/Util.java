@@ -12,6 +12,7 @@ import android.util.Patterns;
 
 public class Util extends Application {
 
+  public static final String PROFILE_ID = "profile_id";
   public static SharedPreferences prefs;
   public static String[] email_arr;
   public static final String ACTION_REGISTER = "at.tugraz.sw14_xp_01.REGISTER";
