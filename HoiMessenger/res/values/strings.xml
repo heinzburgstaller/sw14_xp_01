@@ -10,4 +10,7 @@
     <string name="iv_avatar_text">IMG</string>
     <string name="bt_add_contact_text">Add Contact</string>
     <string name="tv_online_text">Online</string>
+    <string name="title_activity_chat">ChatActivity</string>
+    <string name="hello_world">Hello world!</string>
+
 </resources>
