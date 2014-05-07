@@ -1,9 +1,11 @@
 package at.tugraz.sw.hoi.model;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NoResultException;
 
 @Entity
 public class Contact {
@@ -11,7 +13,9 @@ public class Contact {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
 	private String email;
+
 	private String regId;
 
 	public Contact(String email, String regId) {
@@ -42,6 +46,18 @@ public class Contact {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public static Contact findByEmail(String email, EntityManager em) {
+		try {
+			return em
+					.createQuery(
+							"select c from Contact c where c.email = :email",
+							Contact.class).setParameter("email", email)
+					.getSingleResult();
+		} catch (NoResultException ex) {
+			return null;
+		}
 	}
 
 }
