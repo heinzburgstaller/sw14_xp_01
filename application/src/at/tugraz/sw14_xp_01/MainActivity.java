@@ -16,6 +16,7 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -94,6 +95,7 @@ public class MainActivity extends ActionBarActivity implements
 
   @Override
   public void onItemClick(AdapterView<?> arg0, View view, int arg2, long arg3) {
+    Log.d("DEBUG", "BIN HIER");
     Intent intent = new Intent(this, ChatActivity.class);
     intent.putExtra(Common.PROFILE_ID, String.valueOf(arg3));
     startActivity(intent);

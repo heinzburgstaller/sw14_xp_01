@@ -10,8 +10,9 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-
+import android.util.Log;
 import at.tugraz.sw14_xp_01.Common;
+
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 public class GcmUtil {
@@ -132,6 +133,7 @@ public class GcmUtil {
 		registrationTask = new AsyncTask<Void, Void, Boolean>() {
 	        @Override
 	        protected Boolean doInBackground(Void... params) {
+	          Log.d("DEBUG", "was machst du da");
 	            long backoff = BACKOFF_MILLI_SECONDS + random.nextInt(1000);
 	            for (int i = 1; i <= MAX_ATTEMPTS; i++) {
 	            	//Log.d(TAG, "Attempt #" + i + " to register");
