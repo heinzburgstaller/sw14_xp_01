@@ -16,6 +16,11 @@ public class TestHoiServerServlet {
 	public static final Integer NUMBER_1 = 7;
 	public static final Integer NUMBER_2 = 10;
 
+	/**
+	 * Example test.
+	 * 
+	 * @throws IOException
+	 */
 	@Test
 	public void testJUnit() throws IOException {
 		HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
