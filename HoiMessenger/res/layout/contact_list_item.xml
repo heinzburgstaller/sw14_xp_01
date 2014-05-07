@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:padding="6dip" 
+    android:clickable="true">
+
+    <ImageView
+        android:id="@+id/avatar"
+        android:layout_width="60dip"
+        android:layout_height="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="6dip"
+        android:scaleType="fitStart" 
+        android:contentDescription="@string/iv_avatar_text"
+        android:background="#909090"/>
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_toRightOf="@id/avatar"
+        android:layout_toLeftOf="@+id/tvOnlineStatus"
+        android:gravity="center_vertical" 
+        android:textSize="22sp"
+        android:text="Thomas Nachnamedafasdfasd"
+        android:singleLine="true"/>
+    
+    <!---  if you set this invisible via code, use "invisible" NOT "gone" -->
+    <TextView 
+        android:id="@id/tvOnlineStatus"
+        android:visibility="visible"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:gravity="center_vertical" 
+        android:text="@string/tv_online_text"
+        android:textColor="@color/tv_online_text_color"
+        />
+</RelativeLayout>

@@ -6,7 +6,23 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="at.tugraz.sw.hoi.messenger.MainActivity$PlaceholderFragment" >
+    tools:context="at.tugraz.sw.hoi.messenger.MainActivity$ContactsFragment"
+    android:padding="0dp"
+    android:clickable="true">
 
-
+    <ListView
+        android:id="@+id/lvContacts"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" 
+        android:layout_above="@+id/btAddContact"/>
+    <ImageButton
+        android:background="@drawable/custom_button"
+        android:id="@id/btAddContact"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_action_add_person"
+        android:contentDescription="@string/bt_add_contact_text"
+        android:layout_alignParentBottom="true"
+        android:clickable="true"
+        />
 </RelativeLayout>

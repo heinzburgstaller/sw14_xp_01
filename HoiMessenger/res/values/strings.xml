@@ -8,4 +8,6 @@
     <string name="action_settings">Settings</string>
     <string name="bt_send_message_text">Send Message</string>
     <string name="iv_avatar_text">IMG</string>
+    <string name="bt_add_contact_text">Add Contact</string>
+    <string name="tv_online_text">Online</string>
 </resources>
