@@ -22,6 +22,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="at.tugraz.sw.hoi.messenger.ChatActivity"
+            android:label="@string/title_activity_chat"
+            android:parentActivityName="android.support.v7.app.ActionBarActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="android.support.v7.app.ActionBarActivity" />
+        </activity>
     </application>
 
 </manifest>
