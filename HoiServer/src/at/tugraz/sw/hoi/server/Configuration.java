@@ -5,7 +5,11 @@ public class Configuration {
 	public static final String API_KEY = "AIzaSyBPT80qCXojVMx3nrQvORWDds8k-EYvxvY";
 	public static final String EMAIL = "email";
 	public static final String REG_ID = "regId";
+	public static final String FROM = "from";
+	public static final String TO = "to";
+	public static final String MSG = "message";
 
 	public static final String SUCCESS = "Success!\n";
 	public static final String FAILURE = "Failure!\n";
+	
 }

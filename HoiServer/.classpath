@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="libs/appengine-api-stubs.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="libs/mockito-all-1.9.5.jar"/>
+	<classpathentry kind="lib" path="libs/gcm-server.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
