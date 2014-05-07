@@ -2,6 +2,7 @@ package at.tugraz.sw.hoi.messenger.test;
 
 import android.test.ActivityInstrumentationTestCase2;
 import at.tugraz.sw.hoi.messenger.MainActivity;
+import at.tugraz.sw.hoi.messenger.R;
 
 import com.robotium.solo.Solo;
 
@@ -18,7 +19,7 @@ public class SampleTest extends ActivityInstrumentationTestCase2<MainActivity> {
 	}
 
 	public void testButton() throws Exception {
-		// solo.clickOnView(solo.getView(R.id.btSendMessage));
+		solo.clickOnView(solo.getView(R.id.btSendMessage));
 	}
 
 	@Override
