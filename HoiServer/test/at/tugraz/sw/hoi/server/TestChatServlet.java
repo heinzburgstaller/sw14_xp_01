@@ -88,6 +88,7 @@ public class TestChatServlet {
 		Mockito.when(request.getParameter(Configuration.MSG)).thenReturn(
 				"This is a message.");
 
+		Assert.assertTrue(sr.toString().startsWith(Configuration.FAILURE));
 		new ChatServlet().doPost(request, response);
 		writer.flush();
 		writer.close();
