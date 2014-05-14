@@ -1,7 +1,5 @@
 package at.tugraz.sw.hoi.messenger;
 
-import util.DataProvider;
-import util.Util;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -14,6 +12,8 @@ import android.support.v4.app.DialogFragment;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.widget.EditText;
+import at.tugraz.sw.hoi.messenger.util.DataProvider;
+import at.tugraz.sw.hoi.messenger.util.Util;
 
 public class EditContactDialog extends DialogFragment {
 

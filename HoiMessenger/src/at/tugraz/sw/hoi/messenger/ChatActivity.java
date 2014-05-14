@@ -2,11 +2,6 @@ package at.tugraz.sw.hoi.messenger;
 
 import java.io.IOException;
 
-import util.DataProvider;
-import util.DataProvider.MessageType;
-import util.GcmUtil;
-import util.ServerUtilities;
-import util.Util;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -26,6 +21,11 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import at.tugraz.sw.hoi.messenger.util.DataProvider;
+import at.tugraz.sw.hoi.messenger.util.GcmUtil;
+import at.tugraz.sw.hoi.messenger.util.ServerUtilities;
+import at.tugraz.sw.hoi.messenger.util.Util;
+import at.tugraz.sw.hoi.messenger.util.DataProvider.MessageType;
 
 public class ChatActivity extends ActionBarActivity implements MessagesFragment.OnFragmentInteractionListener,
     EditContactDialog.OnFragmentInteractionListener, OnClickListener {
