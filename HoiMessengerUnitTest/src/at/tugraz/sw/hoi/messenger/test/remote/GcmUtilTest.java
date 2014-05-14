@@ -25,7 +25,7 @@ public class GcmUtilTest extends InstrumentationTestCase {
 		
 		
 	}
-	public void testGetPreffered() {
+	public void testGetPrefered() {
 		GcmUtil gcmutil = new GcmUtil(context);
 		assertEquals("heinz.burgstaller@gmail.com",gcmutil.getPreferredEmail());
 		

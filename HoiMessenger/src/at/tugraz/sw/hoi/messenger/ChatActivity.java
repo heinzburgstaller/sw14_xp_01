@@ -1,7 +1,5 @@
 package at.tugraz.sw.hoi.messenger;
 
-import java.io.IOException;
-
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -23,9 +21,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import at.tugraz.sw.hoi.messenger.util.DataProvider;
 import at.tugraz.sw.hoi.messenger.util.GcmUtil;
-import at.tugraz.sw.hoi.messenger.util.ServerUtilities;
 import at.tugraz.sw.hoi.messenger.util.Util;
-import at.tugraz.sw.hoi.messenger.util.DataProvider.MessageType;
 
 public class ChatActivity extends ActionBarActivity implements MessagesFragment.OnFragmentInteractionListener,
     EditContactDialog.OnFragmentInteractionListener, OnClickListener {
@@ -119,18 +115,19 @@ public class ChatActivity extends ActionBarActivity implements MessagesFragment.
       @Override
       protected String doInBackground(Void... params) {
         String msg = "";
-        try {
-          ServerUtilities.send(txt, profileEmail);
-          ContentValues values = new ContentValues(2);
-          values.put(DataProvider.COL_TYPE, MessageType.OUTGOING.ordinal());
-          values.put(DataProvider.COL_MESSAGE, txt);
-          values.put(DataProvider.COL_RECEIVER_EMAIL, profileEmail);
-          values.put(DataProvider.COL_SENDER_EMAIL, Util.getPreferredEmail());
-          getContentResolver().insert(DataProvider.CONTENT_URI_MESSAGES, values);
-
-        } catch (IOException ex) {
-          msg = "Message could not be sent";
-        }
+        // try {
+        // ServerUtilities.send(txt, profileEmail);
+        // ContentValues values = new ContentValues(2);
+        // values.put(DataProvider.COL_TYPE, MessageType.OUTGOING.ordinal());
+        // values.put(DataProvider.COL_MESSAGE, txt);
+        // values.put(DataProvider.COL_RECEIVER_EMAIL, profileEmail);
+        // values.put(DataProvider.COL_SENDER_EMAIL, Util.getPreferredEmail());
+        // getContentResolver().insert(DataProvider.CONTENT_URI_MESSAGES,
+        // values);
+        //
+        // } catch (IOException ex) {
+        // msg = "Message could not be sent";
+        // }
         return msg;
       }
 
