@@ -16,11 +16,11 @@ public class SampleTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
 	public void setUp() throws Exception {
 		solo = new Solo(getInstrumentation(), getActivity());
-	}
+	} 
 
 	public void testButton() throws Exception {
 		solo.clickOnView(solo.getView(R.id.btSendMessage));
-	}
+	} 
 
 	@Override
 	public void tearDown() throws Exception {
