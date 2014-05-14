@@ -23,7 +23,6 @@ import android.widget.Toast;
 import at.tugraz.sw.hoi.messenger.util.DataProvider;
 import at.tugraz.sw.hoi.messenger.util.DataProvider.MessageType;
 import at.tugraz.sw.hoi.messenger.util.GcmUtil;
-import at.tugraz.sw.hoi.messenger.util.ServerUtilities;
 import at.tugraz.sw.hoi.messenger.util.Util;
 
 public class ChatActivity extends ActionBarActivity implements MessagesFragment.OnFragmentInteractionListener,
