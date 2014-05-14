@@ -19,4 +19,16 @@ public interface Configuration {
 
   public static final String SUCCESS = "Success!";
   public static final String FAILURE = "Failure!";
+
+  public static final String PROFILE_ID = "profile_id";
+  public static final String ACTION_REGISTER = "at.tugraz.sw14_xp_01.REGISTER";
+  public static final int STATUS_SUCCESS = 1;
+  public static final int STATUS_FAILED = 0;
+  public static final String EXTRA_STATUS = "status";
+  public static final String CHAT_EMAIL_ID = "chat_email_id";
+  public static final String CHAT_SENDER_ID = "sender_id_pref";
+
+  public static final String PROPERTY_REG_ID = "registration_id";
+  public static final String PROPERTY_APP_VERSION = "appVersion";
+
 }
