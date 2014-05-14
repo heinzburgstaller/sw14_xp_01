@@ -50,11 +50,10 @@ public class Contact {
 
 	public static Contact findByEmail(String email, EntityManager em) {
 		try {
-			return em
+			return (Contact) em
 					.createQuery(
-							"select c from Contact c where c.email = :email",
-							Contact.class).setParameter("email", email)
-					.getSingleResult();
+							"select c from Contact c where c.email = :email")
+					.setParameter("email", email).getSingleResult();
 		} catch (NoResultException ex) {
 			return null;
 		}
