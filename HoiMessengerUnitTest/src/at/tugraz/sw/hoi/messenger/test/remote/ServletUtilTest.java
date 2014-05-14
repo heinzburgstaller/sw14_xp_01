@@ -1,5 +1,6 @@
 package at.tugraz.sw.hoi.messenger.test.remote;
 
+import android.util.Log;
 import at.tugraz.sw.hoi.messenger.remote.ServletResponse;
 import at.tugraz.sw.hoi.messenger.remote.ServletResponse.Status;
 import at.tugraz.sw.hoi.messenger.remote.ServletUtil;
@@ -12,6 +13,7 @@ public class ServletUtilTest extends TestCase {
 
 	public void testRegister() {
 		ServletResponse response = ServletUtil.register(EMAIL, REG_ID);
+		Log.d("JUnit", response.toString());
 		assertTrue(Status.SUCCESS.equals(response.getStatus()));
 	}
 

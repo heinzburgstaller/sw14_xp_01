@@ -16,6 +16,6 @@ public interface Configuration {
   public static final String TO = "receiverEmail";
   public static final String MSG = "message";
 
-  public static final String SUCCESS = "Success!\n";
-  public static final String FAILURE = "Failure!\n";
+  public static final String SUCCESS = "Success!";
+  public static final String FAILURE = "Failure!";
 }

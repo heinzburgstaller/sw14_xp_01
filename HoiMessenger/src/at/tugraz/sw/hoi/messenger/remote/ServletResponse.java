@@ -23,4 +23,9 @@ public class ServletResponse {
     return message;
   }
 
+  @Override
+  public String toString() {
+    return "ServletResponse [status=" + status + ", message=" + message + "]";
+  }
+
 }
