@@ -175,7 +175,7 @@ public class GcmUtil {
     }
   }
 
-  private String getPreferredEmail() {
+  public String getPreferredEmail() {
 
     List<String> emailList = new ArrayList<String>();
     Account[] accounts = AccountManager.get(ctx).getAccounts();
