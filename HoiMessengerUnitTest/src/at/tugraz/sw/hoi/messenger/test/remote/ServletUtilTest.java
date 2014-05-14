@@ -18,6 +18,12 @@ public class ServletUtilTest extends TestCase {
 		Log.d(TAG, response.toString());
 		assertTrue(Status.SUCCESS.equals(response.getStatus()));
 	}
+	
+	public void testUnregister() {
+		ServletResponse response = ServletUtil.unregister(EMAIL, REG_ID);
+		Log.d(TAG, response.toString());
+		assertTrue(Status.SUCCESS.equals(response.getStatus()));
+	}
 
 	public void testChat() {
 		String testMsg = "Hello World!";
