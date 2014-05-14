@@ -20,6 +20,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -150,20 +151,16 @@ public class MessagesFragment extends ListFragment implements LoaderManager.Load
       View itemLayout = null;
       switch (getItemViewType(cursor)) {
       case 0:
-        // itemLayout =
-        // LayoutInflater.from(context).inflate(R.layout.chat_list_item_left_aligned,
-        // parent, false);
+        itemLayout = LayoutInflater.from(context).inflate(R.layout.chat_list_item_left_aligned, parent, false);
         break;
       case 1:
-        // itemLayout =
-        // LayoutInflater.from(context).inflate(R.layout.chat_list_item_right_aligned,
-        // parent, false);
+        itemLayout = LayoutInflater.from(context).inflate(R.layout.chat_list_item_right_aligned, parent, false);
         break;
       }
       itemLayout.setTag(holder);
       holder.avatar = (ImageView) itemLayout.findViewById(R.id.avatar);
-      // holder.text1 = (TextView) itemLayout.findViewById(R.id.text1);
-      // holder.text2 = (TextView) itemLayout.findViewById(R.id.text2);
+      holder.text1 = (TextView) itemLayout.findViewById(R.id.text1);
+      holder.text2 = (TextView) itemLayout.findViewById(R.id.text2);
       return itemLayout;
     }
 
