@@ -17,10 +17,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import at.tugraz.sw.hoi.messenger.util.DataProvider;
 import at.tugraz.sw.hoi.messenger.util.DataProvider.MessageType;
@@ -29,10 +27,10 @@ import at.tugraz.sw.hoi.messenger.util.ServerUtilities;
 import at.tugraz.sw.hoi.messenger.util.Util;
 
 public class ChatActivity extends ActionBarActivity implements MessagesFragment.OnFragmentInteractionListener,
-    EditContactDialog.OnFragmentInteractionListener, OnClickListener {
+    EditContactDialog.OnFragmentInteractionListener {
 
   private EditText msgEdit;
-  private Button sendBtn;
+  private ImageButton sendBtn;
   private String profileId;
   private String profileName;
   private String profileEmail;
@@ -43,20 +41,30 @@ public class ChatActivity extends ActionBarActivity implements MessagesFragment.
     setContentView(R.layout.chat_activity);
 
     profileId = getIntent().getStringExtra(Util.PROFILE_ID);
+    Log.d("DEBUG", "profilid  " + profileId);
+    msgEdit = (EditText) findViewById(R.id.etText);
+    sendBtn = (ImageButton) findViewById(R.id.btSendMessage);
+    Log.d("DEBUG", "++++++++++++++0.5++++++++++");
 
-    msgEdit = (EditText) findViewById(R.id.etText); // TODO change name of
-    // contact add this feature we also will need a view/popup for that needs to
-    // be added by design in the R file
-    sendBtn = (Button) findViewById(R.id.btSendMessage);
-    sendBtn.setOnClickListener(this);
+    // sendBtn.setOnClickListener(new OnClickListener() {
+    //
+    // @Override
+    // public void onClick(View v) {
+    // switch (v.getId()) {
+    // case R.id.btSendMessage:
+    // send(msgEdit.getText().toString());
+    // msgEdit.setText(null);
+    // break;
+    // }
+    // }
+    // });
+
+    Log.d("DEBUG", "++++++++++++++1++++++++++");
     ActionBar actionBar = getSupportActionBar();
     actionBar.setHomeButtonEnabled(true);
     actionBar.setDisplayHomeAsUpEnabled(true);
-
-    Log.d("DEBUG", "ON CREATE CHAT ACTIVITY");
     Cursor c = getContentResolver().query(Uri.withAppendedPath(DataProvider.CONTENT_URI_PROFILE, profileId), null,
         null, null, null);
-    Log.d("DEBUG", "ON CREATE CHAT ACTIVITY 111");
     if (c.moveToFirst()) {
       profileName = c.getString(c.getColumnIndex(DataProvider.COL_NAME));
       profileEmail = c.getString(c.getColumnIndex(DataProvider.COL_EMAIL));
@@ -67,7 +75,6 @@ public class ChatActivity extends ActionBarActivity implements MessagesFragment.
     registerReceiver(registrationStatusReceiver, new IntentFilter(Util.ACTION_REGISTER));
     gcmUtil = new GcmUtil(getApplicationContext());
 
-    Log.d("DEBUG", "ON CREATE CHAT ACTIVITY2222");
   }
 
   @Override
@@ -95,16 +102,6 @@ public class ChatActivity extends ActionBarActivity implements MessagesFragment.
       return true;
     }
     return super.onOptionsItemSelected(item);
-  }
-
-  @Override
-  public void onClick(View v) {
-    switch (v.getId()) {
-    case R.id.btSendMessage:
-      send(msgEdit.getText().toString());
-      msgEdit.setText(null);
-      break;
-    }
   }
 
   @Override

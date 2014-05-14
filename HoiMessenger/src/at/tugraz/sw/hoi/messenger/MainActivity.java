@@ -271,7 +271,6 @@ public class MainActivity extends ActionBarActivity {
       @Override
       public void bindView(View view, Context context, Cursor cursor) {
         ViewHolder holder = (ViewHolder) view.getTag();
-        Log.d("DEBUG", "bindview");
         holder.tvName.setText(cursor.getString(cursor.getColumnIndex(DataProvider.COL_NAME)));
         //
 
@@ -288,7 +287,6 @@ public class MainActivity extends ActionBarActivity {
 
       @Override
       public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        Log.d("DEBUG", "newview");
         View itemLayout = mInflater.inflate(R.layout.conversation_list_item, parent, false);
         ViewHolder holder = new ViewHolder();
         itemLayout.setTag(holder);
@@ -309,7 +307,6 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
-      Log.d("DEBUG", "oncreateLoader");
       CursorLoader loader = new CursorLoader(getActivity().getApplicationContext(), DataProvider.CONTENT_URI_PROFILE,
           new String[] { DataProvider.COL_ID, DataProvider.COL_NAME, DataProvider.COL_EMAIL, DataProvider.COL_COUNT },
           null, null, DataProvider.COL_ID + " DESC");
@@ -395,16 +392,15 @@ public class MainActivity extends ActionBarActivity {
       @Override
       public void bindView(View view, Context context, final Cursor cursor) {
         ViewHolder holder = (ViewHolder) view.getTag();
-        Log.d("DEBUG", "bindview");
         holder.tvName.setText(cursor.getString(cursor.getColumnIndex(DataProvider.COL_NAME)));
+        holder.tvId.setTag(String.valueOf(cursor.getInt(cursor.getColumnIndex(DataProvider.COL_ID))));
 
         view.setOnClickListener(new OnClickListener() {
 
           @Override
-          public void onClick(View arg0) {
+          public void onClick(View view) {
             Intent intent = new Intent(getActivity(), ChatActivity.class);
-            intent.putExtra(Util.PROFILE_ID,
-                String.valueOf(cursor.getInt(cursor.getColumnIndex(DataProvider.COL_NAME))));
+            intent.putExtra(Util.PROFILE_ID, (String) (view.findViewById(R.id.tvId)).getTag());
             startActivity(intent);
           }
         });
@@ -423,13 +419,12 @@ public class MainActivity extends ActionBarActivity {
 
       @Override
       public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        Log.d("DEBUG", "newview");
         View itemLayout = mInflater.inflate(R.layout.contact_list_item, parent, false);
         ViewHolder holder = new ViewHolder();
         itemLayout.setTag(holder);
         holder.tvName = (TextView) itemLayout.findViewById(R.id.tvName);
         holder.tvOnlineStatus = (TextView) itemLayout.findViewById(R.id.tvOnlineStatus);
-
+        holder.tvId = (TextView) itemLayout.findViewById(R.id.tvId);
         // holder.avatar = (ImageView) itemLayout.findViewById(R.id.avatar);
         return itemLayout;
       }
@@ -438,12 +433,12 @@ public class MainActivity extends ActionBarActivity {
     private static class ViewHolder {
       TextView tvName;
       TextView tvOnlineStatus;
+      TextView tvId;
 
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
-      Log.d("DEBUG", "oncreateLoader");
       CursorLoader loader = new CursorLoader(getActivity().getApplicationContext(), DataProvider.CONTENT_URI_PROFILE,
           new String[] { DataProvider.COL_ID, DataProvider.COL_NAME, DataProvider.COL_EMAIL, DataProvider.COL_COUNT },
           null, null, DataProvider.COL_ID + " DESC");
