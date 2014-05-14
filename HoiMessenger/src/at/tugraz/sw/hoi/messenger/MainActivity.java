@@ -242,9 +242,9 @@ public class MainActivity extends ActionBarActivity {
       getLoaderManager().initLoader(0, null, this);
 
       Log.d("DEBUG", "after initloader");
-      contactCursorAdapter = new SimpleCursorAdapter(getActivity().getApplicationContext(), R.layout.main_list_item,
-          null, new String[] { DataProvider.COL_NAME, DataProvider.COL_EMAIL }, new int[] { R.id.tvName,
-              R.id.tvLastMessage }, 0);
+      contactCursorAdapter = new SimpleCursorAdapter(getActivity().getApplicationContext(),
+          R.layout.conversation_list_item, null, new String[] { DataProvider.COL_NAME, DataProvider.COL_EMAIL },
+          new int[] { R.id.tvName, R.id.tvLastMessage }, 0);
 
       Log.d("DEBUG", "after simplecursorAdapter");
       conversationList.setAdapter(contactCursorAdapter);
@@ -324,7 +324,7 @@ public class MainActivity extends ActionBarActivity {
         @Override
         public View newView(Context context, Cursor cursor, ViewGroup parent) {
           Log.d("DEBUG", "newview");
-          View itemLayout = mInflater.inflate(R.layout.main_list_item, parent, false);
+          View itemLayout = mInflater.inflate(R.layout.conversation_list_item, parent, false);
           ViewHolder holder = new ViewHolder();
           itemLayout.setTag(holder);
           holder.tvName = (TextView) itemLayout.findViewById(R.id.tvName);
@@ -346,13 +346,19 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
-      // Log.d("DEBUG", "oncreateLoader");
+      Log.d("DEBUG", "oncreateLoader");
       // CursorLoader loader = new
       // CursorLoader(getActivity().getApplicationContext(),
       // DataProvider.CONTENT_URI_PROFILE,
       // new String[] { DataProvider.COL_NAME, DataProvider.COL_EMAIL,
       // DataProvider.COL_COUNT }, null, null, " DESC");
       //
+
+      // CursorLoader loader = new CursorLoader(getActivity(),
+      // DataProvider.CONTENT_URI_PROFILE, new String[] {
+      // DataProvider.COL_ID, DataProvider.COL_NAME, DataProvider.COL_EMAIL,
+      // DataProvider.COL_COUNT }, null, null,
+      // DataProvider.COL_ID + " DESC");
       // Log.d("DEBUG", "endeLoader");
       // Log.d("DEBUG", loader.toString());
       // Log.d("DEBUG", loader.getSelection().toString());
