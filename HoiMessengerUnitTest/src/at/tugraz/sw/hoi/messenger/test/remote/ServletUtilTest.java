@@ -17,4 +17,12 @@ public class ServletUtilTest extends TestCase {
 		assertTrue(Status.SUCCESS.equals(response.getStatus()));
 	}
 
+	public void testChat() {
+		String testMsg = "Hello World!";
+		String testTo = EMAIL;
+		ServletResponse resp = ServletUtil.sendMessage(testMsg, testTo);
+		Log.d("JUnit", response.toString());
+		assertTrue(Status.SUCCESS.equals(response.getStatus()));
+	}
+
 }
