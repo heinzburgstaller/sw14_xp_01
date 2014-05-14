@@ -1,4 +1,4 @@
-package util;
+package at.tugraz.sw.hoi.messenger.util;
 
 import java.util.Random;
 

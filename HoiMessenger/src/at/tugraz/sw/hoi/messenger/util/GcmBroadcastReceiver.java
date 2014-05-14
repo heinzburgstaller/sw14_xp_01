@@ -1,4 +1,4 @@
-package util;
+package at.tugraz.sw.hoi.messenger.util;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;

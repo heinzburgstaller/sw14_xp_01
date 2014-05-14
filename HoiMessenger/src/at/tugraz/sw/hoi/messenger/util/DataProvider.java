@@ -1,4 +1,4 @@
-package util;
+package at.tugraz.sw.hoi.messenger.util;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
@@ -14,8 +14,8 @@ import android.util.Log;
 
 public class DataProvider extends ContentProvider {
 
-  public static final Uri CONTENT_URI_MESSAGES = Uri.parse("content://at.tugraz.sw14_xp_01.provider/messages");
-  public static final Uri CONTENT_URI_PROFILE = Uri.parse("content://at.tugraz.sw14_xp_01.provider/profile");
+  public static final Uri CONTENT_URI_MESSAGES = Uri.parse("content://at.tugraz.sw.hoi.messenger.provider/messages");
+  public static final Uri CONTENT_URI_PROFILE = Uri.parse("content://at.tugraz.sw.hoi.messenger.provider/profile");
 
   public static final String COL_ID = "_id";
 
@@ -54,17 +54,16 @@ public class DataProvider extends ContentProvider {
   private static final UriMatcher uriMatcher;
   static {
     uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-    uriMatcher.addURI("at.tugraz.sw14_xp_01.provider", "messages", MESSAGES_ALLROWS);
-    uriMatcher.addURI("at.tugraz.sw14_xp_01.provider", "messages/#", MESSAGES_SINGLE_ROW);
-    uriMatcher.addURI("at.tugraz.sw14_xp_01.provider", "profile", PROFILE_ALLROWS);
-    uriMatcher.addURI("at.tugraz.sw14_xp_01.provider", "profile/#", PROFILE_SINGLE_ROW);
+    uriMatcher.addURI("at.tugraz.sw.hoi.messenger.provider", "messages", MESSAGES_ALLROWS);
+    uriMatcher.addURI("at.tugraz.sw.hoi.messenger.provider", "messages/#", MESSAGES_SINGLE_ROW);
+    uriMatcher.addURI("at.tugraz.sw.hoi.messenger.provider", "profile", PROFILE_ALLROWS);
+    uriMatcher.addURI("at.tugraz.sw.hoi.messenger.provider", "profile/#", PROFILE_SINGLE_ROW);
   }
 
   @Override
   public boolean onCreate() {
-
+    Log.d("DEBUG", "CREATE DATA PROVIDER");
     dbHelper = new DbHelper(getContext());
-    Log.d("DEBUG", "createDBHELPTER");
     return true;
   }
 
@@ -200,10 +199,13 @@ public class DataProvider extends ContentProvider {
 
     public DbHelper(Context context) {
       super(context, DATABASE_NAME, null, DATABASE_VERSION);
+
+      Log.d("DEBUG", "ON CREATE DBHELPER");
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+      Log.d("DEBUG", "create DB");
       db.execSQL("create table messages (" + "_id integer primary key autoincrement, " + COL_TYPE + " integer, "
           + COL_MESSAGE + " text, " + COL_SENDER_EMAIL + " text, " + COL_RECEIVER_EMAIL + " text, " + COL_TIME
           + " datetime default current_timestamp);");
