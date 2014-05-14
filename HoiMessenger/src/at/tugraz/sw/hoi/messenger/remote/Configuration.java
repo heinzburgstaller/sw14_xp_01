@@ -30,5 +30,11 @@ public interface Configuration {
 
   public static final String PROPERTY_REG_ID = "registration_id";
   public static final String PROPERTY_APP_VERSION = "appVersion";
+  public static final String PROPERTY_NEW_NOTIFICATION = "notifications_new_message";
+  public static final String PROPERTY_NEW_NOTIFICATION_RINGTONE = "notifications_new_message_ringtone";
+
+  public static final String MESSAGE_SEND_ERROR = "Send error";
+  public static final String MESSAGE_DELETED_ERROR = "Message deleted on server";
+  public static final String MESSAGE_NEW = "new message";
 
 }

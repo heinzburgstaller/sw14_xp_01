@@ -47,9 +47,9 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
       GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(context);
       String messageType = gcm.getMessageType(intent);
       if (GoogleCloudMessaging.MESSAGE_TYPE_SEND_ERROR.equals(messageType)) {
-        sendNotification("Send error", false);
+        sendNotification(Configuration.MESSAGE_SEND_ERROR, false);
       } else if (GoogleCloudMessaging.MESSAGE_TYPE_DELETED.equals(messageType)) {
-        sendNotification("Deleted messages on server", false);
+        sendNotification(Configuration.MESSAGE_DELETED_ERROR, false);
       } else {
         String msg = intent.getStringExtra(DataProvider.COL_MESSAGE);
         String senderEmail = intent.getStringExtra(DataProvider.COL_SENDER_EMAIL);
@@ -61,8 +61,8 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
         values.put(DataProvider.COL_RECEIVER_EMAIL, receiverEmail);
         context.getContentResolver().insert(DataProvider.CONTENT_URI_MESSAGES, values);
 
-        if (prefs.getBoolean("notifications_new_message", true)) {
-          sendNotification("New message", true);
+        if (prefs.getBoolean(Configuration.PROPERTY_NEW_NOTIFICATION, true)) {
+          sendNotification(Configuration.MESSAGE_NEW, true);
         }
       }
       setResultCode(Activity.RESULT_OK);
@@ -79,7 +79,7 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
     notification.setAutoCancel(true);
     notification.setSmallIcon(R.drawable.ic_launcher);
 
-    String ringtone = prefs.getString("notifications_new_message_ringtone",
+    String ringtone = prefs.getString(Configuration.PROPERTY_NEW_NOTIFICATION_RINGTONE,
         android.provider.Settings.System.DEFAULT_NOTIFICATION_URI.toString());
     if (!TextUtils.isEmpty(ringtone)) {
       notification.setSound(Uri.parse(ringtone));
