@@ -23,7 +23,7 @@ public class ServletUtil {
   public static final String TAG = "ServletUtil";
 
   public static final String REGISTER = "register";
-  public static final String UNREGISTER = "register";
+  public static final String UNREGISTER = "unregister";
   public static final String CHAT = "chat";
 
   public static ServletResponse register(String email, String regId) {
@@ -31,7 +31,6 @@ public class ServletUtil {
   }
 
   public static ServletResponse unregister(String email) {
-
     return post(UNREGISTER, new Parameter(Configuration.EMAIL, email));
   }
 
