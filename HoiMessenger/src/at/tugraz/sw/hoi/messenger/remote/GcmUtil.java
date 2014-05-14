@@ -10,8 +10,6 @@ import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Patterns;
@@ -66,14 +64,7 @@ public class GcmUtil {
       // Log.v(TAG, "Registration not found.");
       return "";
     }
-    // check if app was updated; if so, it must clear registration id to
-    // avoid a race condition if GCM sends a message
-    int registeredVersion = prefs.getInt(Configuration.PROPERTY_APP_VERSION, Integer.MIN_VALUE);
-    int currentVersion = getAppVersion();
-    if (registeredVersion != currentVersion || isRegistrationExpired()) {
-      // Log.v(TAG, "App version changed or registration expired.");
-      return "";
-    }
+
     return registrationId;
   }
 
@@ -85,30 +76,16 @@ public class GcmUtil {
    *          registration id
    */
   private void setRegistrationId(String regId) {
-    int appVersion = getAppVersion();
+
     // Log.v(TAG, "Saving regId on app version " + appVersion);
     SharedPreferences.Editor editor = prefs.edit();
     editor.putString(Configuration.PROPERTY_REG_ID, regId);
-    editor.putInt(Configuration.PROPERTY_APP_VERSION, appVersion);
     long expirationTime = System.currentTimeMillis() + REGISTRATION_EXPIRY_TIME_MS;
 
     // Log.v(TAG, "Setting registration expiry time to " + new
     // Timestamp(expirationTime));
     editor.putLong(PROPERTY_ON_SERVER_EXPIRATION_TIME, expirationTime);
     editor.commit();
-  }
-
-  /**
-   * @return Application's version code from the {@code PackageManager}.
-   */
-  private int getAppVersion() {
-    try {
-      PackageInfo packageInfo = ctx.getPackageManager().getPackageInfo(ctx.getPackageName(), 0);
-      return packageInfo.versionCode;
-    } catch (NameNotFoundException e) {
-      // should never happen
-      throw new RuntimeException("Could not get package name: " + e);
-    }
   }
 
   /**
@@ -148,7 +125,7 @@ public class GcmUtil {
 
             // You should send the registration ID to your server over HTTP,
             // so it can use GCM/HTTP or CCS to send messages to your app.
-            ServletResponse response = ServletUtil.register(this.getPreferredEmail(), regid);
+            ServletResponse response = ServletUtil.register(getPreferredEmail(), regid);
 
             if (response.getStatus() == ServletResponse.Status.FAILURE) {
               return Boolean.FALSE;
@@ -177,20 +154,6 @@ public class GcmUtil {
         return Boolean.FALSE;
       }
 
-      private String getPreferredEmail() {
-
-        List<String> emailList = new ArrayList<String>();
-        Account[] accounts = AccountManager.get(ctx).getAccounts();
-        for (Account account : accounts) {
-          if (Patterns.EMAIL_ADDRESS.matcher(account.name).matches()) {
-            emailList.add(account.name);
-          }
-        }
-
-        return prefs.getString(Configuration.CHAT_EMAIL_ID, emailList.size() == 0 ? "" : emailList.get(0));
-
-      }
-
       @Override
       protected void onPostExecute(Boolean status) {
         broadcastStatus(status);
@@ -211,6 +174,20 @@ public class GcmUtil {
     if (gcm != null) {
       gcm.close();
     }
+  }
+
+  private String getPreferredEmail() {
+
+    List<String> emailList = new ArrayList<String>();
+    Account[] accounts = AccountManager.get(ctx).getAccounts();
+    for (Account account : accounts) {
+      if (Patterns.EMAIL_ADDRESS.matcher(account.name).matches()) {
+        emailList.add(account.name);
+      }
+    }
+
+    return prefs.getString(Configuration.CHAT_EMAIL_ID, emailList.size() == 0 ? "" : emailList.get(0));
+
   }
 
 }
