@@ -18,9 +18,16 @@ public class ServletUtil {
    */
 
   public static final String REGISTER = "register";
+  public static final String CHAT = "chat";
 
   public static ServletResponse register(String email, String regId) {
     return post(REGISTER, new Parameter(Configuration.EMAIL, email), new Parameter(Configuration.REG_ID, regId));
+  }
+
+  public static ServletResponse chat(String msg, String from, String to) {
+    ServletResponse response = post(CHAT, new Parameter(Configuration.MSG, msg),
+        new Parameter(Configuration.FROM, from), new Parameter(Configuration.TO, to));
+    return response;
   }
 
   private static ServletResponse post(String servlet, Parameter... parameters) {
