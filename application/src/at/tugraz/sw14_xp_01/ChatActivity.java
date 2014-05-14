@@ -21,7 +21,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import at.tugraz.sw14_xp_01.DataProvider.MessageType;
 import at.tugraz.sw14_xp_01.client.GcmUtil;
 import at.tugraz.sw14_xp_01.client.ServerUtilities;
