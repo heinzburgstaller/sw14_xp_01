@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Locale;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,7 +17,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.CursorAdapter;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.ActionBarActivity;
@@ -25,11 +25,13 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import at.tugraz.sw.hoi.messenger.util.DataProvider;
+import at.tugraz.sw.hoi.messenger.util.Util;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -212,7 +214,8 @@ public class MainActivity extends ActionBarActivity {
    */
   public static class ConversationsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private SimpleCursorAdapter conversationCursorAdapter;
+    // private SimpleCursorAdapter conversationCursorAdapter;
+    private ConversationtCursorAdapter conversationCursorAdapter;
     /**
      * The fragment argument representing the section number for this fragment.
      */
@@ -237,9 +240,13 @@ public class MainActivity extends ActionBarActivity {
       View rootView = inflater.inflate(R.layout.fragment_conversations, container, false);
 
       ListView conversationList = (ListView) rootView.findViewById(R.id.lvConversation);
-      conversationCursorAdapter = new SimpleCursorAdapter(getActivity().getApplicationContext(),
-          R.layout.conversation_list_item, null, new String[] { DataProvider.COL_NAME, DataProvider.COL_EMAIL },
-          new int[] { R.id.tvName, R.id.tvLastMessage }, 0);
+      // conversationCursorAdapter = new
+      // SimpleCursorAdapter(getActivity().getApplicationContext(),
+      // R.layout.conversation_list_item, null, new String[] {
+      // DataProvider.COL_NAME, DataProvider.COL_EMAIL },
+      // new int[] { R.id.tvName, R.id.tvLastMessage }, 0);
+
+      conversationCursorAdapter = new ConversationtCursorAdapter(getActivity().getApplicationContext(), null);
       conversationList.setAdapter(conversationCursorAdapter);
 
       // Prepare the loader. Either re-connect with an existing one,
@@ -249,11 +256,11 @@ public class MainActivity extends ActionBarActivity {
       return rootView;
     }
 
-    public class ContactCursorAdapter extends CursorAdapter {
+    public class ConversationtCursorAdapter extends CursorAdapter {
 
       private LayoutInflater mInflater;
 
-      public ContactCursorAdapter(Context context, Cursor c) {
+      public ConversationtCursorAdapter(Context context, Cursor c) {
         super(context, c, 0);
         Log.d("DEBUG", "constructerContactCursorAdapter ");
         this.mInflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(
@@ -266,21 +273,23 @@ public class MainActivity extends ActionBarActivity {
         ViewHolder holder = (ViewHolder) view.getTag();
         Log.d("DEBUG", "bindview");
         holder.tvName.setText(cursor.getString(cursor.getColumnIndex(DataProvider.COL_NAME)));
+        //
 
-        holder.tvTimeLastMessage.setText(cursor.getString(cursor.getColumnIndex(DataProvider.COL_EMAIL)));
+        holder.tvLastMessage.setText(cursor.getString(cursor.getColumnIndex(DataProvider.COL_EMAIL)));
+
         int count = cursor.getInt(cursor.getColumnIndex(DataProvider.COL_COUNT));
         if (count > 0) {
-          holder.tvLastMessage.setVisibility(View.VISIBLE);
-          holder.tvLastMessage.setText(String.format("%d new message%s", count, count == 1 ? "" : "s"));
+          holder.tvTimeLastMessage.setVisibility(View.VISIBLE);
+          holder.tvTimeLastMessage.setText(String.format("%d new message%s", count, count == 1 ? "" : "s"));
         } else
-          holder.tvLastMessage.setVisibility(View.GONE);
+          holder.tvTimeLastMessage.setVisibility(View.GONE);
 
       }
 
       @Override
       public View newView(Context context, Cursor cursor, ViewGroup parent) {
         Log.d("DEBUG", "newview");
-        View itemLayout = mInflater.inflate(R.layout.contact_list_item, parent, false);
+        View itemLayout = mInflater.inflate(R.layout.conversation_list_item, parent, false);
         ViewHolder holder = new ViewHolder();
         itemLayout.setTag(holder);
         holder.tvName = (TextView) itemLayout.findViewById(R.id.tvName);
@@ -309,25 +318,15 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public void onLoadFinished(Loader<Cursor> arg0, Cursor cursor) {
-      Log.d("DEBUG", "onLoadFinished");
-      conversationCursorAdapter.swapCursor(cursor);
+      conversationCursorAdapter.changeCursor(cursor);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> arg0) {
       Log.d("DEBUG", "onLoaderReset");
-      conversationCursorAdapter.swapCursor(null);
+      conversationCursorAdapter.changeCursor(null);
 
     }
-
-    // @Override
-    // public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long
-    // arg3) {
-    // // Intent intent = new Intent(this, chat_activity.class);
-    // // intent.putExtra(Util.PROFILE_ID, String.valueOf(arg3));
-    // // startActivity(intent);
-    //
-    // }
   }
 
   /**
@@ -335,7 +334,8 @@ public class MainActivity extends ActionBarActivity {
    */
   public static class ContactsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private ImageButton btAddContacts;
-    private SimpleCursorAdapter contactCursorAdapter;
+    // private SimpleCursorAdapter contactCursorAdapter;
+    private ContactCursorAdapter contactCursorAdapter;
     private static final String ARG_SECTION_NUMBER = "section_number";
 
     public static ContactsFragment newInstance(int sectionNumber) {
@@ -354,10 +354,14 @@ public class MainActivity extends ActionBarActivity {
       View rootView = inflater.inflate(R.layout.fragment_contacts, container, false);
 
       ListView conversationList = (ListView) rootView.findViewById(R.id.lvContacts);
-      contactCursorAdapter = new SimpleCursorAdapter(getActivity().getApplicationContext(), R.layout.contact_list_item,
-          null, new String[] { DataProvider.COL_NAME, DataProvider.COL_EMAIL }, new int[] { R.id.tvName,
-              R.id.tvLastMessage }, 0);
+      // contactCursorAdapter = new
+      // SimpleCursorAdapter(getActivity().getApplicationContext(),
+      // R.layout.contact_list_item,
+      // null, new String[] { DataProvider.COL_NAME, DataProvider.COL_EMAIL },
+      // new int[] { R.id.tvName,
+      // R.id.tvLastMessage }, 0);
 
+      contactCursorAdapter = new ContactCursorAdapter(getActivity().getApplicationContext(), null);
       conversationList.setAdapter(contactCursorAdapter);
 
       // Prepare the loader. Either re-connect with an existing one,
@@ -389,12 +393,24 @@ public class MainActivity extends ActionBarActivity {
       }
 
       @Override
-      public void bindView(View view, Context context, Cursor cursor) {
+      public void bindView(View view, Context context, final Cursor cursor) {
         ViewHolder holder = (ViewHolder) view.getTag();
         Log.d("DEBUG", "bindview");
         holder.tvName.setText(cursor.getString(cursor.getColumnIndex(DataProvider.COL_NAME)));
+
+        view.setOnClickListener(new OnClickListener() {
+
+          @Override
+          public void onClick(View arg0) {
+            Intent intent = new Intent(getActivity(), ChatActivity.class);
+            intent.putExtra(Util.PROFILE_ID,
+                String.valueOf(cursor.getInt(cursor.getColumnIndex(DataProvider.COL_NAME))));
+            startActivity(intent);
+          }
+        });
         // holder.tvOnlineStatus = "online";
         /*
+         * 
          * holder.tvTimeLastMessage.setText(cursor.getString(cursor.getColumnIndex
          * (DataProvider.COL_EMAIL))); int count =
          * cursor.getInt(cursor.getColumnIndex(DataProvider.COL_COUNT)); if
@@ -413,6 +429,7 @@ public class MainActivity extends ActionBarActivity {
         itemLayout.setTag(holder);
         holder.tvName = (TextView) itemLayout.findViewById(R.id.tvName);
         holder.tvOnlineStatus = (TextView) itemLayout.findViewById(R.id.tvOnlineStatus);
+
         // holder.avatar = (ImageView) itemLayout.findViewById(R.id.avatar);
         return itemLayout;
       }
@@ -436,13 +453,13 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public void onLoadFinished(Loader<Cursor> arg0, Cursor cursor) {
       Log.d("DEBUG", "onLoadFinished");
-      contactCursorAdapter.swapCursor(cursor);
+      contactCursorAdapter.changeCursor(cursor);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> arg0) {
       Log.d("DEBUG", "onLoaderReset");
-      contactCursorAdapter.swapCursor(null);
+      contactCursorAdapter.changeCursor(null);
 
     }
   }

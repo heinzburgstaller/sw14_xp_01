@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/msg_list"
-        android:name="at.tugraz.sw14_xp_01.MessagesFragment"
+        android:name="at.tugraz.sw.hoi.messenger.MessagesFragment"
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="1" />

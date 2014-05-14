@@ -14,7 +14,8 @@
         android:id="@+id/lvContacts"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" 
-        android:layout_above="@+id/btAddContact"/>
+        android:layout_above="@+id/btAddContact"
+        android:clickable="true"/>
     <ImageButton
         android:background="@drawable/custom_button"
         android:id="@id/btAddContact"

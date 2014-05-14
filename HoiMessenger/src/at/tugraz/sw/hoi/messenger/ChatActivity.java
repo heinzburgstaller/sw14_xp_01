@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,10 +23,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import at.tugraz.sw.hoi.messenger.util.DataProvider;
+import at.tugraz.sw.hoi.messenger.util.DataProvider.MessageType;
 import at.tugraz.sw.hoi.messenger.util.GcmUtil;
 import at.tugraz.sw.hoi.messenger.util.ServerUtilities;
 import at.tugraz.sw.hoi.messenger.util.Util;
-import at.tugraz.sw.hoi.messenger.util.DataProvider.MessageType;
 
 public class ChatActivity extends ActionBarActivity implements MessagesFragment.OnFragmentInteractionListener,
     EditContactDialog.OnFragmentInteractionListener, OnClickListener {
@@ -39,9 +40,7 @@ public class ChatActivity extends ActionBarActivity implements MessagesFragment.
 
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    // setContentView(R.layout.chat_activity);// TODO add label for chat
-    // activity
-    // here.
+    setContentView(R.layout.chat_activity);
 
     profileId = getIntent().getStringExtra(Util.PROFILE_ID);
 
@@ -54,8 +53,10 @@ public class ChatActivity extends ActionBarActivity implements MessagesFragment.
     actionBar.setHomeButtonEnabled(true);
     actionBar.setDisplayHomeAsUpEnabled(true);
 
+    Log.d("DEBUG", "ON CREATE CHAT ACTIVITY");
     Cursor c = getContentResolver().query(Uri.withAppendedPath(DataProvider.CONTENT_URI_PROFILE, profileId), null,
         null, null, null);
+    Log.d("DEBUG", "ON CREATE CHAT ACTIVITY 111");
     if (c.moveToFirst()) {
       profileName = c.getString(c.getColumnIndex(DataProvider.COL_NAME));
       profileEmail = c.getString(c.getColumnIndex(DataProvider.COL_EMAIL));
@@ -65,6 +66,8 @@ public class ChatActivity extends ActionBarActivity implements MessagesFragment.
 
     registerReceiver(registrationStatusReceiver, new IntentFilter(Util.ACTION_REGISTER));
     gcmUtil = new GcmUtil(getApplicationContext());
+
+    Log.d("DEBUG", "ON CREATE CHAT ACTIVITY2222");
   }
 
   @Override

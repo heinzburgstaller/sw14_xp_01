@@ -15,7 +15,7 @@ public class Util extends Application {
   public static final String PROFILE_ID = "profile_id";
   public static SharedPreferences prefs;
   public static String[] email_arr;
-  public static final String ACTION_REGISTER = "at.tugraz.sw14_xp_01.REGISTER";
+  public static final String ACTION_REGISTER = "at.tugraz.sw.hoi.messenger.REGISTER";
   public static final int STATUS_SUCCESS = 1;
   public static final int STATUS_FAILED = 0;
   public static final String EXTRA_STATUS = "status";
