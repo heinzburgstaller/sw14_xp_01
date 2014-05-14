@@ -20,7 +20,7 @@ public class ServletUtilTest extends TestCase {
 	}
 	
 	public void testUnregister() {
-		ServletResponse response = ServletUtil.unregister(EMAIL, REG_ID);
+		ServletResponse response = ServletUtil.unregister(EMAIL);
 		Log.d(TAG, response.toString());
 		assertTrue(Status.SUCCESS.equals(response.getStatus()));
 	}

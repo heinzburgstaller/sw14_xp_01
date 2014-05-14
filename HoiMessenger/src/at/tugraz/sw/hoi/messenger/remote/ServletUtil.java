@@ -23,10 +23,16 @@ public class ServletUtil {
   public static final String TAG = "ServletUtil";
 
   public static final String REGISTER = "register";
+  public static final String UNREGISTER = "register";
   public static final String CHAT = "chat";
 
   public static ServletResponse register(String email, String regId) {
     return post(REGISTER, new Parameter(Configuration.EMAIL, email), new Parameter(Configuration.REG_ID, regId));
+  }
+
+  public static ServletResponse unregister(String email) {
+
+    return post(UNREGISTER, new Parameter(Configuration.EMAIL, email));
   }
 
   public static ServletResponse chat(String msg, String from, String to) {
