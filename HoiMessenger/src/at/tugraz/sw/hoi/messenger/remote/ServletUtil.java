@@ -9,13 +9,18 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import android.util.Log;
 import at.tugraz.sw.hoi.messenger.remote.ServletResponse.Status;
 
+/**
+ * Parameters: in at.tugraz.sw.hoi.messenger.remote
+ * 
+ * @author sw
+ * 
+ */
 public class ServletUtil {
 
-  /*
-   * Parameters: in at.tugraz.sw.hoi.messenger.remote
-   */
+  public static final String TAG = "ServletUtil";
 
   public static final String REGISTER = "register";
   public static final String CHAT = "chat";
@@ -53,6 +58,8 @@ public class ServletUtil {
 
       if (resp.startsWith(Configuration.SUCCESS)) {
         status = Status.SUCCESS;
+      } else {
+        Log.d(TAG, "Post - Error from Server");
       }
 
       return new ServletResponse(status, resp);
