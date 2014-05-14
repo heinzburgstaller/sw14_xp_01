@@ -1,7 +1,5 @@
 package at.tugraz.sw.hoi.messenger;
 
-import java.io.IOException;
-
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -118,18 +116,16 @@ public class ChatActivity extends ActionBarActivity implements MessagesFragment.
       @Override
       protected String doInBackground(Void... params) {
         String msg = "";
-        try {
-          ServerUtilities.send(txt, profileEmail);
-          ContentValues values = new ContentValues(2);
-          values.put(DataProvider.COL_TYPE, MessageType.OUTGOING.ordinal());
-          values.put(DataProvider.COL_MESSAGE, txt);
-          values.put(DataProvider.COL_RECEIVER_EMAIL, profileEmail);
-          values.put(DataProvider.COL_SENDER_EMAIL, Util.getPreferredEmail());
-          getContentResolver().insert(DataProvider.CONTENT_URI_MESSAGES, values);
 
-        } catch (IOException ex) {
-          msg = "Message could not be sent";
-        }
+        // ServerUtilities.send(txt, profileEmail); //TODO replace send with
+        // post mb
+        ContentValues values = new ContentValues(2);
+        values.put(DataProvider.COL_TYPE, MessageType.OUTGOING.ordinal());
+        values.put(DataProvider.COL_MESSAGE, txt);
+        values.put(DataProvider.COL_RECEIVER_EMAIL, profileEmail);
+        values.put(DataProvider.COL_SENDER_EMAIL, Util.getPreferredEmail());
+        getContentResolver().insert(DataProvider.CONTENT_URI_MESSAGES, values);
+
         return msg;
       }
 
