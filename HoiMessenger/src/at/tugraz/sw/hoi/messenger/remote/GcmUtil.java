@@ -13,7 +13,6 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Patterns;
-import at.tugraz.sw.hoi.messenger.util.Util;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
@@ -121,7 +120,7 @@ public class GcmUtil {
             if (gcm == null) {
               gcm = GoogleCloudMessaging.getInstance(ctx);
             }
-            String regid = gcm.register(Util.getSenderId());
+            String regid = gcm.register(Configuration.SENDER_ID);
 
             // You should send the registration ID to your server over HTTP,
             // so it can use GCM/HTTP or CCS to send messages to your app.
@@ -162,8 +161,8 @@ public class GcmUtil {
   }
 
   private void broadcastStatus(boolean status) {
-    Intent intent = new Intent(Util.ACTION_REGISTER);
-    intent.putExtra(Util.EXTRA_STATUS, status ? Util.STATUS_SUCCESS : Util.STATUS_FAILED);
+    Intent intent = new Intent(Configuration.ACTION_REGISTER);
+    intent.putExtra(Configuration.EXTRA_STATUS, status ? Configuration.STATUS_SUCCESS : Configuration.STATUS_FAILED);
     ctx.sendBroadcast(intent);
   }
 
