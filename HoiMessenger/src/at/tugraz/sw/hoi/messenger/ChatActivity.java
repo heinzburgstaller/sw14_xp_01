@@ -43,7 +43,7 @@ public class ChatActivity extends ActionBarActivity implements MessagesFragment.
                                            // here.
 
     profileId = getIntent().getStringExtra(Util.PROFILE_ID);
-    msgEdit = (EditText) findViewById(R.id.msg_edit); // TODO change name of
+    msgEdit = (EditText) findViewById(R.id.etText); // TODO change name of
     // contact add this feature we also will need a view/popup for that needs to
     // be added by design in the R file
     sendBtn = (Button) findViewById(R.id.btSendMessage);
