@@ -1,6 +1,5 @@
 package util;
 
-import java.io.IOException;
 import java.util.Random;
 
 import android.content.Context;
@@ -42,7 +41,7 @@ public class GcmUtil {
 
     String regid = getRegistrationId();
     if (regid.length() == 0) {
-      registerBackground();
+      // registerBackground();
     } else {
       broadcastStatus(true);
     }
@@ -130,53 +129,53 @@ public class GcmUtil {
    * Stores the registration id, app versionCode, and expiration time in the
    * application's shared preferences.
    */
-  private void registerBackground() {
-    registrationTask = new AsyncTask<Void, Void, Boolean>() {
-      @Override
-      protected Boolean doInBackground(Void... params) {
-        long backoff = BACKOFF_MILLI_SECONDS + random.nextInt(1000);
-        for (int i = 1; i <= MAX_ATTEMPTS; i++) {
-          // Log.d(TAG, "Attempt #" + i + " to register");
-          try {
-            if (gcm == null) {
-              gcm = GoogleCloudMessaging.getInstance(ctx);
-            }
-            String regid = gcm.register(Util.getSenderId());
-
-            // You should send the registration ID to your server over HTTP,
-            // so it can use GCM/HTTP or CCS to send messages to your app.
-            ServerUtilities.register(Util.getPreferredEmail(), regid);
-
-            // Save the regid - no need to register again.
-            setRegistrationId(regid);
-            return Boolean.TRUE;
-
-          } catch (IOException ex) {
-            // Log.e(TAG, "Failed to register on attempt " + i + ":" + ex);
-            if (i == MAX_ATTEMPTS) {
-              break;
-            }
-            try {
-              // Log.d(TAG, "Sleeping for " + backoff + " ms before retry");
-              Thread.sleep(backoff);
-            } catch (InterruptedException e1) {
-              // Activity finished before we complete - exit.
-              // Log.d(TAG, "Thread interrupted: abort remaining retries!");
-              Thread.currentThread().interrupt();
-            }
-            // increase backoff exponentially
-            backoff *= 2;
-          }
-        }
-        return Boolean.FALSE;
-      }
-
-      @Override
-      protected void onPostExecute(Boolean status) {
-        broadcastStatus(status);
-      }
-    }.execute(null, null, null);
-  }
+  // private void registerBackground() {
+  // registrationTask = new AsyncTask<Void, Void, Boolean>() {
+  // @Override
+  // protected Boolean doInBackground(Void... params) {
+  // long backoff = BACKOFF_MILLI_SECONDS + random.nextInt(1000);
+  // for (int i = 1; i <= MAX_ATTEMPTS; i++) {
+  // // Log.d(TAG, "Attempt #" + i + " to register");
+  // try {
+  // if (gcm == null) {
+  // gcm = GoogleCloudMessaging.getInstance(ctx);
+  // }
+  // String regid = gcm.register(Util.getSenderId());
+  //
+  // // You should send the registration ID to your server over HTTP,
+  // // so it can use GCM/HTTP or CCS to send messages to your app.
+  // ServerUtilities.register(Util.getPreferredEmail(), regid);
+  //
+  // // Save the regid - no need to register again.
+  // setRegistrationId(regid);
+  // return Boolean.TRUE;
+  //
+  // } catch (IOException ex) {
+  // // Log.e(TAG, "Failed to register on attempt " + i + ":" + ex);
+  // if (i == MAX_ATTEMPTS) {
+  // break;
+  // }
+  // try {
+  // // Log.d(TAG, "Sleeping for " + backoff + " ms before retry");
+  // Thread.sleep(backoff);
+  // } catch (InterruptedException e1) {
+  // // Activity finished before we complete - exit.
+  // // Log.d(TAG, "Thread interrupted: abort remaining retries!");
+  // Thread.currentThread().interrupt();
+  // }
+  // // increase backoff exponentially
+  // backoff *= 2;
+  // }
+  // }
+  // return Boolean.FALSE;
+  // }
+  //
+  // @Override
+  // protected void onPostExecute(Boolean status) {
+  // broadcastStatus(status);
+  // }
+  // }.execute(null, null, null);
+  // }
 
   private void broadcastStatus(boolean status) {
     Intent intent = new Intent(Util.ACTION_REGISTER);

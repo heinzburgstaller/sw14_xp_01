@@ -51,11 +51,13 @@ public class Util extends Application {
   }
 
   public static String getSenderId() {
-    return prefs.getString(CHAT_SENDER_ID, Constants.SENDER_ID);
+    // return prefs.getString(CHAT_SENDER_ID, Constants.SENDER_ID);
+    return Constants.SENDER_ID;
   }
 
   public static String getServerUrl() {
-    return prefs.getString("server_url_pref", Constants.SERVER_URL);
+    // return prefs.getString("server_url_pref", Constants.SERVER_URL);
+    return Constants.SERVER_URL;
   }
 
 }

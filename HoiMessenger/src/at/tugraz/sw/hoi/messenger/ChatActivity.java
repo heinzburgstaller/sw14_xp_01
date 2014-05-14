@@ -39,11 +39,16 @@ public class ChatActivity extends ActionBarActivity implements MessagesFragment.
 
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.chat_activity);// TODO add label for chat activity
-                                           // here.
+    // setContentView(R.layout.chat_activity);// TODO add label for chat
+    // activity
+    // here.
 
     profileId = getIntent().getStringExtra(Util.PROFILE_ID);
+<<<<<<< HEAD
     msgEdit = (EditText) findViewById(R.id.etText); // TODO change name of
+=======
+    // msgEdit = (EditText) findViewById(R.id.msg_edit); // TODO change name of
+>>>>>>> 50281c6deca4d661bc64a301c56c9738879b43cc
     // contact add this feature we also will need a view/popup for that needs to
     // be added by design in the R file
     sendBtn = (Button) findViewById(R.id.btSendMessage);
@@ -68,7 +73,7 @@ public class ChatActivity extends ActionBarActivity implements MessagesFragment.
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     // Inflate the menu; this adds items to the action bar if it is present.
-    getMenuInflater().inflate(R.menu.chat, menu);
+    // getMenuInflater().inflate(R.menu.chat, menu);
     return true;
   }
 
