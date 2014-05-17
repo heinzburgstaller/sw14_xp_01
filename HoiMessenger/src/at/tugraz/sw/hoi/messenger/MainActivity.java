@@ -377,7 +377,7 @@ public class MainActivity extends ActionBarActivity {
       return rootView;
     }
 
-    public class ContactCursorAdapter extends CursorAdapter {
+    public class ContactCursorAdapter extends CursorAdapter implements OnClickListener {
 
       private LayoutInflater mInflater;
 
@@ -390,20 +390,20 @@ public class MainActivity extends ActionBarActivity {
       }
 
       @Override
+      public void onClick(View v) {
+        // TODO Auto-generated method stub
+        Intent intent = new Intent(getActivity(), ChatActivity.class);
+        intent.putExtra(Util.PROFILE_ID, (String) (v.findViewById(R.id.tvId)).getTag());
+        startActivity(intent);
+      }
+
+      @Override
       public void bindView(View view, Context context, final Cursor cursor) {
         ViewHolder holder = (ViewHolder) view.getTag();
         holder.tvName.setText(cursor.getString(cursor.getColumnIndex(DataProvider.COL_NAME)));
         holder.tvId.setTag(String.valueOf(cursor.getInt(cursor.getColumnIndex(DataProvider.COL_ID))));
 
-        view.setOnClickListener(new OnClickListener() {
-
-          @Override
-          public void onClick(View view) {
-            Intent intent = new Intent(getActivity(), ChatActivity.class);
-            intent.putExtra(Util.PROFILE_ID, (String) (view.findViewById(R.id.tvId)).getTag());
-            startActivity(intent);
-          }
-        });
+        view.setOnClickListener(this);
         // holder.tvOnlineStatus = "online";
         /*
          * 
@@ -428,6 +428,7 @@ public class MainActivity extends ActionBarActivity {
         // holder.avatar = (ImageView) itemLayout.findViewById(R.id.avatar);
         return itemLayout;
       }
+
     }
 
     private static class ViewHolder {
