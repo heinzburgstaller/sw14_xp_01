@@ -20,9 +20,9 @@ import android.widget.TextView;
 import at.tugraz.sw.hoi.messenger.util.DataProvider;
 import at.tugraz.sw.hoi.messenger.util.Util;
 
-public class ContactsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class ContactsFragment extends Fragment implements OnClickListener, LoaderManager.LoaderCallbacks<Cursor> {
+
   private ImageButton btAddContacts;
-  // private SimpleCursorAdapter contactCursorAdapter;
   private ContactCursorAdapter contactCursorAdapter;
   private static final String ARG_SECTION_NUMBER = "section_number";
 
@@ -56,19 +56,13 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
     // or start a new one.
     getLoaderManager().initLoader(0, null, this);
 
-    btAddContacts = (ImageButton) rootView.findViewById(R.id.btAddContact);
-    this.btAddContacts.setOnClickListener(new View.OnClickListener() {
+    this.btAddContacts = (ImageButton) rootView.findViewById(R.id.btAddContact);
+    this.btAddContacts.setOnClickListener(this);
 
-      @Override
-      public void onClick(View arg0) {
-        AddContactDialog newFragment = AddContactDialog.newInstance();
-        newFragment.show(getActivity().getSupportFragmentManager(), "AddContactDialog");
-      }
-    });
     return rootView;
   }
 
-  public class ContactCursorAdapter extends CursorAdapter implements OnClickListener {
+  class ContactCursorAdapter extends CursorAdapter implements OnClickListener {
 
     private LayoutInflater mInflater;
 
@@ -147,5 +141,11 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
     Log.d("DEBUG", "onLoaderReset");
     contactCursorAdapter.changeCursor(null);
 
+  }
+
+  @Override
+  public void onClick(View v) {
+    AddContactDialog newFragment = AddContactDialog.newInstance();
+    newFragment.show(getActivity().getSupportFragmentManager(), "AddContactDialog");
   }
 }

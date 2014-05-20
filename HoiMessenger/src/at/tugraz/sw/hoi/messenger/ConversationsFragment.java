@@ -18,7 +18,6 @@ import at.tugraz.sw.hoi.messenger.util.DataProvider;
 
 public class ConversationsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-  // private SimpleCursorAdapter conversationCursorAdapter;
   private ConversationtCursorAdapter conversationCursorAdapter;
   /**
    * The fragment argument representing the section number for this fragment.
@@ -44,6 +43,7 @@ public class ConversationsFragment extends Fragment implements LoaderManager.Loa
     View rootView = inflater.inflate(R.layout.fragment_conversations, container, false);
 
     ListView conversationList = (ListView) rootView.findViewById(R.id.lvConversation);
+
     // conversationCursorAdapter = new
     // SimpleCursorAdapter(getActivity().getApplicationContext(),
     // R.layout.conversation_list_item, null, new String[] {
@@ -60,7 +60,7 @@ public class ConversationsFragment extends Fragment implements LoaderManager.Loa
     return rootView;
   }
 
-  public class ConversationtCursorAdapter extends CursorAdapter {
+  class ConversationtCursorAdapter extends CursorAdapter {
 
     private LayoutInflater mInflater;
 
@@ -76,7 +76,6 @@ public class ConversationsFragment extends Fragment implements LoaderManager.Loa
     public void bindView(View view, Context context, Cursor cursor) {
       ViewHolder holder = (ViewHolder) view.getTag();
       holder.tvName.setText(cursor.getString(cursor.getColumnIndex(DataProvider.COL_NAME)));
-      //
 
       holder.tvLastMessage.setText(cursor.getString(cursor.getColumnIndex(DataProvider.COL_EMAIL)));
 
