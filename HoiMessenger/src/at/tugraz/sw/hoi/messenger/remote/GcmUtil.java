@@ -62,6 +62,7 @@ public class GcmUtil {
     }
 
     SharedPreferences.Editor editor = prefs.edit();
+    editor.putString(Configuration.REG_ID, "");
     editor.putString(Configuration.CHAT_EMAIL_ID, newEmail);
     editor.commit();
 
