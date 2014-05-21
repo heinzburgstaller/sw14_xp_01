@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Locale;
 
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -13,9 +14,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import at.tugraz.sw.hoi.messenger.remote.Configuration;
 import at.tugraz.sw.hoi.messenger.remote.GcmUtil;
 
 public class MainActivity extends ActionBarActivity {
@@ -54,13 +55,12 @@ public class MainActivity extends ActionBarActivity {
     final ActionBar ab = getSupportActionBar();
     ab.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
+    if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+        .getString(Configuration.CHAT_EMAIL_ID, "").equals("")) {
+      EditEmailDialog newFragment = EditEmailDialog.newInstance();
+      newFragment.show(getSupportFragmentManager(), "EditEmailDialog");
+    }
     gcm = new GcmUtil(this);
-
-    // EditEmailDialog newFragment = EditEmailDialog.newInstance();
-    // newFragment.show(getSupportFragmentManager(), "EditEmailDialog");
-    //
-    // gcm.reRegister(getApplicationContext(), newFragment.newemail_);
-
     // Create a tab listener that is called when the user changes tabs.
     ActionBar.TabListener tabListener = new ActionBar.TabListener() {
       public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
@@ -101,9 +101,6 @@ public class MainActivity extends ActionBarActivity {
         CONTACTS_FRAGMENT_INDEX);
     ab.addTab(ab.newTab().setText(mSectionsPagerAdapter.getPageTitle(MORE_FRAGMENT_INDEX)).setTabListener(tabListener),
         MORE_FRAGMENT_INDEX);
-
-    Log.d("DEBUG", "oncreate MAinactivity");
-
   }
 
   private List<Fragment> getFragments() {
@@ -169,5 +166,9 @@ public class MainActivity extends ActionBarActivity {
       }
       return null;
     }
+  }
+
+  public void reRegisterUser(String email) {
+    gcm.reRegister(getApplicationContext(), email);
   }
 }

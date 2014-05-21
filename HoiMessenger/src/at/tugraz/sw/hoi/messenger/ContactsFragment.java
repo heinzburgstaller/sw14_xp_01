@@ -68,7 +68,6 @@ public class ContactsFragment extends Fragment implements OnClickListener, Loade
 
     public ContactCursorAdapter(Context context, Cursor c) {
       super(context, c, 0);
-      Log.d("DEBUG", "constructerContactCursorAdapter ");
       this.mInflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(
           Context.LAYOUT_INFLATER_SERVICE);
 

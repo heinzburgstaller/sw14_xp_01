@@ -8,7 +8,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,13 +42,6 @@ public class ConversationsFragment extends Fragment implements LoaderManager.Loa
     View rootView = inflater.inflate(R.layout.fragment_conversations, container, false);
 
     ListView conversationList = (ListView) rootView.findViewById(R.id.lvConversation);
-
-    // conversationCursorAdapter = new
-    // SimpleCursorAdapter(getActivity().getApplicationContext(),
-    // R.layout.conversation_list_item, null, new String[] {
-    // DataProvider.COL_NAME, DataProvider.COL_EMAIL },
-    // new int[] { R.id.tvName, R.id.tvLastMessage }, 0);
-
     conversationCursorAdapter = new ConversationtCursorAdapter(getActivity().getApplicationContext(), null);
     conversationList.setAdapter(conversationCursorAdapter);
 
@@ -66,7 +58,6 @@ public class ConversationsFragment extends Fragment implements LoaderManager.Loa
 
     public ConversationtCursorAdapter(Context context, Cursor c) {
       super(context, c, 0);
-      Log.d("DEBUG", "constructerContactCursorAdapter ");
       this.mInflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(
           Context.LAYOUT_INFLATER_SERVICE);
 
@@ -96,7 +87,6 @@ public class ConversationsFragment extends Fragment implements LoaderManager.Loa
       holder.tvName = (TextView) itemLayout.findViewById(R.id.tvName);
       holder.tvLastMessage = (TextView) itemLayout.findViewById(R.id.tvLastMessage);
       holder.tvTimeLastMessage = (TextView) itemLayout.findViewById(R.id.tvTimeLastMessage);
-      // holder.avatar = (ImageView) itemLayout.findViewById(R.id.avatar);
       return itemLayout;
     }
   }
@@ -123,8 +113,6 @@ public class ConversationsFragment extends Fragment implements LoaderManager.Loa
 
   @Override
   public void onLoaderReset(Loader<Cursor> arg0) {
-    Log.d("DEBUG", "onLoaderReset");
     conversationCursorAdapter.changeCursor(null);
-
   }
 }

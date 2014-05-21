@@ -32,6 +32,7 @@ public class ServletUtil {
   }
 
   public static ServletResponse unregister(String email) {
+    Log.d("DEBUG", "unregister" + email);
     return post(UNREGISTER, new Parameter(Configuration.EMAIL, email));
   }
 

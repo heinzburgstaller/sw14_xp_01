@@ -53,9 +53,10 @@ public class EditEmailDialog extends DialogFragment {
               et.setError("Invalid email!");
               return;
             }
-            if (email != Configuration.CHAT_EMAIL_ID) {
+            if (email != prefs.getString(Configuration.CHAT_EMAIL_ID, "")) {
               newemail_ = email;
-              oldemail_ = Configuration.CHAT_EMAIL_ID;
+              ((MainActivity) getActivity()).reRegisterUser(email);
+              oldemail_ = prefs.getString(Configuration.CHAT_EMAIL_ID, "");
 
             }
 

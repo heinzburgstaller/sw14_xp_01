@@ -57,12 +57,8 @@ public class GcmUtil {
   }
 
   public void reRegister(Context applicationContext, String newEmail) {
-
     new_mail = newEmail;
     reRegisterBackground();
-
-    // this.init(applicationContext);
-
   }
 
   public GcmUtil(Context applicationContext, CountDownLatch signal) {
