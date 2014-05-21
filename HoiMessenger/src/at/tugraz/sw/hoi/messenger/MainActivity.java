@@ -16,6 +16,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import at.tugraz.sw.hoi.messenger.remote.GcmUtil;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -27,6 +28,7 @@ public class MainActivity extends ActionBarActivity {
    * {@link android.support.v4.app.FragmentStatePagerAdapter}.
    */
   private SectionsPagerAdapter mSectionsPagerAdapter;
+  private GcmUtil gcm;
 
   /**
    * The {@link ViewPager} that will host the section contents.
@@ -51,6 +53,8 @@ public class MainActivity extends ActionBarActivity {
 
     final ActionBar ab = getSupportActionBar();
     ab.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+    gcm = new GcmUtil(this);
 
     // Create a tab listener that is called when the user changes tabs.
     ActionBar.TabListener tabListener = new ActionBar.TabListener() {

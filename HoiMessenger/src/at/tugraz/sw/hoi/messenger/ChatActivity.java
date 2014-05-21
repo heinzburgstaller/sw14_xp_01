@@ -15,6 +15,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -24,7 +26,7 @@ import at.tugraz.sw.hoi.messenger.util.GcmUtil;
 import at.tugraz.sw.hoi.messenger.util.Util;
 
 public class ChatActivity extends ActionBarActivity implements MessagesFragment.OnFragmentInteractionListener,
-    EditContactDialog.OnFragmentInteractionListener {
+    EditContactDialog.OnFragmentInteractionListener, OnClickListener {
 
   private EditText msgEdit;
   private ImageButton sendBtn;
@@ -40,23 +42,9 @@ public class ChatActivity extends ActionBarActivity implements MessagesFragment.
     profileId = getIntent().getStringExtra(Util.PROFILE_ID);
     Log.d("DEBUG", "profilid  " + profileId);
     msgEdit = (EditText) findViewById(R.id.etText);
-    sendBtn = (ImageButton) findViewById(R.id.btSendMessage);
-    Log.d("DEBUG", "++++++++++++++0.5++++++++++");
+    sendBtn = (ImageButton) findViewById(R.id.btSend);
+    sendBtn.setOnClickListener(this);
 
-    // sendBtn.setOnClickListener(new OnClickListener() {
-    //
-    // @Override
-    // public void onClick(View v) {
-    // switch (v.getId()) {
-    // case R.id.btSendMessage:
-    // send(msgEdit.getText().toString());
-    // msgEdit.setText(null);
-    // break;
-    // }
-    // }
-    // });
-
-    Log.d("DEBUG", "++++++++++++++1++++++++++");
     ActionBar actionBar = getSupportActionBar();
     actionBar.setHomeButtonEnabled(true);
     actionBar.setDisplayHomeAsUpEnabled(true);
@@ -120,10 +108,15 @@ public class ChatActivity extends ActionBarActivity implements MessagesFragment.
         // ServerUtilities.send(txt, profileEmail); //TODO replace send with
         // post mb
         ContentValues values = new ContentValues(2);
+        Log.d("DEBUG", "++++++++++++++++++++++1++++++++++++++++++++++++++");
         values.put(DataProvider.COL_TYPE, MessageType.OUTGOING.ordinal());
+        Log.d("DEBUG", "++++++++++++++++++++++2++++++++++++++++++++++++++");
         values.put(DataProvider.COL_MESSAGE, txt);
+        Log.d("DEBUG", "++++++++++++++++++++++3++++++++++++++++++++++++++");
         values.put(DataProvider.COL_RECEIVER_EMAIL, profileEmail);
+        Log.d("DEBUG", "++++++++++++++++++++++4++++++++++++++++++++++++++");
         values.put(DataProvider.COL_SENDER_EMAIL, Util.getPreferredEmail());
+        Log.d("DEBUG", "++++++++++++++++++++++5++++++++++++++++++++++++++");
         getContentResolver().insert(DataProvider.CONTENT_URI_MESSAGES, values);
 
         return msg;
@@ -170,5 +163,15 @@ public class ChatActivity extends ActionBarActivity implements MessagesFragment.
       }
     }
   };
+
+  @Override
+  public void onClick(View v) {
+    switch (v.getId()) {
+    case R.id.btSend:
+      send(msgEdit.getText().toString());
+      msgEdit.setText("");
+      break;
+    }
+  }
 
 }
