@@ -54,6 +54,22 @@ public class GcmUtil {
     gcm = GoogleCloudMessaging.getInstance(ctx);
   }
 
+  public boolean reRegister(Context applicationContext, String newEmail) {
+
+    if (unRegister(prefs.getString(Configuration.CHAT_EMAIL_ID, "")) == false) {
+      Log.w(TAG, "Can not Unregister");
+      return false;
+    }
+
+    SharedPreferences.Editor editor = prefs.edit();
+    editor.putString(Configuration.CHAT_EMAIL_ID, newEmail);
+    editor.commit();
+
+    this.init(applicationContext);
+
+    return true;
+  }
+
   public GcmUtil(Context applicationContext, CountDownLatch signal) {
     this.signal = signal;
     init(applicationContext);
@@ -75,6 +91,15 @@ public class GcmUtil {
     }
 
     return registrationId;
+  }
+
+  private boolean unRegister(String email) {
+    ServletResponse resp = ServletUtil.unregister(email);
+    if (ServletResponse.Status.SUCCESS.equals(resp.getStatus()))
+      return true;
+    else
+      return false;
+
   }
 
   /**
