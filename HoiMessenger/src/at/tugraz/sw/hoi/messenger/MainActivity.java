@@ -56,10 +56,10 @@ public class MainActivity extends ActionBarActivity {
 
     gcm = new GcmUtil(this);
 
-    EditEmailDialog newFragment = EditEmailDialog.newInstance();
-    newFragment.show(getSupportFragmentManager(), "EditEmailDialog");
-
-    gcm.reRegister(getApplicationContext(), newFragment.newemail_);
+    // EditEmailDialog newFragment = EditEmailDialog.newInstance();
+    // newFragment.show(getSupportFragmentManager(), "EditEmailDialog");
+    //
+    // gcm.reRegister(getApplicationContext(), newFragment.newemail_);
 
     // Create a tab listener that is called when the user changes tabs.
     ActionBar.TabListener tabListener = new ActionBar.TabListener() {
