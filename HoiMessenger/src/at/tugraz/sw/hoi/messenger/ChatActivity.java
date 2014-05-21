@@ -5,10 +5,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
@@ -20,6 +22,9 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
+import at.tugraz.sw.hoi.messenger.remote.Configuration;
+import at.tugraz.sw.hoi.messenger.remote.ServletResponse;
+import at.tugraz.sw.hoi.messenger.remote.ServletUtil;
 import at.tugraz.sw.hoi.messenger.util.DataProvider;
 import at.tugraz.sw.hoi.messenger.util.DataProvider.MessageType;
 import at.tugraz.sw.hoi.messenger.util.GcmUtil;
@@ -28,6 +33,7 @@ import at.tugraz.sw.hoi.messenger.util.Util;
 public class ChatActivity extends ActionBarActivity implements MessagesFragment.OnFragmentInteractionListener,
     EditContactDialog.OnFragmentInteractionListener, OnClickListener {
 
+  private SharedPreferences prefs;
   private EditText msgEdit;
   private ImageButton sendBtn;
   private String profileId;
@@ -38,7 +44,7 @@ public class ChatActivity extends ActionBarActivity implements MessagesFragment.
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.chat_activity);
-
+    prefs = PreferenceManager.getDefaultSharedPreferences(this);
     profileId = getIntent().getStringExtra(Util.PROFILE_ID);
     Log.d("DEBUG", "profilid  " + profileId);
     msgEdit = (EditText) findViewById(R.id.etText);
@@ -59,7 +65,6 @@ public class ChatActivity extends ActionBarActivity implements MessagesFragment.
 
     registerReceiver(registrationStatusReceiver, new IntentFilter(Util.ACTION_REGISTER));
     gcmUtil = new GcmUtil(getApplicationContext());
-
   }
 
   @Override
@@ -105,19 +110,19 @@ public class ChatActivity extends ActionBarActivity implements MessagesFragment.
       protected String doInBackground(Void... params) {
         String msg = "";
 
-        // ServerUtilities.send(txt, profileEmail); //TODO replace send with
-        // post mb
-        ContentValues values = new ContentValues(2);
-        Log.d("DEBUG", "++++++++++++++++++++++1++++++++++++++++++++++++++");
-        values.put(DataProvider.COL_TYPE, MessageType.OUTGOING.ordinal());
-        Log.d("DEBUG", "++++++++++++++++++++++2++++++++++++++++++++++++++");
-        values.put(DataProvider.COL_MESSAGE, txt);
-        Log.d("DEBUG", "++++++++++++++++++++++3++++++++++++++++++++++++++");
-        values.put(DataProvider.COL_RECEIVER_EMAIL, profileEmail);
-        Log.d("DEBUG", "++++++++++++++++++++++4++++++++++++++++++++++++++");
-        values.put(DataProvider.COL_SENDER_EMAIL, Util.getPreferredEmail());
-        Log.d("DEBUG", "++++++++++++++++++++++5++++++++++++++++++++++++++");
-        getContentResolver().insert(DataProvider.CONTENT_URI_MESSAGES, values);
+        String senderEmail = prefs.getString(Configuration.CHAT_EMAIL_ID, "");
+        ServletResponse response = ServletUtil.chat(txt, senderEmail, profileEmail);
+
+        if (ServletResponse.Status.SUCCESS.equals(response.getStatus())) {
+          ContentValues values = new ContentValues(2);
+          values.put(DataProvider.COL_TYPE, MessageType.OUTGOING.ordinal());
+          values.put(DataProvider.COL_MESSAGE, txt);
+          values.put(DataProvider.COL_RECEIVER_EMAIL, profileEmail);
+          values.put(DataProvider.COL_SENDER_EMAIL, senderEmail);
+          getContentResolver().insert(DataProvider.CONTENT_URI_MESSAGES, values);
+        } else {
+          Log.d("ServletResponse", response.getMessage());
+        }
 
         return msg;
       }
@@ -168,8 +173,11 @@ public class ChatActivity extends ActionBarActivity implements MessagesFragment.
   public void onClick(View v) {
     switch (v.getId()) {
     case R.id.btSend:
-      send(msgEdit.getText().toString());
-      msgEdit.setText("");
+      String text = msgEdit.getText().toString();
+      if (text != null && text.trim().length() > 0) {
+        send(msgEdit.getText().toString());
+        msgEdit.setText("");
+      }
       break;
     }
   }

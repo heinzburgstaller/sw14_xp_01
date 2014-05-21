@@ -16,11 +16,6 @@ import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import at.tugraz.sw.hoi.messenger.MainActivity;
 import at.tugraz.sw.hoi.messenger.R;
-//import at.tugraz.sw14_xp_01.Common;
-//import at.tugraz.sw14_xp_01.DataProvider;
-//import at.tugraz.sw14_xp_01.DataProvider.MessageType;
-//import at.tugraz.sw14_xp_01.MainActivity;
-//import at.tugraz.sw14_xp_01.R;
 import at.tugraz.sw.hoi.messenger.util.DataProvider;
 import at.tugraz.sw.hoi.messenger.util.DataProvider.MessageType;
 
@@ -32,14 +27,10 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
   private Context ctx;
   private SharedPreferences prefs;
 
-  public GcmBroadcastReceiver() {
-    super();
-    prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
-  }
-
   @Override
   public void onReceive(Context context, Intent intent) {
     ctx = context;
+    prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
     PowerManager mPowerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
     WakeLock mWakeLock = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
     mWakeLock.acquire();
