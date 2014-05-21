@@ -4,7 +4,7 @@ public interface Configuration {
 
   // Base URL of the Demo Server (such as http://my_host:8080/gcm-demo)
 
-  public static final String SERVER_URL = "http://sw14xp01.appspot.com/";
+  public static final String SERVER_URL = "https://sw14xp01.appspot.com/";
   public static final String SERVER_URL_2 = "http://2-dot-sw14xp01.appspot.com/";
 
   // Google API project id registered to use GCM.

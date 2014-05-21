@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CountDownLatch;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -29,9 +30,18 @@ public class GcmUtil {
   private SharedPreferences prefs;
   private GoogleCloudMessaging gcm;
   private AsyncTask<Void, Void, Boolean> registrationTask;
+  private CountDownLatch signal = null;
+
+  public CountDownLatch getSignal() {
+    return signal;
+  }
 
   public GcmUtil(Context applicationContext) {
     super();
+    init(applicationContext);
+  }
+
+  private void init(Context applicationContext) {
     ctx = applicationContext;
     prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
 
@@ -44,6 +54,11 @@ public class GcmUtil {
     gcm = GoogleCloudMessaging.getInstance(ctx);
   }
 
+  public GcmUtil(Context applicationContext, CountDownLatch signal) {
+    this.signal = signal;
+    init(applicationContext);
+  }
+
   /**
    * Gets the current registration id for application on GCM service.
    * <p>
@@ -52,7 +67,7 @@ public class GcmUtil {
    * @return registration id, or empty string if the registration is not
    *         complete.
    */
-  private String getRegistrationId() {
+  public String getRegistrationId() {
     String registrationId = prefs.getString(Configuration.PROPERTY_REG_ID, "");
     if (registrationId.length() == 0) {
       Log.v(TAG, "Registration not found.");
@@ -131,6 +146,9 @@ public class GcmUtil {
       @Override
       protected void onPostExecute(Boolean status) {
         broadcastStatus(status);
+        if (signal != null) {
+          signal.countDown();
+        }
       }
     }.execute(null, null, null);
   }
