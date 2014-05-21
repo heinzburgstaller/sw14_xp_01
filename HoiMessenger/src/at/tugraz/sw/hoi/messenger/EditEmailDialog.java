@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
@@ -18,6 +17,8 @@ public class EditEmailDialog extends DialogFragment {
   private AlertDialog alertDialog;
   private EditText et;
   private SharedPreferences prefs;
+  public String oldemail_;
+  public String newemail_;
 
   public static EditEmailDialog newInstance() {
     EditEmailDialog fragment = new EditEmailDialog();
@@ -45,17 +46,13 @@ public class EditEmailDialog extends DialogFragment {
         okBtn.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
-            String email = et.getText().toString();
-
-            if (!isEmailValid(email)) {
+            if (!isEmailValid(newemail_)) {
               et.setError("Invalid email!");
               return;
             }
 
-            Editor editor = prefs.edit();
-            editor.putString(Configuration.CHAT_EMAIL_ID, email);
-            editor.putString(Configuration.REG_ID, "");
-            editor.commit();
+            newemail_ = et.getText().toString();
+            oldemail_ = Configuration.CHAT_EMAIL_ID;
 
             alertDialog.dismiss();
           }
