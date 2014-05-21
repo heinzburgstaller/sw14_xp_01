@@ -1,40 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+  <TextView 
+    android:layout_width="0dip"
+    android:layout_weight="0.15"
+    android:layout_height="fill_parent"
+    android:background="@color/chat_bg"/>    
+  <RelativeLayout 
+    android:layout_width="0dip"
     android:layout_height="wrap_content"
-    android:layout_alignParentRight="true" >
-
-    <ImageView
-        android:id="@+id/avatar"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="5dip"
-        android:adjustViewBounds="true"
-        android:gravity="center_vertical" 
-        android:scaleType="centerInside"/>
-
+    android:layout_weight="0.85"
+    android:background="@drawable/message_right_bg">
+    
     <TextView
         android:id="@+id/text1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/avatar"
+        android:layout_above="@+id/text2"
         android:layout_marginRight="5dip"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="2dip"
         android:ellipsize="marquee"
         android:singleLine="true"
+        android:textColor="@color/message_right_text"
         android:textSize="10sp" />
 
     <TextView
-        android:id="@+id/text2"
-        android:layout_width="wrap_content"
+        android:id="@id/text2"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="20dip"
-        android:layout_toLeftOf="@+id/avatar"
-        android:ellipsize="marquee"
-        android:gravity="center" />
+        android:layout_width="match_parent"
+        android:paddingTop="5dip"
+        android:layout_marginRight="10dip"
+        android:paddingBottom="20dip"
+        android:textColor="@color/message_right_text"
+        android:gravity="center_vertical|right"/>
+  </RelativeLayout>
 
-</RelativeLayout>
+</LinearLayout>

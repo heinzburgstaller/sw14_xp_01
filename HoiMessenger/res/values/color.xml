@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<color name="button_background">#3e8973</color>
+	<color name="chat_bg">#FFFFFF</color>
+	<color name="message_right">#3e8973</color>
+	<color name="message_left">#135D52</color>
+	<color name="message_left_text">#FFFFFF</color>
+  <color name="message_right_text">#FFFFFF</color>
   <color name="button_background_pressed">#BCED91</color>
   <color name="tv_online_text_color">#00FF00</color>
 </resources>

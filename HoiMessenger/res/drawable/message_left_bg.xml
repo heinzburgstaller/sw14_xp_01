@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item>
+        <shape android:shape="rectangle" >
+            <solid android:color="@color/chat_bg" />
+        </shape>
+    </item>
+    <item>
+			<shape android:shape="rectangle">
+			    <solid android:color="@color/message_left"/>
+			    <stroke android:width="10dip"/>
+			    <corners
+			        android:bottomLeftRadius="5dip"
+			        android:bottomRightRadius="5dip"
+			        android:topLeftRadius="5dip"
+			        android:topRightRadius="5dip" />
+			    <padding android:left="5dip" android:top="5dip" android:right="5dip" android:bottom="5dip" />
+			</shape>
+	  </item>
+	  
+</layer-list>

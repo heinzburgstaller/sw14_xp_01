@@ -23,8 +23,9 @@
             android:background="@drawable/custom_button"
             android:layout_width="wrap_content"
             android:src="@drawable/ic_action_send_now"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"/>
+
+            android:layout_alignParentRight="true"
+            android:layout_height="50dip"/>
 
         <EditText
             android:id="@+id/etText"
@@ -35,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/btSend"
             android:layout_toLeftOf="@id/btSend" 
-            android:height="10dip">
+            android:height="50dip">
         </EditText>
     </RelativeLayout>
 
