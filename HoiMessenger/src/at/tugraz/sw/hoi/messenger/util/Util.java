@@ -8,6 +8,7 @@ import android.accounts.AccountManager;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.util.Patterns;
 
 public class Util extends Application {
@@ -47,6 +48,7 @@ public class Util extends Application {
   }
 
   public static String getPreferredEmail() {
+    Log.d("PREFERENCES", "prefs null?" + (prefs == null));
     return prefs.getString(CHAT_EMAIL_ID, email_arr.length == 0 ? "" : email_arr[0]);
   }
 

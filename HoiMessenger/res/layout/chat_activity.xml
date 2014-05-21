@@ -4,12 +4,13 @@
     android:background="@android:color/darker_gray"
     android:orientation="vertical" >
 
-   <!--   <fragment
+    <fragment
         android:id="@+id/msg_list"
         android:name="at.tugraz.sw.hoi.messenger.MessagesFragment"
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="1" />-->
+        android:layout_weight="1" />
+
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -33,7 +34,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/btSend"
-            android:layout_toLeftOf="@id/btSend" >
+            android:layout_toLeftOf="@id/btSend" 
+            android:height="10dip">
         </EditText>
     </RelativeLayout>
 
