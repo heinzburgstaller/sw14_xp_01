@@ -54,6 +54,7 @@ public class EditEmailDialog extends DialogFragment {
 
             Editor editor = prefs.edit();
             editor.putString(Configuration.CHAT_EMAIL_ID, email);
+            editor.putString(Configuration.REG_ID, "");
             editor.commit();
 
             alertDialog.dismiss();
