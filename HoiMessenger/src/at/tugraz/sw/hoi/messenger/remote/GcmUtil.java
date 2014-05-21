@@ -104,6 +104,14 @@ public class GcmUtil {
             if (response.getStatus() == ServletResponse.Status.FAILURE) {
               return Boolean.FALSE;
             }
+
+            if (!getPreferredEmail().equals(prefs.getString(Configuration.CHAT_EMAIL_ID, ""))) {
+              SharedPreferences.Editor editor = prefs.edit();
+              editor.putString(Configuration.CHAT_EMAIL_ID, getPreferredEmail());
+
+              editor.commit();
+            }
+
             // Save the regid - no need to register again.
             setRegistrationId(regid);
             return Boolean.TRUE;
