@@ -12,8 +12,8 @@ import android.support.v4.app.DialogFragment;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.widget.EditText;
+import at.tugraz.sw.hoi.messenger.remote.Configuration;
 import at.tugraz.sw.hoi.messenger.util.DataProvider;
-import at.tugraz.sw.hoi.messenger.util.Util;
 
 public class EditContactDialog extends DialogFragment {
 
@@ -37,7 +37,7 @@ public class EditContactDialog extends DialogFragment {
   @Override
   public Dialog onCreateDialog(Bundle savedInstanceState) {
     final Context ctx = getActivity();
-    final String profileId = getArguments().getString(Util.PROFILE_ID);
+    final String profileId = getArguments().getString(Configuration.PROFILE_ID);
     String profileName = getArguments().getString(DataProvider.COL_NAME);
     final EditText et = new EditText(ctx);
     et.setText(profileName);

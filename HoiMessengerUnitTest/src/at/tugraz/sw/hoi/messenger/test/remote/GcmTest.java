@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 import android.test.InstrumentationTestCase;
+import android.test.IsolatedContext;
 import at.tugraz.sw.hoi.messenger.remote.Configuration;
 import at.tugraz.sw.hoi.messenger.remote.GcmUtil;
 import at.tugraz.sw.hoi.messenger.remote.ServletResponse;
@@ -18,9 +19,21 @@ public class GcmTest extends InstrumentationTestCase {
 	public Context context;
 	public GcmUtil gcm;
 	public final CountDownLatch signal = new CountDownLatch(1);
+	
+	protected void setUp() throws Exception {
+		 
+	    // isolated context so that we can't bind to the remote service,
+	    // but don't isolated from system services because we need them
+	    context = new IsolatedContext(null, getInstrumentation().getContext()) {
+	        @Override
+	        public Object getSystemService(final String pName) {
+	            return getInstrumentation().getContext().getSystemService(pName);
+	        }
+	    };
+	}
 
 	public void testWorkflow() throws Throwable {
-		context = getInstrumentation().getTargetContext();
+
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(context);
 		Editor editor = prefs.edit();
