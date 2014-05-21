@@ -46,13 +46,18 @@ public class EditEmailDialog extends DialogFragment {
         okBtn.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
-            if (!isEmailValid(newemail_)) {
+
+            String email = et.getText().toString();
+
+            if (!isEmailValid(email)) {
               et.setError("Invalid email!");
               return;
             }
+            if (email != Configuration.CHAT_EMAIL_ID) {
+              newemail_ = email;
+              oldemail_ = Configuration.CHAT_EMAIL_ID;
 
-            newemail_ = et.getText().toString();
-            oldemail_ = Configuration.CHAT_EMAIL_ID;
+            }
 
             alertDialog.dismiss();
           }
