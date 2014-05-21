@@ -5,9 +5,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import android.util.Log;
 import at.tugraz.sw.hoi.messenger.remote.ServletResponse.Status;
@@ -42,13 +43,13 @@ public class ServletUtil {
 
   private static ServletResponse post(String servlet, Parameter... parameters) {
     URL url;
-    HttpURLConnection connection = null;
+    HttpsURLConnection connection = null;
 
     try {
       url = new URL(Configuration.SERVER_URL + servlet);
       byte[] bytes = convertParametersToBody(parameters);
-      connection = (HttpURLConnection) url.openConnection();
-      connection.setDoOutput(true);
+      connection = (HttpsURLConnection) url.openConnection();
+      // connection.setDoOutput(true);
       connection.setUseCaches(false);
       connection.setFixedLengthStreamingMode(bytes.length);
       connection.setRequestMethod("POST");
