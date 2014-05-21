@@ -17,8 +17,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import at.tugraz.sw.hoi.messenger.remote.Configuration;
 import at.tugraz.sw.hoi.messenger.util.DataProvider;
-import at.tugraz.sw.hoi.messenger.util.Util;
 
 public class ContactsFragment extends Fragment implements OnClickListener, LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -77,7 +77,7 @@ public class ContactsFragment extends Fragment implements OnClickListener, Loade
     @Override
     public void onClick(View v) {
       Intent intent = new Intent(getActivity(), ChatActivity.class);
-      intent.putExtra(Util.PROFILE_ID, (String) (v.findViewById(R.id.tvId)).getTag());
+      intent.putExtra(Configuration.PROFILE_ID, (String) (v.findViewById(R.id.tvId)).getTag());
       startActivity(intent);
     }
 

@@ -23,12 +23,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import at.tugraz.sw.hoi.messenger.remote.Configuration;
+import at.tugraz.sw.hoi.messenger.remote.GcmUtil;
 import at.tugraz.sw.hoi.messenger.remote.ServletResponse;
 import at.tugraz.sw.hoi.messenger.remote.ServletUtil;
 import at.tugraz.sw.hoi.messenger.util.DataProvider;
 import at.tugraz.sw.hoi.messenger.util.DataProvider.MessageType;
-import at.tugraz.sw.hoi.messenger.util.GcmUtil;
-import at.tugraz.sw.hoi.messenger.util.Util;
 
 public class ChatActivity extends ActionBarActivity implements MessagesFragment.OnFragmentInteractionListener,
     EditContactDialog.OnFragmentInteractionListener, OnClickListener {
@@ -45,7 +44,7 @@ public class ChatActivity extends ActionBarActivity implements MessagesFragment.
     super.onCreate(savedInstanceState);
     setContentView(R.layout.chat_activity);
     prefs = PreferenceManager.getDefaultSharedPreferences(this);
-    profileId = getIntent().getStringExtra(Util.PROFILE_ID);
+    profileId = getIntent().getStringExtra(Configuration.PROFILE_ID);
     Log.d("DEBUG", "profilid  " + profileId);
     msgEdit = (EditText) findViewById(R.id.etText);
     sendBtn = (ImageButton) findViewById(R.id.btSend);
@@ -63,7 +62,7 @@ public class ChatActivity extends ActionBarActivity implements MessagesFragment.
     }
     actionBar.setSubtitle("connecting ...");
 
-    registerReceiver(registrationStatusReceiver, new IntentFilter(Util.ACTION_REGISTER));
+    registerReceiver(registrationStatusReceiver, new IntentFilter(Configuration.ACTION_REGISTER));
     gcmUtil = new GcmUtil(getApplicationContext());
   }
 
@@ -154,14 +153,14 @@ public class ChatActivity extends ActionBarActivity implements MessagesFragment.
   private BroadcastReceiver registrationStatusReceiver = new BroadcastReceiver() {
     @Override
     public void onReceive(Context context, Intent intent) {
-      if (intent != null && Util.ACTION_REGISTER.equals(intent.getAction())) {
-        switch (intent.getIntExtra(Util.EXTRA_STATUS, 100)) {
-        case Util.STATUS_SUCCESS:
+      if (intent != null && Configuration.ACTION_REGISTER.equals(intent.getAction())) {
+        switch (intent.getIntExtra(Configuration.EXTRA_STATUS, 100)) {
+        case Configuration.STATUS_SUCCESS:
           getSupportActionBar().setSubtitle("online");
           sendBtn.setEnabled(true);
           break;
 
-        case Util.STATUS_FAILED:
+        case Configuration.STATUS_FAILED:
           getSupportActionBar().setSubtitle("offline");
           break;
         }
