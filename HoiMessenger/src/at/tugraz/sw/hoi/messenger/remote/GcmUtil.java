@@ -30,6 +30,7 @@ public class GcmUtil {
   private SharedPreferences prefs;
   private GoogleCloudMessaging gcm;
   private AsyncTask<Void, Void, Boolean> registrationTask;
+  private AsyncTask<Void, Void, Boolean> unRegisterTask;
   private CountDownLatch signal = null;
 
   public CountDownLatch getSignal() {
@@ -56,10 +57,7 @@ public class GcmUtil {
 
   public boolean reRegister(Context applicationContext, String newEmail) {
 
-    if (unRegister(prefs.getString(Configuration.CHAT_EMAIL_ID, "")) == false) {
-      Log.w(TAG, "Can not Unregister");
-      return false;
-    }
+    unRegisterBackground();
 
     SharedPreferences.Editor editor = prefs.edit();
     editor.putString(Configuration.REG_ID, "");
@@ -94,15 +92,6 @@ public class GcmUtil {
     return registrationId;
   }
 
-  private boolean unRegister(String email) {
-    ServletResponse resp = ServletUtil.unregister(email);
-    if (ServletResponse.Status.SUCCESS.equals(resp.getStatus()))
-      return true;
-    else
-      return false;
-
-  }
-
   /**
    * Stores the registration id, app versionCode, and expiration time in the
    * application's {@code SharedPreferences}.
@@ -117,6 +106,62 @@ public class GcmUtil {
     editor.putString(Configuration.PROPERTY_REG_ID, regId);
 
     editor.commit();
+  }
+
+  /**
+   * Unregistering
+   */
+  private void unRegisterBackground() {
+    unRegisterTask = new AsyncTask<Void, Void, Boolean>() {
+      @Override
+      protected Boolean doInBackground(Void... params) {
+        long backoff = BACKOFF_MILLI_SECONDS + random.nextInt(1000);
+        for (int i = 1; i <= MAX_ATTEMPTS; i++) {
+          // Log.d(TAG, "Attempt #" + i + " to register");
+          try {
+            if (gcm == null) {
+              gcm = GoogleCloudMessaging.getInstance(ctx);
+            }
+            String regid = gcm.register(Configuration.SENDER_ID);
+
+            // You should send the registration ID to your server over HTTP,
+            // so it can use GCM/HTTP or CCS to send messages to your app.
+            ServletResponse response = ServletUtil.unregister(getPreferredEmail());
+
+            if (response.getStatus() == ServletResponse.Status.FAILURE) {
+              return Boolean.FALSE;
+            }
+
+            return Boolean.TRUE;
+
+          } catch (IOException ex) {
+            // Log.e(TAG, "Failed to register on attempt " + i + ":" + ex);
+            if (i == MAX_ATTEMPTS) {
+              break;
+            }
+            try {
+              // Log.d(TAG, "Sleeping for " + backoff + " ms before retry");
+              Thread.sleep(backoff);
+            } catch (InterruptedException e1) {
+              // Activity finished before we complete - exit.
+              // Log.d(TAG, "Thread interrupted: abort remaining retries!");
+              Thread.currentThread().interrupt();
+            }
+            // increase backoff exponentially
+            backoff *= 2;
+          }
+        }
+        return Boolean.FALSE;
+      }
+
+      @Override
+      protected void onPostExecute(Boolean status) {
+        broadcastStatus(status);
+        if (signal != null) {
+          signal.countDown();
+        }
+      }
+    }.execute(null, null, null);
   }
 
   /**
