@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.util.Patterns;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -20,12 +21,6 @@ public class GcmUtil {
 
   private static final String TAG = "GcmUtil";
 
-  /**
-   * Default lifespan (7 days) of a reservation until it is considered expired.
-   */
-  public static final long REGISTRATION_EXPIRY_TIME_MS = 1000 * 3600 * 24 * 7;
-
-  private static final String PROPERTY_ON_SERVER_EXPIRATION_TIME = "onServerExpirationTimeMs";
   private static final int MAX_ATTEMPTS = 5;
   private static final int BACKOFF_MILLI_SECONDS = 2000;
   private static final Random random = new Random();
@@ -33,7 +28,7 @@ public class GcmUtil {
   private Context ctx;
   private SharedPreferences prefs;
   private GoogleCloudMessaging gcm;
-  private AsyncTask registrationTask;
+  private AsyncTask<Void, Void, Boolean> registrationTask;
 
   public GcmUtil(Context applicationContext) {
     super();
@@ -60,7 +55,7 @@ public class GcmUtil {
   private String getRegistrationId() {
     String registrationId = prefs.getString(Configuration.PROPERTY_REG_ID, "");
     if (registrationId.length() == 0) {
-      // Log.v(TAG, "Registration not found.");
+      Log.v(TAG, "Registration not found.");
       return "";
     }
 
@@ -79,28 +74,8 @@ public class GcmUtil {
     // Log.v(TAG, "Saving regId on app version " + appVersion);
     SharedPreferences.Editor editor = prefs.edit();
     editor.putString(Configuration.PROPERTY_REG_ID, regId);
-    long expirationTime = System.currentTimeMillis() + REGISTRATION_EXPIRY_TIME_MS;
 
-    // Log.v(TAG, "Setting registration expiry time to " + new
-    // Timestamp(expirationTime));
-    editor.putLong(PROPERTY_ON_SERVER_EXPIRATION_TIME, expirationTime);
     editor.commit();
-  }
-
-  /**
-   * Checks if the registration has expired.
-   * 
-   * <p>
-   * To avoid the scenario where the device sends the registration to the server
-   * but the server loses it, the app developer may choose to re-register after
-   * REGISTRATION_EXPIRY_TIME_MS.
-   * 
-   * @return true if the registration has expired.
-   */
-  private boolean isRegistrationExpired() {
-    // checks if the information is not stale
-    long expirationTime = prefs.getLong(PROPERTY_ON_SERVER_EXPIRATION_TIME, -1);
-    return System.currentTimeMillis() > expirationTime;
   }
 
   /**
