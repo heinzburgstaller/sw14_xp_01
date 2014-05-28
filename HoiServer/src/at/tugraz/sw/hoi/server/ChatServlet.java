@@ -1,6 +1,7 @@
 package at.tugraz.sw.hoi.server;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -69,4 +70,20 @@ public class ChatServlet extends HttpServlet {
 		resp.getWriter().print(Configuration.SUCCESS);
 	}
 
+	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		resp.setContentType("text/html");
+		PrintWriter writer = resp.getWriter();
+		writer.println("<html>\n<body>");
+		writer.println("<form action=\"\" method=\"post\"><table>");
+		writer.println("<tr><td>TO</td><td><input type=\"text\" name=\""+Configuration.TO+"\" /></td></tr>");
+		writer.println("<tr><td>FROM</td><td><input type=\"text\" name=\""+Configuration.FROM+"\" /></td></tr>");
+		writer.println("<tr><td>MSG</td><td><input type=\"text\" name=\""+Configuration.MSG+"\" /></td></tr>");
+		writer.println("<tr><td colspan=2><input type=\"submit\" /></td></tr>");
+		writer.println("</table></form>");
+		writer.println("</body>");
+		writer.println("</html>");
+		writer.close();
+
+		
+	}
 }
