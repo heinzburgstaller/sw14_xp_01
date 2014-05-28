@@ -19,7 +19,7 @@ public class checkContactTest extends AndroidTestCase {
 		CheckContactTask ccontact = new CheckContactTask(EMAIL);
 		ccontact.execute(null,null,null);
 		
-		Boolean result = ccontact.get();
+		Boolean result = ccontact.getResult();
 		
 //		Log.d(TAG, result);
 		assertTrue(result);
