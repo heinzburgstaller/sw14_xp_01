@@ -1,5 +1,7 @@
 package at.tugraz.sw.hoi.messenger.remote;
 
+import java.util.concurrent.ExecutionException;
+
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -37,4 +39,17 @@ public class CheckContactTask extends AsyncTask<Void, Void, Boolean> {
     this.contactExists = status;
   }
 
+  public Boolean getResult() {
+    try {
+      return this.get();
+    } catch (InterruptedException e) {
+      Log.w(TAG, e.toString());
+      e.printStackTrace();
+    } catch (ExecutionException e) {
+      Log.w(TAG, e.toString());
+      e.printStackTrace();
+    }
+    return Boolean.FALSE;
+
+  }
 }

@@ -116,7 +116,8 @@ public class MainActivity extends ActionBarActivity {
 
     // Inflate the menu; this adds items to the action bar if it is present.
     getMenuInflater().inflate(R.menu.main, menu);
-    return true;
+    return super.onCreateOptionsMenu(menu);
+
   }
 
   @Override
@@ -125,6 +126,11 @@ public class MainActivity extends ActionBarActivity {
     // automatically handle clicks on the Home/Up button, so long
     // as you specify a parent activity in AndroidManifest.xml.
     int id = item.getItemId();
+    if (id == R.id.action_change_email) {
+      EditEmailDialog newFragment = EditEmailDialog.newInstance();
+      newFragment.show(getSupportFragmentManager(), "EditEmailDialog");
+      return true;
+    }
     if (id == R.id.action_settings) {
       return true;
     }
