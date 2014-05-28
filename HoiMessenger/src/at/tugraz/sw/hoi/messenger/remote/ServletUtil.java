@@ -32,7 +32,7 @@ public class ServletUtil {
     return post(REGISTER, new Parameter(Configuration.EMAIL, email), new Parameter(Configuration.REG_ID, regId));
   }
 
-  public static ServletResponse checkContact(String email, String regId) {
+  public static ServletResponse checkContact(String email) {
     return post(CONTACT, new Parameter(Configuration.EMAIL, email));
   }
 
