@@ -11,7 +11,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import at.tugraz.sw.hoi.messenger.remote.Configuration;
 
 public class DataProvider extends ContentProvider {
@@ -68,7 +67,6 @@ public class DataProvider extends ContentProvider {
 
   @Override
   public boolean onCreate() {
-    Log.d("DEBUG", "CREATE DATA PROVIDER");
     dbHelper = new DbHelper(getContext());
     return true;
   }
@@ -207,6 +205,7 @@ public class DataProvider extends ContentProvider {
 
     case PROFILE_ALLROWS:
       count = db.delete(TABLE_PROFILE, selection, selectionArgs);
+
       break;
 
     case PROFILE_SINGLE_ROW:
@@ -232,13 +231,10 @@ public class DataProvider extends ContentProvider {
 
     public DbHelper(Context context) {
       super(context, DATABASE_NAME, null, DATABASE_VERSION);
-
-      Log.d("DEBUG", "ON CREATE DBHELPER");
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-      Log.d("DEBUG", "create DB");
       db.execSQL("create table messages (" + "_id integer primary key autoincrement, " + COL_TYPE + " integer, "
           + COL_MESSAGE + " text, " + COL_SENDER_EMAIL + " text, " + COL_RECEIVER_EMAIL + " text, " + COL_TIME
           + " datetime default current_timestamp);");
