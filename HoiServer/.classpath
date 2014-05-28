@@ -4,6 +4,11 @@
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="libs/appengine-testing.jar"/>
+	<classpathentry kind="lib" path="libs/commons-codec-1.9-javadoc.jar"/>
+	<classpathentry kind="lib" path="libs/commons-codec-1.9-sources.jar"/>
+	<classpathentry kind="lib" path="libs/commons-codec-1.9-test-sources.jar"/>
+	<classpathentry kind="lib" path="libs/commons-codec-1.9-tests.jar"/>
+	<classpathentry kind="lib" path="libs/commons-codec-1.9.jar"/>
 	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
 	<classpathentry kind="lib" path="libs/appengine-api-labs.jar"/>
 	<classpathentry kind="lib" path="libs/appengine-api-stubs.jar"/>
