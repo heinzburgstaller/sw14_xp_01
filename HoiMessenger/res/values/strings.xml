@@ -6,6 +6,7 @@
     <string name="title_contacts">CONTACTS</string>
     <string name="title_more">MORE</string>
     <string name="action_settings">Settings</string>
+    <string name="action_email">Change Email</string>
     <string name="bt_send_message_text">Send Message</string>
     <string name="iv_avatar_text">IMG</string>
     <string name="bt_add_contact_text">Add Contact</string>
