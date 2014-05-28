@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +22,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import at.tugraz.sw14_xp_01.DataProvider.MessageType;
 import at.tugraz.sw14_xp_01.client.GcmUtil;
 import at.tugraz.sw14_xp_01.client.ServerUtilities;
@@ -43,6 +43,8 @@ EditContactDialog.OnFragmentInteractionListener, OnClickListener {
 		setContentView(R.layout.chat_activity);
 
 		profileId = getIntent().getStringExtra(Common.PROFILE_ID);
+		Log.d("DEBUG",profileId);
+		
 		msgEdit = (EditText) findViewById(R.id.msg_edit);
 		sendBtn = (Button) findViewById(R.id.send_btn);
 		sendBtn.setOnClickListener(this);

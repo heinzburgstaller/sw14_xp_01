@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/chat_bg"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:layout_margin="0dip"
+        android:layout_weight="0.05"
+        android:background="@drawable/message_triangle_left"
+        android:scaleX="-1"
+        android:scaleY="0.8" />
+
+    <RelativeLayout
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.80"
+        android:background="@drawable/message_left_bg" >
+
+        <TextView
+            android:id="@+id/text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/text2"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="0dip"
+            android:layout_marginTop="2dip"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:textColor="@color/message_left_text"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@id/text2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:gravity="center_vertical|left"
+            android:paddingBottom="20dip"
+            android:paddingTop="5dip"
+            android:textColor="@color/message_left_text" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:layout_weight="0.15"
+        android:background="@color/chat_bg" />
+
+</LinearLayout>

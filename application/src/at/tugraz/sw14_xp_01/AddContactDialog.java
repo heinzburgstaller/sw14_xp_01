@@ -52,7 +52,7 @@ public class AddContactDialog extends DialogFragment {
 							ContentValues values = new ContentValues(2);
 							values.put(DataProvider.COL_NAME, email.substring(0, email.indexOf('@')));
 							values.put(DataProvider.COL_EMAIL, email);
-							getActivity().getContentResolver().insert(DataProvider.CONTENT_URI_PROFILE, values);
+							getActivity().getApplicationContext().getContentResolver().insert(DataProvider.CONTENT_URI_PROFILE, values);
 						} catch (SQLException sqle) {}
 						alertDialog.dismiss();
 					}
