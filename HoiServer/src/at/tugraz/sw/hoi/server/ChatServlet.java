@@ -27,7 +27,7 @@ public class ChatServlet extends HttpServlet {
 			throws IOException {
 		resp.setContentType("text/plain");
 
-		String email = req.getParameter(Configuration.TO);
+		String to = req.getParameter(Configuration.TO);
 		String from = req.getParameter(Configuration.FROM);
 		String msg = req.getParameter(Configuration.MSG);
 
