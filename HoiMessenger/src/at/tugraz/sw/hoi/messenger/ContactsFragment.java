@@ -10,9 +10,13 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -42,12 +46,6 @@ public class ContactsFragment extends Fragment implements OnClickListener, Loade
     View rootView = inflater.inflate(R.layout.fragment_contacts, container, false);
 
     ListView conversationList = (ListView) rootView.findViewById(R.id.lvContacts);
-    // contactCursorAdapter = new
-    // SimpleCursorAdapter(getActivity().getApplicationContext(),
-    // R.layout.contact_list_item,
-    // null, new String[] { DataProvider.COL_NAME, DataProvider.COL_EMAIL },
-    // new int[] { R.id.tvName,
-    // R.id.tvLastMessage }, 0);
 
     contactCursorAdapter = new ContactCursorAdapter(getActivity().getApplicationContext(), null);
     conversationList.setAdapter(contactCursorAdapter);
@@ -62,7 +60,24 @@ public class ContactsFragment extends Fragment implements OnClickListener, Loade
     return rootView;
   }
 
-  class ContactCursorAdapter extends CursorAdapter implements OnClickListener {
+  @Override
+  public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+    super.onCreateContextMenu(menu, v, menuInfo);
+    menu.add(0, Integer.parseInt((String) (v.findViewById(R.id.tvId)).getTag()), 1, getString(R.string.option_delete));
+  };
+
+  @Override
+  public boolean onContextItemSelected(MenuItem item) {
+    super.onContextItemSelected(item);
+    if (item.getTitle().equals(getString(R.string.option_delete))) {
+      Log.d("DEBUG", "Delete Element: " + item.getItemId());
+      String[] toDelete = new String[] { "" + item.getItemId() };
+      getActivity().getContentResolver().delete(DataProvider.CONTENT_URI_PROFILE, "_id=?", toDelete);
+    }
+    return true;
+  }
+
+  class ContactCursorAdapter extends CursorAdapter implements OnClickListener, OnLongClickListener {
 
     private LayoutInflater mInflater;
 
@@ -81,12 +96,20 @@ public class ContactsFragment extends Fragment implements OnClickListener, Loade
     }
 
     @Override
+    public boolean onLongClick(View v) {
+      getActivity().openContextMenu(v);
+      return true;
+    }
+
+    @Override
     public void bindView(View view, Context context, final Cursor cursor) {
       ViewHolder holder = (ViewHolder) view.getTag();
       holder.tvName.setText(cursor.getString(cursor.getColumnIndex(DataProvider.COL_NAME)));
       holder.tvId.setTag(String.valueOf(cursor.getInt(cursor.getColumnIndex(DataProvider.COL_ID))));
 
       view.setOnClickListener(this);
+      view.setOnLongClickListener(this);
+      registerForContextMenu(view);
       // holder.tvOnlineStatus = "online";
       /*
        * 
@@ -147,4 +170,5 @@ public class ContactsFragment extends Fragment implements OnClickListener, Loade
     AddContactDialog newFragment = AddContactDialog.newInstance();
     newFragment.show(getActivity().getSupportFragmentManager(), "AddContactDialog");
   }
+
 }
