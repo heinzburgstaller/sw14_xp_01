@@ -21,7 +21,7 @@ public class checkContactTest extends AndroidTestCase {
 		
 		Boolean result = ccontact.get();
 		
-		Log.d(TAG, result);
+//		Log.d(TAG, result);
 		assertTrue(result);
 	}
 	
