@@ -1,5 +1,9 @@
 package at.tugraz.sw.hoi.messenger;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -66,16 +70,21 @@ public class ConversationsFragment extends Fragment implements LoaderManager.Loa
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
       ViewHolder holder = (ViewHolder) view.getTag();
-      holder.tvName.setText(cursor.getString(cursor.getColumnIndex(DataProvider.COL_NAME)));
 
-      holder.tvLastMessage.setText(cursor.getString(cursor.getColumnIndex(DataProvider.COL_EMAIL)));
+      holder.tvName.setText(cursor.getString(cursor.getColumnIndex(DataProvider.COL_EMAIL)));
 
-      int count = cursor.getInt(cursor.getColumnIndex(DataProvider.COL_COUNT));
-      if (count > 0) {
-        holder.tvTimeLastMessage.setVisibility(View.VISIBLE);
-        holder.tvTimeLastMessage.setText(String.format("%d new message%s", count, count == 1 ? "" : "s"));
-      } else
-        holder.tvTimeLastMessage.setVisibility(View.GONE);
+      holder.tvLastMessage.setText(cursor.getString(cursor.getColumnIndex(DataProvider.COL_MESSAGE)));
+
+      String dateString = cursor.getString(cursor.getColumnIndex(DataProvider.COL_TIME));
+      Date date;
+      try {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        date = sdf.parse(dateString);
+        holder.tvTimeLastMessage.setText(new SimpleDateFormat("HH:mm").format(date));
+      } catch (ParseException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
 
     }
 
@@ -100,9 +109,8 @@ public class ConversationsFragment extends Fragment implements LoaderManager.Loa
 
   @Override
   public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
-    CursorLoader loader = new CursorLoader(getActivity().getApplicationContext(), DataProvider.CONTENT_URI_PROFILE,
-        new String[] { DataProvider.COL_ID, DataProvider.COL_NAME, DataProvider.COL_EMAIL, DataProvider.COL_COUNT },
-        null, null, DataProvider.COL_ID + " DESC");
+    CursorLoader loader = new CursorLoader(getActivity(), DataProvider.CONTENT_URI_CONVERSATIONS, null, null, null,
+        DataProvider.COL_TIME + " ASC");
     return loader;
   }
 

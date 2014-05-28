@@ -10,12 +10,16 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import at.tugraz.sw.hoi.messenger.remote.Configuration;
 
 public class DataProvider extends ContentProvider {
 
   public static final Uri CONTENT_URI_MESSAGES = Uri.parse("content://at.tugraz.sw.hoi.messenger.provider/messages");
   public static final Uri CONTENT_URI_PROFILE = Uri.parse("content://at.tugraz.sw.hoi.messenger.provider/profile");
+  public static final Uri CONTENT_URI_CONVERSATIONS = Uri
+      .parse("content://at.tugraz.sw.hoi.messenger.provider/messages/conversations");
 
   public static final String COL_ID = "_id";
 
@@ -50,6 +54,7 @@ public class DataProvider extends ContentProvider {
   private static final int MESSAGES_SINGLE_ROW = 2;
   private static final int PROFILE_ALLROWS = 3;
   private static final int PROFILE_SINGLE_ROW = 4;
+  private static final int MESSAGES_CONVERSATIONS = 5;
 
   private static final UriMatcher uriMatcher;
   static {
@@ -58,6 +63,7 @@ public class DataProvider extends ContentProvider {
     uriMatcher.addURI("at.tugraz.sw.hoi.messenger.provider", "messages/#", MESSAGES_SINGLE_ROW);
     uriMatcher.addURI("at.tugraz.sw.hoi.messenger.provider", "profile", PROFILE_ALLROWS);
     uriMatcher.addURI("at.tugraz.sw.hoi.messenger.provider", "profile/#", PROFILE_SINGLE_ROW);
+    uriMatcher.addURI("at.tugraz.sw.hoi.messenger.provider", "messages/conversations", MESSAGES_CONVERSATIONS);
   }
 
   @Override
@@ -73,6 +79,7 @@ public class DataProvider extends ContentProvider {
     SQLiteDatabase db = dbHelper.getReadableDatabase();
     SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 
+    Cursor c = null;
     switch (uriMatcher.match(uri)) {
     case MESSAGES_ALLROWS:
       qb.setTables(TABLE_MESSAGES);
@@ -83,6 +90,29 @@ public class DataProvider extends ContentProvider {
       qb.appendWhere("_id = " + uri.getLastPathSegment());
       break;
 
+    case MESSAGES_CONVERSATIONS:
+      String registered_mail = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(
+          Configuration.CHAT_EMAIL_ID, "");
+      c = db.rawQuery("SELECT main._id, main.message, main.time, CASE WHEN main." + COL_RECEIVER_EMAIL
+          + "= ? THEN main." + COL_SENDER_EMAIL + " ELSE main." + COL_RECEIVER_EMAIL + " END AS " + COL_EMAIL
+          + " FROM " + TABLE_MESSAGES + " main INNER JOIN (SELECT _id, " + COL_EMAIL + "," + "max(" + COL_TIME
+          + ") FROM (select _id, CASE WHEN " + COL_RECEIVER_EMAIL + "= ? THEN " + COL_SENDER_EMAIL + " ELSE "
+          + COL_RECEIVER_EMAIL + " END AS " + COL_EMAIL + "," + COL_MESSAGE + "," + COL_TIME + " FROM "
+          + TABLE_MESSAGES + ") GROUP BY " + COL_EMAIL + ") temp ON main._id = temp._id", new String[] {
+          registered_mail, registered_mail });
+
+      //
+      // c = db.rawQuery("SELECT main._id, main." + COL_SENDER_EMAIL + ", main."
+      // + COL_RECEIVER_EMAIL + ",main."
+      // + COL_MESSAGE + ",main." + COL_TIME + " FROM " + TABLE_MESSAGES +
+      // " main INNER JOIN (select _id, "
+      // + COL_RECEIVER_EMAIL + "," + COL_MESSAGE + "," + "max(" + COL_TIME +
+      // ") FROM " + TABLE_MESSAGES
+      // + " GROUP BY " + COL_RECEIVER_EMAIL + ") temp ON main." +
+      // COL_RECEIVER_EMAIL + " = " + "temp."
+      // + COL_RECEIVER_EMAIL + " WHERE main._id = temp._id", null);
+
+      break;
     case PROFILE_ALLROWS:
       qb.setTables(TABLE_PROFILE);
       break;
@@ -96,7 +126,10 @@ public class DataProvider extends ContentProvider {
       throw new IllegalArgumentException("Unsupported URI: " + uri);
     }
 
-    Cursor c = qb.query(db, projection, selection, selectionArgs, null, null, sortOrder);
+    if (c == null) {
+      c = qb.query(db, projection, selection, selectionArgs, null, null, sortOrder);
+    }
+
     c.setNotificationUri(getContext().getContentResolver(), uri);
     return c;
   }
@@ -212,6 +245,8 @@ public class DataProvider extends ContentProvider {
 
       db.execSQL("create table profile(" + "_id integer primary key autoincrement, " + COL_NAME + " text, " + COL_EMAIL
           + " text unique, " + COL_COUNT + " integer default 0);");
+
+      // db.execSQL("CREATE VIEW conversations SELECT p."+);
     }
 
     @Override

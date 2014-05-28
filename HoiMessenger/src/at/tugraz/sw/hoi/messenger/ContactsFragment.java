@@ -125,7 +125,7 @@ public class ContactsFragment extends Fragment implements OnClickListener, Loade
   public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
     CursorLoader loader = new CursorLoader(getActivity().getApplicationContext(), DataProvider.CONTENT_URI_PROFILE,
         new String[] { DataProvider.COL_ID, DataProvider.COL_NAME, DataProvider.COL_EMAIL, DataProvider.COL_COUNT },
-        null, null, DataProvider.COL_ID + " DESC");
+        null, null, DataProvider.COL_NAME + " ASC");
     return loader;
   }
 
