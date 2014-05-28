@@ -38,12 +38,13 @@ public class MainActivity extends ActionBarActivity {
   private static int CONVERSATIONS_FRAGMENT_INDEX = 0;
   private static int CONTACTS_FRAGMENT_INDEX = 1;
   private static int MORE_FRAGMENT_INDEX = 2;
+  List<Fragment> fragments;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    List<Fragment> fragments = getFragments();
+    fragments = getFragments();
     // Create the adapter that will return a fragment for each of the three
     // primary sections of the activity.
     mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), fragments);
