@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item>
+        <shape android:shape="rectangle" >
+            <solid android:color="@color/chat_bg" />
+        </shape>
+    </item>
+    <item android:top="10dip">
+        <rotate
+            android:fromDegrees="45"
+            android:pivotX="0.5"
+            android:pivotY="0.5"
+            android:toDegrees="45" >
+            <shape android:shape="rectangle" >
+                <solid android:color="@color/message_right" />
+            </shape>
+        </rotate>
+    </item>
+
+</layer-list>
