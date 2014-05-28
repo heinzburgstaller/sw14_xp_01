@@ -26,9 +26,14 @@ public class ServletUtil {
   public static final String REGISTER = "register";
   public static final String UNREGISTER = "unregister";
   public static final String CHAT = "chat";
+  public static final String CONTACT = "checkContact";
 
   public static ServletResponse register(String email, String regId) {
     return post(REGISTER, new Parameter(Configuration.EMAIL, email), new Parameter(Configuration.REG_ID, regId));
+  }
+
+  public static ServletResponse checkContact(String email, String regId) {
+    return post(CONTACT, new Parameter(Configuration.EMAIL, email));
   }
 
   public static ServletResponse unregister(String email) {
