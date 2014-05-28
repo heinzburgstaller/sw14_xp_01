@@ -12,6 +12,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import at.tugraz.sw.hoi.messenger.util.DataProvider;
 
 public class ConversationsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
+  private ListView conversationList;
   private ConversationtCursorAdapter conversationCursorAdapter;
   /**
    * The fragment argument representing the section number for this fragment.
@@ -45,7 +47,7 @@ public class ConversationsFragment extends Fragment implements LoaderManager.Loa
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View rootView = inflater.inflate(R.layout.fragment_conversations, container, false);
 
-    ListView conversationList = (ListView) rootView.findViewById(R.id.lvConversation);
+    conversationList = (ListView) rootView.findViewById(R.id.lvConversation);
     conversationCursorAdapter = new ConversationtCursorAdapter(getActivity().getApplicationContext(), null);
     conversationList.setAdapter(conversationCursorAdapter);
 
@@ -121,6 +123,7 @@ public class ConversationsFragment extends Fragment implements LoaderManager.Loa
 
   @Override
   public void onLoaderReset(Loader<Cursor> arg0) {
+    Log.d("onloadreset", "resetted");
     conversationCursorAdapter.changeCursor(null);
   }
 }
