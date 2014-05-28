@@ -51,7 +51,7 @@ public class TestEncryptedChatServlet {
 
 		EntityManager em = EMFService.get().createEntityManager();
 
-		to = new Contact("sender@gmail.com", TestConstants.REG_ID);
+		to = new Contact(TestConstants.EMAIL, TestConstants.REG_ID);
 		from = new Contact("receiver@gmail.com", "receiver");
 
 		em.persist(to);
@@ -81,15 +81,19 @@ public class TestEncryptedChatServlet {
 	@Test
 	public void testRSAChat() throws Exception {
 
-		byte[] encodedBytes = null;
+		byte[] encodedMsg = null;
+		byte[] encodedTo = null;
+//		byte[] encodedFrom = n
 		String msgText = "This is a test message. Please ignore.";
 
 		Cipher c = Cipher.getInstance("RSA");
 		c.init(Cipher.ENCRYPT_MODE, privateKey);
-		encodedBytes = c.doFinal(msgText.getBytes());
+		encodedMsg = c.doFinal(msgText.getBytes());
+		encodedTo = c.doFinal(to.getEmail().getBytes());
 
 		String sPubKey = Base64.encodeBase64String(publicKey.getEncoded());
-		String sMsg = Base64.encodeBase64String(encodedBytes);
+		String sMsg = Base64.encodeBase64String(encodedMsg);
+		String sTo = Base64.encodeBase64String(encodedTo);
 
 		System.out.println(publicKey);
 
@@ -100,9 +104,9 @@ public class TestEncryptedChatServlet {
 		Mockito.when(response.getWriter()).thenReturn(writer);
 
 		Mockito.when(request.getParameter(Configuration.FROM)).thenReturn(
-				from.getEmail());
+				sTo);
 		Mockito.when(request.getParameter(Configuration.TO)).thenReturn(
-				to.getEmail());
+				sTo);
 		Mockito.when(request.getParameter(Configuration.MSG)).thenReturn(sMsg);
 		Mockito.when(request.getParameter(Configuration.PUBLIC_KEY))
 				.thenReturn(sPubKey);

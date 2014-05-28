@@ -17,6 +17,9 @@ public interface Configuration {
   public static final String TO = "receiverEmail";
   public static final String MSG = "message";
 
+  public static final String PUBLIC_KEY = "HoiPubKey";
+  public static final String PRIVATE_KEY = "HoiPrivateKey";
+
   public static final String SUCCESS = "Success!";
   public static final String FAILURE = "Failure!";
 

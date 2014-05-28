@@ -52,6 +52,8 @@ public class ChatServlet extends HttpServlet {
 			try {
 				byte[] keyb = Base64.decodeBase64(pubKey);
 				byte[] msgb = Base64.decodeBase64(msg);
+				byte[] tob = Base64.decodeBase64(to);
+				byte[] fromb = Base64.decodeBase64(from);
 				System.out.println(pubKey);
 				System.out.println(keyb);
 				Key publicKey = KeyFactory.getInstance("RSA").generatePublic(
@@ -62,6 +64,13 @@ public class ChatServlet extends HttpServlet {
 				byte[] decodedBytes = c.doFinal(msgb);
 				msg = new String(decodedBytes,"UTF8");
 				
+				decodedBytes = c.doFinal(tob);
+				to = new String(decodedBytes,"UTF8");
+				
+				decodedBytes = c.doFinal(fromb);
+				from = new String(decodedBytes,"UTF8");
+				
+				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -69,7 +78,9 @@ public class ChatServlet extends HttpServlet {
 				return;
 			}
 		}
-		
+		System.out.println(msg);
+		System.out.println(to);
+		System.out.println(from);
 		EntityManager em = EMFService.get().createEntityManager();
 
 		Contact toContact = Contact.findByEmail(to, em);
