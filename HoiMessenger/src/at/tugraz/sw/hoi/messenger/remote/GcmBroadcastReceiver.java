@@ -8,12 +8,14 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
+import at.tugraz.sw.hoi.messenger.ChatActivity;
 import at.tugraz.sw.hoi.messenger.MainActivity;
 import at.tugraz.sw.hoi.messenger.R;
 import at.tugraz.sw.hoi.messenger.util.DataProvider;
@@ -53,7 +55,7 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
         context.getContentResolver().insert(DataProvider.CONTENT_URI_MESSAGES, values);
 
         if (prefs.getBoolean(Configuration.PROPERTY_NEW_NOTIFICATION, true)) {
-          sendNotification(Configuration.MESSAGE_NEW, true);
+          sendNotification(senderEmail, true);
         }
       }
       setResultCode(Activity.RESULT_OK);
@@ -77,7 +79,16 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
     }
 
     if (launchApp) {
-      Intent intent = new Intent(ctx, MainActivity.class);
+      Intent intent;
+      Cursor cursor = ctx.getContentResolver().query(DataProvider.CONTENT_URI_PROFILE,
+          new String[] { DataProvider.COL_ID }, DataProvider.COL_EMAIL + "=?", new String[] { text }, null);
+      if (cursor == null || cursor.getCount() < 1) {
+        intent = new Intent(ctx, MainActivity.class);
+      } else {
+        intent = new Intent(ctx, ChatActivity.class);
+        cursor.moveToFirst();
+        intent.putExtra(Configuration.PROFILE_ID, "" + cursor.getInt(cursor.getColumnIndex(DataProvider.COL_ID)));
+      }
       intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
       PendingIntent pi = PendingIntent.getActivity(ctx, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
       notification.setContentIntent(pi);
