@@ -22,6 +22,7 @@ public interface Configuration {
 
   public static final String PROFILE_ID = "profile_id";
   public static final String ACTION_REGISTER = "at.tugraz.sw14_xp_01.REGISTER";
+  public static final String ACTION_CONTACT = "at.tugraz.sw14_xp_01.CHECKCONTACT";
   public static final int STATUS_SUCCESS = 1;
   public static final int STATUS_FAILED = 0;
   public static final String EXTRA_STATUS = "status";
