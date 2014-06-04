@@ -1,5 +1,6 @@
 package at.tugraz.sw.hoi.messenger.remote;
 
+import net.java.otr4j.session.SessionID;
 import android.app.Activity;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -18,6 +19,9 @@ import android.text.TextUtils;
 import at.tugraz.sw.hoi.messenger.ChatActivity;
 import at.tugraz.sw.hoi.messenger.MainActivity;
 import at.tugraz.sw.hoi.messenger.R;
+import at.tugraz.sw.hoi.messenger.otr.HoiOtrEngine;
+import at.tugraz.sw.hoi.messenger.otr.HoiOtrEngineHost;
+import at.tugraz.sw.hoi.messenger.otr.HoiOtrUtil;
 import at.tugraz.sw.hoi.messenger.util.DataProvider;
 import at.tugraz.sw.hoi.messenger.util.DataProvider.MessageType;
 
@@ -47,6 +51,13 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
         String msg = intent.getStringExtra(DataProvider.COL_MESSAGE);
         String senderEmail = intent.getStringExtra(DataProvider.COL_SENDER_EMAIL);
         String receiverEmail = intent.getStringExtra(DataProvider.COL_RECEIVER_EMAIL);
+        String handshakeState = intent.getStringExtra(Configuration.HANDSHAKE_STATE);
+
+        if (handshakeState != null && !handshakeState.equals("")) {
+          answerHandshake(receiverEmail, senderEmail, msg, handshakeState);
+          return;
+        }
+
         ContentValues values = new ContentValues(2);
         values.put(DataProvider.COL_TYPE, MessageType.INCOMING.ordinal());
         values.put(DataProvider.COL_MESSAGE, msg);
@@ -62,6 +73,43 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
     } finally {
       mWakeLock.release();
     }
+  }
+
+  private void answerHandshake(String receiverEmail, String senderEmail, String msg, String handshakeState) {
+    // Do Handshake
+
+    String newState = "";
+    SessionID sessionID = HoiOtrUtil.getInstance().getSessionId(receiverEmail, senderEmail);
+    HoiOtrEngine engine = HoiOtrUtil.getInstance().getEngine(sessionID);
+
+    engine.transformReceiving(sessionID, msg);
+
+    if (handshakeState.equals(Configuration.OTR_QUERY)) {
+      newState = Configuration.OTR_COMMIT;
+    }
+    if (handshakeState.equals(Configuration.OTR_COMMIT)) {
+      newState = Configuration.OTR_KEY;
+    }
+    if (handshakeState.equals(Configuration.OTR_KEY)) {
+      newState = Configuration.OTR_SIGNATURE;
+    }
+    if (handshakeState.equals(Configuration.OTR_SIGNATURE)) {
+      newState = Configuration.OTR_SECURE;
+    }
+    if (handshakeState.equals(Configuration.OTR_SECURE)) {
+      newState = Configuration.OTR_SECURE;
+      return;
+    }
+
+    HoiOtrEngineHost host = engine.getListener();
+    OtrHandshakeTask task = new OtrHandshakeTask(receiverEmail, senderEmail, host.lastInjectedMessage, newState);
+    task.execute(null, null, null);
+
+    if (task.getResult().equals(Boolean.TRUE)) {
+      return;
+    }
+    return;
+
   }
 
   private void sendNotification(String text, boolean launchApp) {

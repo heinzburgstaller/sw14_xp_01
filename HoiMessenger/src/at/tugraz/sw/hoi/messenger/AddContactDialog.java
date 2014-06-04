@@ -16,8 +16,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import at.tugraz.sw.hoi.messenger.otr.HoiOtrEngine;
+import at.tugraz.sw.hoi.messenger.otr.HoiOtrEngineHost;
 import at.tugraz.sw.hoi.messenger.otr.HoiOtrUtil;
 import at.tugraz.sw.hoi.messenger.remote.Configuration;
+import at.tugraz.sw.hoi.messenger.remote.OtrHandshakeTask;
 import at.tugraz.sw.hoi.messenger.util.DataProvider;
 
 public class AddContactDialog extends DialogFragment {
@@ -46,6 +48,15 @@ public class AddContactDialog extends DialogFragment {
     SessionID sessionID = HoiOtrUtil.getInstance().getSessionId(fromEmail, toEmail);
     HoiOtrEngine engine = HoiOtrUtil.getInstance().getEngine(sessionID);
     engine.startSession(sessionID);
+    HoiOtrEngineHost host = engine.getListener();
+
+    OtrHandshakeTask task = new OtrHandshakeTask(fromEmail, toEmail, host.lastInjectedMessage, Configuration.OTR_QUERY);
+    task.execute(null, null, null);
+
+    if (task.getResult().equals(Boolean.TRUE)) {
+      return;
+    }
+
   }
 
   @Override

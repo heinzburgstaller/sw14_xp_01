@@ -1,18 +1,17 @@
 package at.tugraz.sw.hoi.messenger.otr;
 
-import net.java.otr4j.OtrEngineHost;
 import net.java.otr4j.OtrEngineImpl;
 
 public class HoiOtrEngine extends OtrEngineImpl {
 
-  private OtrEngineHost listener;
+  private HoiOtrEngineHost listener;
 
-  public HoiOtrEngine(OtrEngineHost listener) {
+  public HoiOtrEngine(HoiOtrEngineHost listener) {
     super(listener);
     this.listener = listener;
   }
 
-  public OtrEngineHost getListener() {
+  public HoiOtrEngineHost getListener() {
     return listener;
   }
 

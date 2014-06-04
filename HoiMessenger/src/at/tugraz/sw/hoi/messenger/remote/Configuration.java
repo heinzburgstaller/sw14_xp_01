@@ -17,6 +17,13 @@ public interface Configuration {
   public static final String TO = "receiverEmail";
   public static final String MSG = "message";
 
+  public static final String HANDSHAKE_STATE = "HandshakeState";
+  public static final String OTR_QUERY = "query";
+  public static final String OTR_COMMIT = "commit";
+  public static final String OTR_KEY = "key";
+  public static final String OTR_SIGNATURE = "signature";
+  public static final String OTR_SECURE = "secure";
+
   public static final String SUCCESS = "Success!";
   public static final String FAILURE = "Failure!";
 
