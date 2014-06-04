@@ -17,6 +17,7 @@
         android:background="#909090"/>
     <TextView
         android:id="@+id/tvName"
+        android:textColor="@color/main_text_color"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/tvLastMessage"
@@ -27,25 +28,37 @@
         android:textSize="22sp" 
         android:singleLine="true"
         android:layout_toLeftOf="@+id/tvTimeLastMessage"
-        android:text="Max Mustermasdfasdfasdfaf"/>
+        android:text="Murgbauer Gerhard"/>
     
     <TextView
         android:id="@id/tvLastMessage"
-        android:layout_width="fill_parent"
-        android:layout_height="26dip"
+        android:layout_width="wrap_content"
+        android:layout_height="20dip"
+        android:textColor="@color/sec_text_color"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
         android:layout_toRightOf="@id/avatar"
+        android:layout_toLeftOf="@+id/tvNewUser"
         android:singleLine="true"
-        android:gravity="center_vertical"
+        android:gravity="center_vertical|left"
         android:text="last message is here hh  kh  iuh jlsdfgsdfgsdfjhkjl" />
     
     <TextView 
         android:id="@id/tvTimeLastMessage"
+        android:textColor="@color/main_text_color"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:text="19:20"
+        />
+    <TextView 
+        android:id="@id/tvNewUser"
+        android:textColor="@color/button_background"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="@string/tv_new_user"
+        android:visibility="visible"
         />
 </RelativeLayout>

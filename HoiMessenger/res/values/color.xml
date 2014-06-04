@@ -8,4 +8,6 @@
   <color name="message_right_text">#FFFFFF</color>
   <color name="button_background_pressed">#BCED91</color>
   <color name="tv_online_text_color">#00FF00</color>
+  <color name="main_text_color">#323232</color>
+  <color name="sec_text_color">#808080</color>
 </resources>
