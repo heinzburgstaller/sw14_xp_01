@@ -9,15 +9,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -28,6 +33,7 @@ public class ConversationsFragment extends Fragment implements LoaderManager.Loa
 
   private ListView conversationList;
   private ConversationtCursorAdapter conversationCursorAdapter;
+  private String email;
   /**
    * The fragment argument representing the section number for this fragment.
    */
@@ -48,6 +54,46 @@ public class ConversationsFragment extends Fragment implements LoaderManager.Loa
   }
 
   @Override
+  public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+    super.onCreateContextMenu(menu, v, menuInfo);
+    this.email = (String) ((TextView) (v.findViewById(R.id.tvName))).getText();
+    menu.add(0, Integer.parseInt((String) (v.findViewById(R.id.tvId)).getTag()), 1,
+        getString(R.string.option_delete_conversation));
+
+  };
+
+  @Override
+  public boolean onContextItemSelected(MenuItem item) {
+    super.onContextItemSelected(item);
+    if (item.getTitle().equals(getString(R.string.option_delete_conversation))) {
+      String otherEmail;
+      if (item.getItemId() < 1) {
+        otherEmail = email;
+      } else {
+        String[] columns = new String[] { DataProvider.COL_ID, DataProvider.COL_EMAIL };
+        String[] toDeleteId = new String[] { "" + item.getItemId() };
+
+        Cursor c = getActivity().getContentResolver().query(DataProvider.CONTENT_URI_PROFILE, columns, "_id=?",
+            toDeleteId, DataProvider.COL_ID);
+        c.moveToFirst();
+        otherEmail = c.getString(c.getColumnIndex(DataProvider.COL_EMAIL));
+
+      }
+
+      String ownEmail = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext()).getString(
+          Configuration.CHAT_EMAIL_ID, "");
+      String[] toDeleteEmail = new String[] { ownEmail, otherEmail, otherEmail, ownEmail };
+
+      getActivity().getContentResolver().delete(
+          DataProvider.CONTENT_URI_MESSAGES,
+          "(" + DataProvider.SENDER_EMAIL + "=? AND " + DataProvider.RECEIVER_EMAIL + "=?) OR ("
+              + DataProvider.SENDER_EMAIL + "=? AND " + DataProvider.RECEIVER_EMAIL + "=?)", toDeleteEmail);
+
+    }
+    return true;
+  }
+
+  @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View rootView = inflater.inflate(R.layout.fragment_conversations, container, false);
 
@@ -62,7 +108,7 @@ public class ConversationsFragment extends Fragment implements LoaderManager.Loa
     return rootView;
   }
 
-  class ConversationtCursorAdapter extends CursorAdapter implements OnClickListener {
+  class ConversationtCursorAdapter extends CursorAdapter implements OnClickListener, OnLongClickListener {
 
     private LayoutInflater mInflater;
 
@@ -113,7 +159,8 @@ public class ConversationsFragment extends Fragment implements LoaderManager.Loa
         e.printStackTrace();
       }
       view.setOnClickListener(this);
-
+      view.setOnLongClickListener(this);
+      registerForContextMenu(view);
     }
 
     @Override
@@ -140,6 +187,12 @@ public class ConversationsFragment extends Fragment implements LoaderManager.Loa
         intent.putExtra(Configuration.PROFILE_ID, id);
         startActivity(intent);
       }
+    }
+
+    @Override
+    public boolean onLongClick(View view) {
+      getActivity().openContextMenu(view);
+      return true;
     }
   }
 
