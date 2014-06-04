@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import at.tugraz.sw.hoi.messenger.remote.Configuration;
 import at.tugraz.sw.hoi.messenger.remote.GcmUtil;
+import at.tugraz.sw.hoi.messenger.util.DataProvider;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -39,6 +41,68 @@ public class MainActivity extends ActionBarActivity {
   private static int CONTACTS_FRAGMENT_INDEX = 1;
   private static int MORE_FRAGMENT_INDEX = 2;
   List<Fragment> fragments;
+
+  @Override
+  public boolean onContextItemSelected(MenuItem item) {
+    super.onContextItemSelected(item);
+    if (item.getTitle().equals(getString(R.string.option_delete_conversation))) {
+      String otherEmail;
+      if (item.getItemId() < 1) {
+        otherEmail = "mani.sedude@gmail.com";
+
+      } else {
+        String[] columns = new String[] { DataProvider.COL_ID, DataProvider.COL_EMAIL };
+        String[] toDeleteId = new String[] { "" + item.getItemId() };
+
+        Cursor c = this.getContentResolver().query(DataProvider.CONTENT_URI_PROFILE, columns, "_id=?", toDeleteId,
+            DataProvider.COL_ID);
+        c.moveToFirst();
+        otherEmail = c.getString(c.getColumnIndex(DataProvider.COL_EMAIL));
+
+      }
+
+      String ownEmail = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext()).getString(
+          Configuration.CHAT_EMAIL_ID, "");
+      String[] toDeleteEmail = new String[] { ownEmail, otherEmail, otherEmail, ownEmail };
+
+      this.getContentResolver().delete(
+          DataProvider.CONTENT_URI_MESSAGES,
+          "(" + DataProvider.SENDER_EMAIL + "=? AND " + DataProvider.RECEIVER_EMAIL + "=?) OR ("
+              + DataProvider.SENDER_EMAIL + "=? AND " + DataProvider.RECEIVER_EMAIL + "=?)", toDeleteEmail);
+
+    } else if (item.getTitle().equals(getString(R.string.option_edit))) {
+      String[] columns = new String[] { DataProvider.COL_ID, DataProvider.COL_EMAIL };
+      String[] toDeleteId = new String[] { "" + item.getItemId() };
+      Cursor c = this.getContentResolver().query(DataProvider.CONTENT_URI_PROFILE, columns, "_id=?", toDeleteId,
+          DataProvider.COL_ID);
+      c.moveToFirst();
+      String email = c.getString(c.getColumnIndex(DataProvider.COL_EMAIL));
+
+      AddContactDialog newFragment = AddContactDialog.newInstance(true, email);
+      newFragment.show(this.getSupportFragmentManager(), "EditContactDialog");
+    } else if (item.getTitle().equals(getString(R.string.option_delete))) {
+      String[] columns = new String[] { DataProvider.COL_ID, DataProvider.COL_EMAIL };
+      String[] toDeleteId = new String[] { "" + item.getItemId() };
+
+      Cursor c = this.getContentResolver().query(DataProvider.CONTENT_URI_PROFILE, columns, "_id=?", toDeleteId,
+          DataProvider.COL_ID);
+      c.moveToFirst();
+      String otherEmail = c.getString(c.getColumnIndex(DataProvider.COL_EMAIL));
+
+      String ownEmail = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext()).getString(
+          Configuration.CHAT_EMAIL_ID, "");
+      String[] toDeleteEmail = new String[] { ownEmail, otherEmail, otherEmail, ownEmail };
+
+      this.getContentResolver().delete(
+          DataProvider.CONTENT_URI_MESSAGES,
+          "(" + DataProvider.SENDER_EMAIL + "=? AND " + DataProvider.RECEIVER_EMAIL + "=?) OR ("
+              + DataProvider.SENDER_EMAIL + "=? AND " + DataProvider.RECEIVER_EMAIL + "=?)", toDeleteEmail);
+
+      this.getContentResolver().delete(DataProvider.CONTENT_URI_PROFILE, "_id=?", toDeleteId);
+    }
+
+    return true;
+  }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {

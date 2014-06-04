@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -13,7 +12,6 @@ import android.support.v4.widget.CursorAdapter;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
@@ -66,43 +64,6 @@ public class ContactsFragment extends Fragment implements OnClickListener, Loade
     menu.add(0, Integer.parseInt((String) (v.findViewById(R.id.tvId)).getTag()), 1, getString(R.string.option_edit));
     menu.add(0, Integer.parseInt((String) (v.findViewById(R.id.tvId)).getTag()), 2, getString(R.string.option_delete));
   };
-
-  @Override
-  public boolean onContextItemSelected(MenuItem item) {
-    super.onContextItemSelected(item);
-    if (item.getTitle().equals(getString(R.string.option_edit))) {
-      String[] columns = new String[] { DataProvider.COL_ID, DataProvider.COL_EMAIL };
-      String[] toDeleteId = new String[] { "" + item.getItemId() };
-      Cursor c = getActivity().getContentResolver().query(DataProvider.CONTENT_URI_PROFILE, columns, "_id=?",
-          toDeleteId, DataProvider.COL_ID);
-      c.moveToFirst();
-      String email = c.getString(c.getColumnIndex(DataProvider.COL_EMAIL));
-
-      AddContactDialog newFragment = AddContactDialog.newInstance(true, email);
-      newFragment.show(getActivity().getSupportFragmentManager(), "EditContactDialog");
-    } else if (item.getTitle().equals(getString(R.string.option_delete))) {
-
-      String[] columns = new String[] { DataProvider.COL_ID, DataProvider.COL_EMAIL };
-      String[] toDeleteId = new String[] { "" + item.getItemId() };
-
-      Cursor c = getActivity().getContentResolver().query(DataProvider.CONTENT_URI_PROFILE, columns, "_id=?",
-          toDeleteId, DataProvider.COL_ID);
-      c.moveToFirst();
-      String otherEmail = c.getString(c.getColumnIndex(DataProvider.COL_EMAIL));
-
-      String ownEmail = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext()).getString(
-          Configuration.CHAT_EMAIL_ID, "");
-      String[] toDeleteEmail = new String[] { ownEmail, otherEmail, otherEmail, ownEmail };
-
-      getActivity().getContentResolver().delete(
-          DataProvider.CONTENT_URI_MESSAGES,
-          "(" + DataProvider.SENDER_EMAIL + "=? AND " + DataProvider.RECEIVER_EMAIL + "=?) OR ("
-              + DataProvider.SENDER_EMAIL + "=? AND " + DataProvider.RECEIVER_EMAIL + "=?)", toDeleteEmail);
-
-      getActivity().getContentResolver().delete(DataProvider.CONTENT_URI_PROFILE, "_id=?", toDeleteId);
-    }
-    return true;
-  }
 
   class ContactCursorAdapter extends CursorAdapter implements OnClickListener, OnLongClickListener {
 
@@ -184,4 +145,5 @@ public class ContactsFragment extends Fragment implements OnClickListener, Loade
     AddContactDialog newFragment = AddContactDialog.newInstance();
     newFragment.show(getActivity().getSupportFragmentManager(), "AddContactDialog");
   }
+
 }
