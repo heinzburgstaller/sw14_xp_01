@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,9 +16,11 @@ import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
+import at.tugraz.sw.hoi.messenger.remote.Configuration;
 import at.tugraz.sw.hoi.messenger.util.DataProvider;
 
 public class ConversationsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -58,7 +61,7 @@ public class ConversationsFragment extends Fragment implements LoaderManager.Loa
     return rootView;
   }
 
-  class ConversationtCursorAdapter extends CursorAdapter {
+  class ConversationtCursorAdapter extends CursorAdapter implements OnClickListener {
 
     private LayoutInflater mInflater;
 
@@ -72,10 +75,20 @@ public class ConversationsFragment extends Fragment implements LoaderManager.Loa
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
       ViewHolder holder = (ViewHolder) view.getTag();
-
-      holder.tvName.setText(cursor.getString(cursor.getColumnIndex(DataProvider.COL_EMAIL)));
-
+      String email = cursor.getString(cursor.getColumnIndex(DataProvider.COL_EMAIL));
+      holder.tvName.setText(email);
       holder.tvLastMessage.setText(cursor.getString(cursor.getColumnIndex(DataProvider.COL_MESSAGE)));
+
+      Cursor c = getActivity().getContentResolver().query(DataProvider.CONTENT_URI_PROFILE,
+          new String[] { DataProvider.COL_ID, DataProvider.COL_NAME }, DataProvider.COL_EMAIL + "=?",
+          new String[] { "" + email }, DataProvider.COL_ID);
+      if (c.getCount() < 1) {
+        holder.tvId.setTag("0");
+      } else {
+        c.moveToFirst();
+        holder.tvName.setText(c.getString(c.getColumnIndex(DataProvider.COL_NAME)));
+        holder.tvId.setTag(String.valueOf(c.getInt(c.getColumnIndex(DataProvider.COL_ID))));
+      }
 
       String dateString = cursor.getString(cursor.getColumnIndex(DataProvider.COL_TIME));
       Date date;
@@ -87,6 +100,7 @@ public class ConversationsFragment extends Fragment implements LoaderManager.Loa
         // TODO Auto-generated catch block
         e.printStackTrace();
       }
+      view.setOnClickListener(this);
 
     }
 
@@ -98,7 +112,22 @@ public class ConversationsFragment extends Fragment implements LoaderManager.Loa
       holder.tvName = (TextView) itemLayout.findViewById(R.id.tvName);
       holder.tvLastMessage = (TextView) itemLayout.findViewById(R.id.tvLastMessage);
       holder.tvTimeLastMessage = (TextView) itemLayout.findViewById(R.id.tvTimeLastMessage);
+      holder.tvId = (TextView) itemLayout.findViewById(R.id.tvId);
       return itemLayout;
+    }
+
+    @Override
+    public void onClick(View v) {
+      Intent intent = new Intent(getActivity(), ChatActivity.class);
+      String id = (String) (v.findViewById(R.id.tvId)).getTag();
+      String email = (String) ((TextView) (v.findViewById(R.id.tvName))).getText();
+      if (id.equals("0")) {
+        AddContactDialog newFragment = AddContactDialog.newInstance(email);
+        newFragment.show(getActivity().getSupportFragmentManager(), "AddContactDialog");
+      } else {
+        intent.putExtra(Configuration.PROFILE_ID, id);
+        startActivity(intent);
+      }
     }
   }
 
@@ -106,6 +135,7 @@ public class ConversationsFragment extends Fragment implements LoaderManager.Loa
     TextView tvName;
     TextView tvLastMessage;
     TextView tvTimeLastMessage;
+    TextView tvId;
 
   }
 
@@ -126,4 +156,5 @@ public class ConversationsFragment extends Fragment implements LoaderManager.Loa
     Log.d("onloadreset", "resetted");
     conversationCursorAdapter.changeCursor(null);
   }
+
 }
