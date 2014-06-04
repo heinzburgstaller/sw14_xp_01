@@ -19,6 +19,8 @@ public class DataProvider extends ContentProvider {
   public static final Uri CONTENT_URI_PROFILE = Uri.parse("content://at.tugraz.sw.hoi.messenger.provider/profile");
   public static final Uri CONTENT_URI_CONVERSATIONS = Uri
       .parse("content://at.tugraz.sw.hoi.messenger.provider/messages/conversations");
+  // public static final Uri CONTENT_URI_OTR =
+  // Uri.parse("content://at.tugraz.sw.hoi.messenger.provider/otr");
 
   public static final String COL_ID = "_id";
 
@@ -46,6 +48,15 @@ public class DataProvider extends ContentProvider {
   public static final String COL_NAME = "name";
   public static final String COL_EMAIL = "email";
   public static final String COL_COUNT = "count";
+  public static final String COL_ACCOUNT = "accountID";
+  public static final String COL_SECURED = "secured";
+  public static final String COL_LAST_KEY = "lastPubKey";
+
+  // TABLE OTR
+  // public static final String TABLE_OTR = "otr";
+  // public static final String COL_STATE = "state";
+  // public static final String COL_RECEIVER = "account";
+  // public static final String COL_COUNT = "user";
 
   private DbHelper dbHelper;
 
@@ -228,7 +239,8 @@ public class DataProvider extends ContentProvider {
           + " datetime default current_timestamp);");
 
       db.execSQL("create table profile(" + "_id integer primary key autoincrement, " + COL_NAME + " text, " + COL_EMAIL
-          + " text unique, " + COL_COUNT + " integer default 0);");
+          + " text unique, " + COL_ACCOUNT + " text,, " + COL_SECURED + " integer default 0, " + COL_LAST_KEY
+          + " text, " + COL_COUNT + " integer default 0);");
 
       // db.execSQL("CREATE VIEW conversations SELECT p."+);
     }
