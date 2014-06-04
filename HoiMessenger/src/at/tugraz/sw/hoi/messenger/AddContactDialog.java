@@ -20,6 +20,7 @@ public class AddContactDialog extends DialogFragment {
   private AlertDialog alertDialog;
   private EditText et;
   private String email;
+  private EditText etname;
 
   public static AddContactDialog newInstance() {
     AddContactDialog fragment = new AddContactDialog();
@@ -42,6 +43,7 @@ public class AddContactDialog extends DialogFragment {
   public Dialog onCreateDialog(Bundle savedInstanceState) {
     et = new EditText(getActivity());
     et.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+
     if (email.equals("")) {
       et.setHint("abc@example.com");
     } else {

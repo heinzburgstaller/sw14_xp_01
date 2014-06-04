@@ -173,5 +173,4 @@ public class ContactsFragment extends Fragment implements OnClickListener, Loade
     AddContactDialog newFragment = AddContactDialog.newInstance();
     newFragment.show(getActivity().getSupportFragmentManager(), "AddContactDialog");
   }
-
 }

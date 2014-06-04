@@ -85,6 +85,8 @@ public class ConversationsFragment extends Fragment implements LoaderManager.Loa
       if (c.getCount() < 1) {
         holder.tvId.setTag("0");
       } else {
+        TextView tv = (TextView) view.findViewById(R.id.tvNewUser);
+        tv.setVisibility(View.INVISIBLE);
         c.moveToFirst();
         holder.tvName.setText(c.getString(c.getColumnIndex(DataProvider.COL_NAME)));
         holder.tvId.setTag(String.valueOf(c.getInt(c.getColumnIndex(DataProvider.COL_ID))));
