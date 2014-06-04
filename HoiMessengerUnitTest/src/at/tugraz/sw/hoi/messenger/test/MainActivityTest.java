@@ -10,9 +10,10 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+import at.tugraz.sw.hoi.messenger.AddContactDialog;
 import at.tugraz.sw.hoi.messenger.MainActivity;
 import at.tugraz.sw.hoi.messenger.MainActivity.SectionsPagerAdapter;
-
+import at.tugraz.sw.hoi.messenger.R;
 import junit.framework.TestCase;
 
 public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActivity> {
@@ -42,7 +43,24 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
   public void testOnCreateBundle() 
   { 
 }
+  public void editContactDialogTest() {
 
+   // final Button addButton = (Button) mActivity.getActionBar().findViewById(R.);
+
+    AddContactDialog newFragment = AddContactDialog.newInstance();
+    newFragment.show(getActivity().getSupportFragmentManager(), "AddContactDialog");
+
+  //  TouchUtils.clickView(this, addButton);
+
+    assertTrue(newFragment.getDialog().isShowing());
+
+    newFragment.getDialog().dismiss();
+  }
+
+
+
+  
+  
   public void testOnCreateOptionsMenuMenu() {
     fail("Not yet implemented");
   }
