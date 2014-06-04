@@ -1,27 +1,24 @@
 package at.tugraz.sw.hoi.messenger.test;
-import com.robotium.solo.Solo;
-
-import android.app.Fragment;
 import android.app.Instrumentation;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.UiThreadTest;
 import android.view.KeyEvent;
-import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
-import at.tugraz.sw.hoi.messenger.MainActivity;
+import at.tugraz.sw.hoi.messenger.ChatActivity;
 import at.tugraz.sw.hoi.messenger.MainActivity.SectionsPagerAdapter;
 
 import junit.framework.TestCase;
 
-public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
-	private MainActivity mActivity;
+public class MessagesFragmentTest extends ActivityInstrumentationTestCase2<ChatActivity> {
+
+	private ChatActivity mActivity;
 	private SectionsPagerAdapter mSectionsPagerAdapter;
 	
-	public MainActivityTest() {
-		super(MainActivity.class);
+	public MessagesFragmentTest() {
+		super(ChatActivity.class);
 	}
 
 	public void setUp() throws Exception {
@@ -36,22 +33,34 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
   public void testPreconditions() 
   {
     assertNotNull("mActivity is null", mActivity);
-    assertNotNull("Fragment Manager ist null",mActivity.getSupportFragmentManager());
   }
   
-  public void testOnCreateBundle() 
-  { 
-}
 
-  public void testOnCreateOptionsMenuMenu() {
+  public void testOnDetach() {
     fail("Not yet implemented");
   }
 
-  public void testOnOptionsItemSelectedMenuItem() {
+  public void testOnAttachActivity() {
     fail("Not yet implemented");
   }
 
-  public void testReRegisterUser() {
+  public void testOnCreateBundle() {
+    fail("Not yet implemented");
+  }
+
+  public void testOnActivityCreatedBundle() {
+    fail("Not yet implemented");
+  }
+
+  public void testOnCreateLoader() {
+    fail("Not yet implemented");
+  }
+
+  public void testOnLoadFinished() {
+    fail("Not yet implemented");
+  }
+
+  public void testOnLoaderReset() {
     fail("Not yet implemented");
   }
 

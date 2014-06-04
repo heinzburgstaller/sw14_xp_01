@@ -81,14 +81,6 @@ public class ChatActivity extends ActionBarActivity implements MessagesFragment.
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
-    /*
-     * case R.id.action_edit: EditContactDialog dialog = new
-     * EditContactDialog(); Bundle args = new Bundle();
-     * args.putString(Common.PROFILE_ID, profileId);
-     * args.putString(DataProvider.COL_NAME, profileName);
-     * dialog.setArguments(args); dialog.show(getSupportFragmentManager(),
-     * "EditContactDialog"); return true;
-     */
     case android.R.id.home:
       Intent intent = new Intent(this, MainActivity.class);
       intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

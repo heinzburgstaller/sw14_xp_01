@@ -126,17 +126,6 @@ public class ContactsFragment extends Fragment implements OnClickListener, Loade
       view.setOnClickListener(this);
       view.setOnLongClickListener(this);
       registerForContextMenu(view);
-      // holder.tvOnlineStatus = "online";
-      /*
-       * 
-       * holder.tvTimeLastMessage.setText(cursor.getString(cursor.getColumnIndex
-       * (DataProvider.COL_EMAIL))); int count =
-       * cursor.getInt(cursor.getColumnIndex(DataProvider.COL_COUNT)); if (count
-       * > 0) { holder.tvLastMessage.setVisibility(View.VISIBLE);
-       * holder.tvLastMessage.setText(String.format("%d new message%s", count,
-       * count == 1 ? "" : "s")); } else
-       * holder.tvLastMessage.setVisibility(View.GONE);
-       */
     }
 
     @Override
@@ -145,9 +134,9 @@ public class ContactsFragment extends Fragment implements OnClickListener, Loade
       ViewHolder holder = new ViewHolder();
       itemLayout.setTag(holder);
       holder.tvName = (TextView) itemLayout.findViewById(R.id.tvName);
-      holder.tvOnlineStatus = (TextView) itemLayout.findViewById(R.id.tvOnlineStatus);
+      TextView tv = (TextView) itemLayout.findViewById(R.id.tvOnlineStatus);
+      tv.setVisibility(View.INVISIBLE);
       holder.tvId = (TextView) itemLayout.findViewById(R.id.tvId);
-      // holder.avatar = (ImageView) itemLayout.findViewById(R.id.avatar);
       return itemLayout;
     }
 
@@ -155,7 +144,7 @@ public class ContactsFragment extends Fragment implements OnClickListener, Loade
 
   private static class ViewHolder {
     TextView tvName;
-    TextView tvOnlineStatus;
+    // TextView tvOnlineStatus;
     TextView tvId;
 
   }
@@ -184,5 +173,4 @@ public class ContactsFragment extends Fragment implements OnClickListener, Loade
     AddContactDialog newFragment = AddContactDialog.newInstance();
     newFragment.show(getActivity().getSupportFragmentManager(), "AddContactDialog");
   }
-
 }
