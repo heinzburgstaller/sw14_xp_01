@@ -1,28 +1,62 @@
 package at.tugraz.sw.hoi.messenger.test;
+import android.app.Instrumentation;
+import android.test.ActivityInstrumentationTestCase2;
+import android.test.UiThreadTest;
+import android.view.KeyEvent;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
+import android.widget.TextView;
+import at.tugraz.sw.hoi.messenger.ChatActivity;
+import at.tugraz.sw.hoi.messenger.MainActivity.SectionsPagerAdapter;
 
-import junit.framework.Assert;
-import android.content.Intent;
-import android.test.TouchUtils;
+import junit.framework.TestCase;
 
-import at.tugraz.sw.hoi.messenger.ConversationsFragment;
 
-public class ConversationsFragmentTest extends ConversationsFragment {
+public class ConversationsFragmentTest extends ActivityInstrumentationTestCase2<ChatActivity> {
 
-	  
-	  private ConversationsFragment fragment;
+	private ChatActivity mActivity;
+	private SectionsPagerAdapter mSectionsPagerAdapter;
+	
+	public ConversationsFragmentTest() {
+		super(ChatActivity.class);
+	}
 
-	  public ConversationsFragmentTest() 
-	  {
-	    super();
-	  }
-	  protected void setUp() throws Exception 
-	  {
+	public void setUp() throws Exception {
+		super.setUp();
+		mActivity = getActivity();
+	}
+	
+  protected void tearDown() throws Exception {
+    super.tearDown();
+  }
+  
+  public void testPreconditions() 
+  {
+    assertNotNull("mActivity is null", mActivity);
+  }
 
-	  }
-	  public void Testcase1 ()
-	    {
-		  
-	    }
-	  }
-   
-   
+  public void testNewInstance() {
+    fail("Not yet implemented");
+  }
+
+  public void testConversationsFragment() {
+    fail("Not yet implemented");
+  }
+
+  public void testOnCreateViewLayoutInflaterViewGroupBundle() {
+    fail("Not yet implemented");
+  }
+
+  public void testOnCreateLoader() {
+    fail("Not yet implemented");
+  }
+
+  public void testOnLoadFinished() {
+    fail("Not yet implemented");
+  }
+
+  public void testOnLoaderReset() {
+    fail("Not yet implemented");
+  }
+
+}
