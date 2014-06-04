@@ -14,5 +14,5 @@
     <string name="title_activity_chat">ChatActivity</string>
     <string name="option_delete">Delete</string>
     <string name="hello_world">Hello world!</string>
-
+    <string name="tv_new_user">New User</string>
 </resources>
