@@ -96,20 +96,8 @@ public class DataProvider extends ContentProvider {
           + " FROM " + TABLE_MESSAGES + " main INNER JOIN (SELECT _id, " + COL_EMAIL + "," + "max(" + COL_TIME
           + ") FROM (select _id, CASE WHEN " + COL_RECEIVER_EMAIL + "= ? THEN " + COL_SENDER_EMAIL + " ELSE "
           + COL_RECEIVER_EMAIL + " END AS " + COL_EMAIL + "," + COL_MESSAGE + "," + COL_TIME + " FROM "
-          + TABLE_MESSAGES + ") GROUP BY " + COL_EMAIL + ") temp ON main._id = temp._id", new String[] {
-          registered_mail, registered_mail });
-
-      //
-      // c = db.rawQuery("SELECT main._id, main." + COL_SENDER_EMAIL + ", main."
-      // + COL_RECEIVER_EMAIL + ",main."
-      // + COL_MESSAGE + ",main." + COL_TIME + " FROM " + TABLE_MESSAGES +
-      // " main INNER JOIN (select _id, "
-      // + COL_RECEIVER_EMAIL + "," + COL_MESSAGE + "," + "max(" + COL_TIME +
-      // ") FROM " + TABLE_MESSAGES
-      // + " GROUP BY " + COL_RECEIVER_EMAIL + ") temp ON main." +
-      // COL_RECEIVER_EMAIL + " = " + "temp."
-      // + COL_RECEIVER_EMAIL + " WHERE main._id = temp._id", null);
-
+          + TABLE_MESSAGES + ") GROUP BY " + COL_EMAIL + ") temp ON main._id = temp._id ORDER BY main.time DESC",
+          new String[] { registered_mail, registered_mail });
       break;
     case PROFILE_ALLROWS:
       qb.setTables(TABLE_PROFILE);
