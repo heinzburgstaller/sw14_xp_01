@@ -63,13 +63,24 @@ public class ContactsFragment extends Fragment implements OnClickListener, Loade
   @Override
   public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
     super.onCreateContextMenu(menu, v, menuInfo);
-    menu.add(0, Integer.parseInt((String) (v.findViewById(R.id.tvId)).getTag()), 1, getString(R.string.option_delete));
+    menu.add(0, Integer.parseInt((String) (v.findViewById(R.id.tvId)).getTag()), 1, getString(R.string.option_edit));
+    menu.add(0, Integer.parseInt((String) (v.findViewById(R.id.tvId)).getTag()), 2, getString(R.string.option_delete));
   };
 
   @Override
   public boolean onContextItemSelected(MenuItem item) {
     super.onContextItemSelected(item);
-    if (item.getTitle().equals(getString(R.string.option_delete))) {
+    if (item.getTitle().equals(getString(R.string.option_edit))) {
+      String[] columns = new String[] { DataProvider.COL_ID, DataProvider.COL_EMAIL };
+      String[] toDeleteId = new String[] { "" + item.getItemId() };
+      Cursor c = getActivity().getContentResolver().query(DataProvider.CONTENT_URI_PROFILE, columns, "_id=?",
+          toDeleteId, DataProvider.COL_ID);
+      c.moveToFirst();
+      String email = c.getString(c.getColumnIndex(DataProvider.COL_EMAIL));
+
+      AddContactDialog newFragment = AddContactDialog.newInstance(true, email);
+      newFragment.show(getActivity().getSupportFragmentManager(), "EditContactDialog");
+    } else if (item.getTitle().equals(getString(R.string.option_delete))) {
 
       String[] columns = new String[] { DataProvider.COL_ID, DataProvider.COL_EMAIL };
       String[] toDeleteId = new String[] { "" + item.getItemId() };

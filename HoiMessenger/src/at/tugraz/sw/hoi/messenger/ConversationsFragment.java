@@ -122,7 +122,7 @@ public class ConversationsFragment extends Fragment implements LoaderManager.Loa
       String id = (String) (v.findViewById(R.id.tvId)).getTag();
       String email = (String) ((TextView) (v.findViewById(R.id.tvName))).getText();
       if (id.equals("0")) {
-        AddContactDialog newFragment = AddContactDialog.newInstance(email);
+        AddContactDialog newFragment = AddContactDialog.newInstance(false, email);
         newFragment.show(getActivity().getSupportFragmentManager(), "AddContactDialog");
       } else {
         intent.putExtra(Configuration.PROFILE_ID, id);

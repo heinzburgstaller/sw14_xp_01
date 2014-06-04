@@ -13,6 +13,11 @@
     <string name="tv_online_text">Online</string>
     <string name="title_activity_chat">ChatActivity</string>
     <string name="option_delete">Delete</string>
+    <string name="option_edit">Edit</string>
     <string name="hello_world">Hello world!</string>
     <string name="tv_new_user">New User</string>
+    <string name="tv_name">Name</string>
+    <string name="tv_email">Email</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
 </resources>

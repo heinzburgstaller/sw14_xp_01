@@ -30,7 +30,7 @@ import at.tugraz.sw.hoi.messenger.util.DataProvider;
 import at.tugraz.sw.hoi.messenger.util.DataProvider.MessageType;
 
 public class ChatActivity extends ActionBarActivity implements MessagesFragment.OnFragmentInteractionListener,
-    EditContactDialog.OnFragmentInteractionListener, OnClickListener {
+    OnClickListener {
 
   private SharedPreferences prefs;
   private EditText msgEdit;
@@ -98,11 +98,6 @@ public class ChatActivity extends ActionBarActivity implements MessagesFragment.
     Intent intent = new Intent(this, MainActivity.class);
     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     startActivity(intent);
-  }
-
-  @Override
-  public void onEditContact(String name) {
-    getSupportActionBar().setTitle(name);
   }
 
   @Override
