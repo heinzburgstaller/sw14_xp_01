@@ -1,17 +1,11 @@
 package at.tugraz.sw.hoi.messenger.test.otr;
 
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
-
-import net.java.otr4j.OtrEngineHost;
 import net.java.otr4j.OtrEngineImpl;
 import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.OtrPolicyImpl;
 import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.SessionStatus;
-import android.annotation.SuppressLint;
-import android.util.Log;
+import at.tugraz.sw.hoi.messenger.otr.HoiOtrEngineHost;
 
 public class OtrTest extends junit.framework.TestCase {
 
@@ -21,53 +15,6 @@ public class OtrTest extends junit.framework.TestCase {
 	private SessionID bobSessionID = new SessionID("Bob@Wonderland",
 			"Alice@Wonderland", "Scytale");
 
-	@SuppressLint("TrulyRandom")
-	class DummyOtrEngineHost implements OtrEngineHost {
-		public DummyOtrEngineHost(OtrPolicy policy) {
-			this.policy = policy;
-		}
-
-		private OtrPolicy policy;
-		public String lastInjectedMessage;
-
-		public OtrPolicy getSessionPolicy(SessionID ctx) {
-			return this.policy;
-		}
-
-		public void injectMessage(SessionID sessionID, String msg) {
-			this.lastInjectedMessage = msg;
-			String msgDisplay = (msg.length() > 10) ? msg.substring(0, 10)
-					+ "..." : msg;
-			Log.d("OTR", "IM injects message: " + msgDisplay);
-		}
-
-		public void showError(SessionID sessionID, String error) {
-			Log.d("OTR", "IM shows error to user: " + error);
-		}
-
-		public void showWarning(SessionID sessionID, String warning) {
-			Log.d("OTR", "IM shows warning to user: " + warning);
-		}
-
-		public void sessionStatusChanged(SessionID sessionID) {
-			// don't care.
-		}
-
-		@SuppressLint("TrulyRandom")
-		public KeyPair getKeyPair(SessionID paramSessionID) {
-			KeyPairGenerator kg;
-			try {
-				kg = KeyPairGenerator.getInstance("DSA");
-
-			} catch (NoSuchAlgorithmException e) {
-				e.printStackTrace();
-				return null;
-			}
-
-			return kg.genKeyPair();
-		}
-	}
-
 	public void testSession() throws Exception {
 		this.startSession();
 		this.exchageMessages();
@@ -76,31 +23,34 @@ public class OtrTest extends junit.framework.TestCase {
 
 	private OtrEngineImpl usAlice;
 	private OtrEngineImpl usBob;
-	private DummyOtrEngineHost host;
+	private HoiOtrEngineHost hostAlice;
+	private HoiOtrEngineHost hostBob;
 
 	private void startSession() {
-		host = new DummyOtrEngineHost(new OtrPolicyImpl(OtrPolicy.ALLOW_V2
+		hostAlice = new HoiOtrEngineHost(new OtrPolicyImpl(OtrPolicy.ALLOW_V2
+				| OtrPolicy.ERROR_START_AKE));
+		hostBob = new HoiOtrEngineHost(new OtrPolicyImpl(OtrPolicy.ALLOW_V2
 				| OtrPolicy.ERROR_START_AKE));
 
-		usAlice = new OtrEngineImpl(host);
-		usBob = new OtrEngineImpl(host);
+		usAlice = new OtrEngineImpl(hostAlice);
+		usBob = new OtrEngineImpl(hostBob);
 
 		usAlice.startSession(aliceSessionID);
 
 		// Bob receives query, sends D-H commit.
-		usBob.transformReceiving(bobSessionID, host.lastInjectedMessage);
+		usBob.transformReceiving(bobSessionID, hostAlice.lastInjectedMessage);
 
 		// Alice received D-H Commit, sends D-H key.
-		usAlice.transformReceiving(aliceSessionID, host.lastInjectedMessage);
+		usAlice.transformReceiving(aliceSessionID, hostBob.lastInjectedMessage);
 
 		// Bob receives D-H Key, sends reveal signature.
-		usBob.transformReceiving(bobSessionID, host.lastInjectedMessage);
+		usBob.transformReceiving(bobSessionID, hostAlice.lastInjectedMessage);
 
 		// Alice receives Reveal Signature, sends signature and goes secure.
-		usAlice.transformReceiving(aliceSessionID, host.lastInjectedMessage);
+		usAlice.transformReceiving(aliceSessionID, hostBob.lastInjectedMessage);
 
 		// Bobs receives Signature, goes secure.
-		usBob.transformReceiving(bobSessionID, host.lastInjectedMessage);
+		usBob.transformReceiving(bobSessionID, hostAlice.lastInjectedMessage);
 
 		if (usBob.getSessionStatus(bobSessionID) != SessionStatus.ENCRYPTED
 				|| usAlice.getSessionStatus(aliceSessionID) != SessionStatus.ENCRYPTED)
