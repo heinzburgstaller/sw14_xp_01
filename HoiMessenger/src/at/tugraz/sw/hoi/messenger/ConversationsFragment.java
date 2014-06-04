@@ -3,6 +3,7 @@ package at.tugraz.sw.hoi.messenger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -80,9 +81,18 @@ public class ConversationsFragment extends Fragment implements LoaderManager.Loa
       String dateString = cursor.getString(cursor.getColumnIndex(DataProvider.COL_TIME));
       Date date;
       try {
+        long oneDay = TimeUnit.MILLISECONDS.convert(24, TimeUnit.HOURS);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         date = sdf.parse(dateString);
-        holder.tvTimeLastMessage.setText(new SimpleDateFormat("HH:mm").format(date));
+        long currTimeInMillis = (new Date()).getTime();
+
+        if ((currTimeInMillis - date.getTime()) >= 2 * oneDay) {
+          holder.tvTimeLastMessage.setText(new SimpleDateFormat("dd.MM.yyyy").format(date));
+        } else if ((currTimeInMillis - date.getTime()) >= oneDay) {
+          holder.tvTimeLastMessage.setText(getResources().getString(R.string.yesterday));
+        } else {
+          holder.tvTimeLastMessage.setText(new SimpleDateFormat("HH:mm").format(date));
+        }
       } catch (ParseException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();

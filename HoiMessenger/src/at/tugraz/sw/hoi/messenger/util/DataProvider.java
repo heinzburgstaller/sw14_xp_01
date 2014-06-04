@@ -128,6 +128,7 @@ public class DataProvider extends ContentProvider {
     switch (uriMatcher.match(uri)) {
     case MESSAGES_ALLROWS:
       id = db.insertOrThrow(TABLE_MESSAGES, null, values);
+
       if (values.get(COL_RECEIVER_EMAIL) == null) {
         db.execSQL("update profile set count = count+1 where email = ?", new Object[] { values.get(COL_SENDER_EMAIL) });
         getContext().getContentResolver().notifyChange(CONTENT_URI_PROFILE, null);
@@ -225,7 +226,7 @@ public class DataProvider extends ContentProvider {
     public void onCreate(SQLiteDatabase db) {
       db.execSQL("create table messages (" + "_id integer primary key autoincrement, " + COL_TYPE + " integer, "
           + COL_MESSAGE + " text, " + COL_SENDER_EMAIL + " text, " + COL_RECEIVER_EMAIL + " text, " + COL_TIME
-          + " datetime default current_timestamp);");
+          + " text);");
 
       db.execSQL("create table profile(" + "_id integer primary key autoincrement, " + COL_NAME + " text, " + COL_EMAIL
           + " text unique, " + COL_COUNT + " integer default 0);");

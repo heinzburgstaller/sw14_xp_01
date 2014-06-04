@@ -1,5 +1,10 @@
 package at.tugraz.sw.hoi.messenger;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
+
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -125,6 +130,9 @@ public class ChatActivity extends ActionBarActivity implements MessagesFragment.
           values.put(DataProvider.COL_MESSAGE, txt);
           values.put(DataProvider.COL_RECEIVER_EMAIL, profileEmail);
           values.put(DataProvider.COL_SENDER_EMAIL, senderEmail);
+          Calendar calDt = Calendar.getInstance(TimeZone.getDefault());
+          calDt.setTime(new Date());
+          values.put(DataProvider.COL_TIME, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calDt.getTime()));
           getContentResolver().insert(DataProvider.CONTENT_URI_MESSAGES, values);
         } else {
           Log.d("ServletResponse", response.getMessage());

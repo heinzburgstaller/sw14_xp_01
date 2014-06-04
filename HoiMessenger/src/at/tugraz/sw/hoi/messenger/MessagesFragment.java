@@ -3,6 +3,7 @@ package at.tugraz.sw.hoi.messenger;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import android.annotation.SuppressLint;
@@ -39,7 +40,8 @@ import at.tugraz.sw.hoi.messenger.util.DataProvider;
 public class MessagesFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
   private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-  private static final DateFormat[] df = new DateFormat[] { DateFormat.getDateInstance(), DateFormat.getTimeInstance() };
+  private static final DateFormat[] df = new DateFormat[] { DateFormat.getDateInstance(DateFormat.SHORT),
+      DateFormat.getTimeInstance(DateFormat.SHORT) };
 
   private OnFragmentInteractionListener mListener;
   private CursorAdapter chatCursorAdapter;
@@ -89,7 +91,14 @@ public class MessagesFragment extends ListFragment implements LoaderManager.Load
   private String getDisplayTime(String datetime) {
     try {
       Date dt = sdf.parse(datetime);
-      if (now.getYear() == dt.getYear() && now.getMonth() == dt.getMonth() && now.getDate() == dt.getDate()) {
+
+      Calendar calDt = Calendar.getInstance();
+      Calendar calNow = Calendar.getInstance();
+      calNow.setTime(now);
+
+      if (calNow.get(Calendar.YEAR) == calDt.get(Calendar.YEAR)
+          && calNow.get(Calendar.MONTH) == calDt.get(Calendar.MONTH)
+          && calNow.get(Calendar.DAY_OF_MONTH) == calDt.get(Calendar.DAY_OF_MONTH)) {
         return df[1].format(dt);
       }
       return df[0].format(dt);

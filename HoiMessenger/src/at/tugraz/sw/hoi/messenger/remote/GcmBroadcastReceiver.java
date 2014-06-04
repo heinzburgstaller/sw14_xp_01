@@ -1,5 +1,10 @@
 package at.tugraz.sw.hoi.messenger.remote;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
+
 import android.app.Activity;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -52,6 +57,9 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
         values.put(DataProvider.COL_MESSAGE, msg);
         values.put(DataProvider.COL_SENDER_EMAIL, senderEmail);
         values.put(DataProvider.COL_RECEIVER_EMAIL, receiverEmail);
+        Calendar calDt = Calendar.getInstance(TimeZone.getDefault());
+        calDt.setTime(new Date());
+        values.put(DataProvider.COL_TIME, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calDt.getTime()));
         context.getContentResolver().insert(DataProvider.CONTENT_URI_MESSAGES, values);
 
         if (prefs.getBoolean(Configuration.PROPERTY_NEW_NOTIFICATION, true)) {
