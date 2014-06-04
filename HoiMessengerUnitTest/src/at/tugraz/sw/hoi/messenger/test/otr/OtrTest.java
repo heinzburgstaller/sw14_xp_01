@@ -1,10 +1,10 @@
 package at.tugraz.sw.hoi.messenger.test.otr;
 
-import net.java.otr4j.OtrEngineImpl;
 import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.OtrPolicyImpl;
 import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.SessionStatus;
+import at.tugraz.sw.hoi.messenger.otr.HoiOtrEngine;
 import at.tugraz.sw.hoi.messenger.otr.HoiOtrEngineHost;
 
 public class OtrTest extends junit.framework.TestCase {
@@ -21,8 +21,8 @@ public class OtrTest extends junit.framework.TestCase {
 		this.endSession();
 	}
 
-	private OtrEngineImpl usAlice;
-	private OtrEngineImpl usBob;
+	private at.tugraz.sw.hoi.messenger.otr.HoiOtrEngine usAlice;
+	private HoiOtrEngine usBob;
 	private HoiOtrEngineHost hostAlice;
 	private HoiOtrEngineHost hostBob;
 
@@ -32,8 +32,8 @@ public class OtrTest extends junit.framework.TestCase {
 		hostBob = new HoiOtrEngineHost(new OtrPolicyImpl(OtrPolicy.ALLOW_V2
 				| OtrPolicy.ERROR_START_AKE));
 
-		usAlice = new OtrEngineImpl(hostAlice);
-		usBob = new OtrEngineImpl(hostBob);
+		usAlice = new HoiOtrEngine(hostAlice);
+		usBob = new HoiOtrEngine(hostBob);
 
 		usAlice.startSession(aliceSessionID);
 

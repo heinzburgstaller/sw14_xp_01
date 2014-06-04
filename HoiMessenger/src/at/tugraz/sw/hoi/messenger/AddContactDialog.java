@@ -1,5 +1,6 @@
 package at.tugraz.sw.hoi.messenger;
 
+import net.java.otr4j.session.SessionID;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
@@ -8,11 +9,14 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import at.tugraz.sw.hoi.messenger.otr.HoiOtrEngine;
+import at.tugraz.sw.hoi.messenger.otr.HoiOtrUtil;
 import at.tugraz.sw.hoi.messenger.remote.Configuration;
 import at.tugraz.sw.hoi.messenger.util.DataProvider;
 
@@ -36,6 +40,12 @@ public class AddContactDialog extends DialogFragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+  }
+
+  private void startOtrHandshake(String fromEmail, String toEmail) {
+    SessionID sessionID = HoiOtrUtil.getInstance().getSessionId(fromEmail, toEmail);
+    HoiOtrEngine engine = HoiOtrUtil.getInstance().getEngine(sessionID);
+    engine.startSession(sessionID);
   }
 
   @Override
@@ -67,6 +77,9 @@ public class AddContactDialog extends DialogFragment {
               values.put(DataProvider.COL_NAME, email.substring(0, email.indexOf('@')));
               values.put(DataProvider.COL_EMAIL, email);
               getActivity().getContentResolver().insert(DataProvider.CONTENT_URI_PROFILE, values);
+
+              startOtrHandshake(PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext())
+                  .getString(Configuration.CHAT_EMAIL_ID, ""), email);
 
               if (!email.equals("")) {
                 Cursor c = getActivity().getContentResolver().query(DataProvider.CONTENT_URI_PROFILE,
