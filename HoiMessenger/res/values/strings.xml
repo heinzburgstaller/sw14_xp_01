@@ -18,6 +18,8 @@
     <string name="tv_new_user">New User</string>
     <string name="tv_name">Name</string>
     <string name="tv_email">Email</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="db_date_format">yyyy-MM-dd HH:mm:ss</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
 </resources>
