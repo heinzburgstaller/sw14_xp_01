@@ -30,7 +30,7 @@ public class MainActivity extends ActionBarActivity {
    */
   private SectionsPagerAdapter mSectionsPagerAdapter;
   private GcmUtil gcm;
-
+  public static boolean VISIBLE = false;
   /**
    * The {@link ViewPager} that will host the section contents.
    */
@@ -43,6 +43,7 @@ public class MainActivity extends ActionBarActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    VISIBLE = true; // for the notification service
     setContentView(R.layout.activity_main);
     fragments = getFragments();
     // Create the adapter that will return a fragment for each of the three
@@ -136,6 +137,21 @@ public class MainActivity extends ActionBarActivity {
       return true;
     }
     return super.onOptionsItemSelected(item);
+  }
+
+  /*
+   * for the service
+   */
+  @Override
+  public void onStop() {
+    super.onStop();
+    VISIBLE = false;
+  }
+
+  @Override
+  public void onStart() {
+    super.onStart();
+    VISIBLE = true;
   }
 
   /**

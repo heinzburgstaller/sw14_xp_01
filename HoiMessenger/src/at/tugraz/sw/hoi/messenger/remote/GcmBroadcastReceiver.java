@@ -13,14 +13,15 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
-import at.tugraz.sw.hoi.messenger.ChatActivity;
 import at.tugraz.sw.hoi.messenger.MainActivity;
 import at.tugraz.sw.hoi.messenger.R;
 import at.tugraz.sw.hoi.messenger.util.DataProvider;
@@ -63,7 +64,7 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
         context.getContentResolver().insert(DataProvider.CONTENT_URI_MESSAGES, values);
 
         if (prefs.getBoolean(Configuration.PROPERTY_NEW_NOTIFICATION, true)) {
-          sendNotification(senderEmail, true);
+          sendNotification("New Message from " + senderEmail, true);
         }
       }
       setResultCode(Activity.RESULT_OK);
@@ -73,36 +74,39 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
   }
 
   private void sendNotification(String text, boolean launchApp) {
-    NotificationManager mNotificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
-    NotificationCompat.Builder notification = new NotificationCompat.Builder(ctx);
-    notification.setContentTitle(ctx.getString(R.string.app_name));
-    notification.setContentText(text);
-    notification.setAutoCancel(true);
-    notification.setSmallIcon(R.drawable.ic_launcher);
-
     String ringtone = prefs.getString(Configuration.PROPERTY_NEW_NOTIFICATION_RINGTONE,
         android.provider.Settings.System.DEFAULT_NOTIFICATION_URI.toString());
-    if (!TextUtils.isEmpty(ringtone)) {
-      notification.setSound(Uri.parse(ringtone));
-    }
+    Vibrator v = (Vibrator) ctx.getSystemService(Context.VIBRATOR_SERVICE);
+    v.vibrate(1000);
 
-    if (launchApp) {
-      Intent intent;
-      Cursor cursor = ctx.getContentResolver().query(DataProvider.CONTENT_URI_PROFILE,
-          new String[] { DataProvider.COL_ID }, DataProvider.COL_EMAIL + "=?", new String[] { text }, null);
-      if (cursor == null || cursor.getCount() < 1) {
-        intent = new Intent(ctx, MainActivity.class);
-      } else {
-        intent = new Intent(ctx, ChatActivity.class);
-        cursor.moveToFirst();
-        intent.putExtra(Configuration.PROFILE_ID, "" + cursor.getInt(cursor.getColumnIndex(DataProvider.COL_ID)));
+    if (MainActivity.VISIBLE) {
+      Ringtone r = RingtoneManager.getRingtone(ctx, Uri.parse(ringtone));
+      r.play();
+      // TODO: solve this properly
+      Intent intent = new Intent(ctx, MainActivity.class);
+      intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+      ctx.startActivity(intent);
+    } else {
+      NotificationManager mNotificationManager = (NotificationManager) ctx
+          .getSystemService(Context.NOTIFICATION_SERVICE);
+      NotificationCompat.Builder notification = new NotificationCompat.Builder(ctx);
+      notification.setContentTitle(ctx.getString(R.string.app_name));
+      notification.setContentText(text);
+      notification.setAutoCancel(true);
+      notification.setSmallIcon(R.drawable.ic_launcher);
+
+      if (!TextUtils.isEmpty(ringtone)) {
+        notification.setSound(Uri.parse(ringtone));
       }
-      intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-      PendingIntent pi = PendingIntent.getActivity(ctx, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-      notification.setContentIntent(pi);
+
+      if (launchApp) {
+        Intent intent = new Intent(ctx, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pi = PendingIntent.getActivity(ctx, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        notification.setContentIntent(pi);
+      }
+
+      mNotificationManager.notify(1, notification.build());
     }
-
-    mNotificationManager.notify(1, notification.build());
   }
-
 }
