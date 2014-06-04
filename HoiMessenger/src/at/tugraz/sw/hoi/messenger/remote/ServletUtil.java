@@ -37,7 +37,7 @@ public class ServletUtil {
   }
 
   public static ServletResponse startHandshake(String fromEmail, String toEmail, String lastMessage, String state) {
-    return post(CONTACT, new Parameter(Configuration.FROM, fromEmail), new Parameter(Configuration.TO, toEmail),
+    return post(CHAT, new Parameter(Configuration.FROM, fromEmail), new Parameter(Configuration.TO, toEmail),
         new Parameter(Configuration.MSG, lastMessage), new Parameter(Configuration.HANDSHAKE_STATE, state));
   }
 

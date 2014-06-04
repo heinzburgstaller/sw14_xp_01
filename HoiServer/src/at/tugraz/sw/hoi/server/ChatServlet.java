@@ -31,6 +31,7 @@ public class ChatServlet extends HttpServlet {
 		String to = req.getParameter(Configuration.TO);
 		String from = req.getParameter(Configuration.FROM);
 		String msg = req.getParameter(Configuration.MSG);
+		String handshake = req.getParameter(Configuration.HANDSHAKE_STATE);
 
 		if (Util.isEmpty(to) || Util.isEmpty(from) || Util.isEmpty(msg)) {
 			resp.getWriter().print(Configuration.FAILURE);
@@ -48,11 +49,22 @@ public class ChatServlet extends HttpServlet {
 		}
 
 		Sender sender = new Sender(Configuration.API_KEY);
-		Message message = new Message.Builder()
-				// .delayWhileIdle(true)
-				.addData(Configuration.TO, to)
-				.addData(Configuration.FROM, from)
-				.addData(Configuration.MSG, msg).build();
+		Message message;
+		if(Util.isEmpty(handshake)){
+			message = new Message.Builder()
+			// .delayWhileIdle(true)
+			.addData(Configuration.TO, to)
+			.addData(Configuration.FROM, from)
+			.addData(Configuration.MSG, msg).build();
+		}else {
+			message = new Message.Builder()
+			// .delayWhileIdle(true)
+			.addData(Configuration.TO, to)
+			.addData(Configuration.FROM, from)
+			.addData(Configuration.MSG, msg)
+			.addData(Configuration.HANDSHAKE_STATE, handshake).build();
+		}
+		
 		try {
 			Result result = sender.send(message, toContact.getRegId(), 5);
 			if (result.getErrorCodeName() != null) {
