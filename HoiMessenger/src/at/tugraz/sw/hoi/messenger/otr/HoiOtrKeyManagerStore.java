@@ -23,6 +23,9 @@ public class HoiOtrKeyManagerStore implements OtrKeyManagerStore {
   @Override
   public byte[] getPropertyBytes(String key) {
     String prop = prefs.getString(key, "");
+    if (prop.length() == 0) {
+      return null;
+    }
     return Base64.decode(prop);
   }
 
