@@ -39,7 +39,7 @@ public class MainActivity extends ActionBarActivity {
   private ViewPager mViewPager;
   private static int CONVERSATIONS_FRAGMENT_INDEX = 0;
   private static int CONTACTS_FRAGMENT_INDEX = 1;
-  private static int MORE_FRAGMENT_INDEX = 2;
+  // private static int MORE_FRAGMENT_INDEX = 2;
   List<Fragment> fragments;
 
   @Override
@@ -165,15 +165,15 @@ public class MainActivity extends ActionBarActivity {
     ab.addTab(
         ab.newTab().setText(mSectionsPagerAdapter.getPageTitle(CONTACTS_FRAGMENT_INDEX)).setTabListener(tabListener),
         CONTACTS_FRAGMENT_INDEX);
-    ab.addTab(ab.newTab().setText(mSectionsPagerAdapter.getPageTitle(MORE_FRAGMENT_INDEX)).setTabListener(tabListener),
-        MORE_FRAGMENT_INDEX);
+    // ab.addTab(ab.newTab().setText(mSectionsPagerAdapter.getPageTitle(MORE_FRAGMENT_INDEX)).setTabListener(tabListener),
+    // MORE_FRAGMENT_INDEX);
   }
 
   private List<Fragment> getFragments() {
     List<Fragment> fList = new ArrayList<Fragment>();
     fList.add(ConversationsFragment.newInstance(CONVERSATIONS_FRAGMENT_INDEX));
     fList.add(ContactsFragment.newInstance(CONTACTS_FRAGMENT_INDEX));
-    fList.add(MoreFragment.newInstance(MORE_FRAGMENT_INDEX));
+    // fList.add(MoreFragment.newInstance(MORE_FRAGMENT_INDEX));
     return fList;
   }
 
@@ -248,8 +248,8 @@ public class MainActivity extends ActionBarActivity {
         return getString(R.string.title_conversations).toUpperCase(l);
       case 1:
         return getString(R.string.title_contacts).toUpperCase(l);
-      case 2:
-        return getString(R.string.title_more).toUpperCase(l);
+        // case 2:
+        // return getString(R.string.title_more).toUpperCase(l);
       }
       return null;
     }

@@ -14,9 +14,8 @@
         android:id="@+id/lvConversation"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" 
-        android:layout_above="@+id/btSendMessage"
         android:clickable="true"/>
-    <ImageButton
+ <!--<ImageButton
         android:background="@drawable/custom_button"
         android:id="@id/btSendMessage"
         android:layout_width="fill_parent"
@@ -25,5 +24,5 @@
         android:contentDescription="@string/bt_send_message_text"
         android:layout_alignParentBottom="true"
         android:clickable="true"
-        />
+        /> -->
 </RelativeLayout>
