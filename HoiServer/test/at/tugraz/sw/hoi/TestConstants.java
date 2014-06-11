@@ -2,6 +2,6 @@ package at.tugraz.sw.hoi;
 
 public class TestConstants {
 
-	public static final String EMAIL = "heinz.burgstaller@gmail.com";
-	public static final String REG_ID = "APA91bHlMWAR8404lQvJsFMxDxNn6JjdTYGM7NOVAP3ENHqaYfGfmDatew4G7i03U_QUc5YlMZ1VJl3ZemXVyTHU3fbxHVDS_iIw6mU8GgsiQRC-33sBaMsr97RFqfkgdxFMmfAw5YZf2NA6qXZBH2K09dgWCTxv3A";
+	public static final String EMAIL = "test@gmail.com";
+	public static final String REG_ID = "APA91bEIcBEC0zEcj_CL78y76rS1JnzfHlgfrTI6WGX1ou9rxirUi6Wwn9-2CouNi8_Q5c6eeDWUP_acpm-cfwQylvgHAlRk5_G3QpcK4EEaNUbhy1toYb-Bp_uXYMvRrCu-FlVXT3EtK-blksqi2k5gRNdmhHYpLel1YVs2Hfj9TgdV0zWXHBE";
 }

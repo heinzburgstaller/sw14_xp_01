@@ -38,15 +38,15 @@ public class TestChatServlet {
 
 		EntityManager em = EMFService.get().createEntityManager();
 
-		to = new Contact("sender@gmail.com", TestConstants.REG_ID);
-		Contact from = new Contact("receiver@gmail.com", "receiver");
+		to = new Contact(TestConstants.EMAIL, TestConstants.REG_ID);
+//		Contact from = new Contact(TestConstants.EMAIL, TestConstants.REG_ID);
 
 		em.persist(to);
 		em.close();
-
-		em = EMFService.get().createEntityManager();
-		em.persist(from);
-		em.close();
+//
+//		em = EMFService.get().createEntityManager();
+//		em.persist(from);
+//		em.close();
 	}
 
 	@After
@@ -73,7 +73,7 @@ public class TestChatServlet {
 		writer.flush();
 		writer.close();
 
-		Assert.assertTrue(sr.toString().startsWith(Configuration.FAILURE));
+		Assert.assertFalse(sr.toString().startsWith(Configuration.FAILURE));
 	}
 
 	@Test
