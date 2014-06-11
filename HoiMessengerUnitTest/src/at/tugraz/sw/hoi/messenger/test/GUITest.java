@@ -54,14 +54,14 @@ public class GUITest extends ActivityInstrumentationTestCase2<MainActivity> {
 						solo.getString(at.tugraz.sw.hoi.messenger.R.string.title_conversations));
 		assertEquals(solo.getCurrentActivity().getActionBar().getTabAt(1).getText(),
 						solo.getString(at.tugraz.sw.hoi.messenger.R.string.title_contacts));
-		assertEquals(solo.getCurrentActivity().getActionBar().getTabAt(2).getText(), 
-						solo.getString(at.tugraz.sw.hoi.messenger.R.string.title_more));
+//		assertEquals(solo.getCurrentActivity().getActionBar().getTabAt(2).getText(), 
+//						solo.getString(at.tugraz.sw.hoi.messenger.R.string.title_more));
 		
 		// check if there exists a list of conversations
 		assertNotNull(solo.getView(at.tugraz.sw.hoi.messenger.R.id.lvConversation));
 		
 		//check if there is a Button for sending
-		assertNotNull(solo.getView(at.tugraz.sw.hoi.messenger.R.id.btSendMessage));
+//		assertNotNull(solo.getView(at.tugraz.sw.hoi.messenger.R.id.btSendMessage));
 		
 	}
 	
@@ -75,10 +75,10 @@ public class GUITest extends ActivityInstrumentationTestCase2<MainActivity> {
 		assertEquals(solo.getString(at.tugraz.sw.hoi.messenger.R.string.title_contacts), 
 						solo.getCurrentActivity().getActionBar().getSelectedTab().getText());
 	
-		solo.clickOnText(solo.getString(at.tugraz.sw.hoi.messenger.R.string.title_more));
-		solo.sleep(500);
-		assertEquals(solo.getString(at.tugraz.sw.hoi.messenger.R.string.title_more), 
-						solo.getCurrentActivity().getActionBar().getSelectedTab().getText());
+//		solo.clickOnText(solo.getString(at.tugraz.sw.hoi.messenger.R.string.title_more));
+//		solo.sleep(500);
+//		assertEquals(solo.getString(at.tugraz.sw.hoi.messenger.R.string.title_more), 
+//						solo.getCurrentActivity().getActionBar().getSelectedTab().getText());
 		
 		solo.clickOnText(solo.getString(at.tugraz.sw.hoi.messenger.R.string.title_conversations));
 		solo.sleep(500);
@@ -116,15 +116,15 @@ public class GUITest extends ActivityInstrumentationTestCase2<MainActivity> {
 		assertEquals(solo.getString(at.tugraz.sw.hoi.messenger.R.string.title_contacts), 
 						solo.getCurrentActivity().getActionBar().getSelectedTab().getText());
 	
-		swipeToLeft(1);
-		solo.sleep(500);
-		assertEquals(solo.getString(at.tugraz.sw.hoi.messenger.R.string.title_more), 
-						solo.getCurrentActivity().getActionBar().getSelectedTab().getText());
+//		swipeToLeft(1);
+//		solo.sleep(500);
+//		assertEquals(solo.getString(at.tugraz.sw.hoi.messenger.R.string.title_more), 
+//						solo.getCurrentActivity().getActionBar().getSelectedTab().getText());
 		
-		swipeToRight(1);
-		solo.sleep(500);
-		assertEquals(solo.getString(at.tugraz.sw.hoi.messenger.R.string.title_contacts), 
-						solo.getCurrentActivity().getActionBar().getSelectedTab().getText());
+//		swipeToRight(1);
+//		solo.sleep(500);
+//		assertEquals(solo.getString(at.tugraz.sw.hoi.messenger.R.string.title_contacts), 
+//						solo.getCurrentActivity().getActionBar().getSelectedTab().getText());
 		
 		swipeToRight(1);
 		solo.sleep(500);
