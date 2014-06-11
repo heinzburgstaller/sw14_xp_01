@@ -95,9 +95,11 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
     }
     if (handshakeState.equals(Configuration.OTR_SIGNATURE)) {
       newState = Configuration.OTR_SECURE;
+      HoiOtrUtil.getInstance().addSecuredReceiver(receiverEmail);
     }
     if (handshakeState.equals(Configuration.OTR_SECURE)) {
       newState = Configuration.OTR_SECURE;
+      HoiOtrUtil.getInstance().addSecuredReceiver(receiverEmail);
       return;
     }
 

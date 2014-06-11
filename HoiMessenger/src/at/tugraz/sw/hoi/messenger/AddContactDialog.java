@@ -45,6 +45,10 @@ public class AddContactDialog extends DialogFragment {
   }
 
   private void startOtrHandshake(String fromEmail, String toEmail) {
+    if (HoiOtrUtil.getInstance().isSecured(toEmail)) {
+      return;
+    }
+
     SessionID sessionID = HoiOtrUtil.getInstance().getSessionId(fromEmail, toEmail);
     HoiOtrEngine engine = HoiOtrUtil.getInstance().getEngine(sessionID);
     engine.startSession(sessionID);
