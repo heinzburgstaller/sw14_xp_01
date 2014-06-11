@@ -1,13 +1,5 @@
 package at.tugraz.sw.hoi.messenger.otr;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -18,7 +10,6 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.List;
-import java.util.Properties;
 import java.util.Vector;
 
 import net.java.otr4j.OtrKeyManager;
@@ -27,9 +18,7 @@ import net.java.otr4j.OtrKeyManagerStore;
 import net.java.otr4j.crypto.OtrCryptoEngineImpl;
 import net.java.otr4j.crypto.OtrCryptoException;
 import net.java.otr4j.session.SessionID;
-
-import org.bouncycastle.util.encoders.Base64;
-
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 
 public class HoiOtrKeyManager implements OtrKeyManager {
@@ -40,7 +29,7 @@ public class HoiOtrKeyManager implements OtrKeyManager {
     this.store = store;
   }
 
-  public HoiOtrKeyManager(SharedPreferences prefs) throws IOException {
+  public HoiOtrKeyManager(SharedPreferences prefs) {
     this.store = new HoiOtrKeyManagerStore(prefs);
   }
 
@@ -59,6 +48,7 @@ public class HoiOtrKeyManager implements OtrKeyManager {
     }
   }
 
+  @SuppressLint("TrulyRandom")
   public void generateLocalKeyPair(SessionID sessionID) {
     if (sessionID == null)
       return;

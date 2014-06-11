@@ -1,6 +1,5 @@
 package at.tugraz.sw.hoi.messenger.otr;
 
-import java.io.IOException;
 import java.security.KeyPair;
 
 import net.java.otr4j.OtrEngineHost;
@@ -17,7 +16,7 @@ public class HoiOtrEngineHost implements OtrEngineHost {
   public String lastInjectedMessage;
   private OtrKeyManager keyManager;
 
-  public HoiOtrEngineHost(OtrPolicy policy, SharedPreferences prefs) throws IOException {
+  public HoiOtrEngineHost(OtrPolicy policy, SharedPreferences prefs) {
     this.policy = policy;
     this.keyManager = new HoiOtrKeyManager(prefs);
   }

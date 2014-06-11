@@ -36,7 +36,8 @@ public class HoiOtrUtil {
       return engine;
     }
 
-    HoiOtrEngineHost host = new HoiOtrEngineHost(new OtrPolicyImpl(OtrPolicy.ALLOW_V2 | OtrPolicy.ERROR_START_AKE));
+    HoiOtrEngineHost host = new HoiOtrEngineHost(new OtrPolicyImpl(OtrPolicy.ALLOW_V2 | OtrPolicy.ERROR_START_AKE),
+        null);
     engine = new HoiOtrEngine(host);
     engines.put(sessionID, engine);
     return engine;

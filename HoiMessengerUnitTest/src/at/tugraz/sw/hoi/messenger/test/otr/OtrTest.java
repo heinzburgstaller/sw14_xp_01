@@ -4,10 +4,29 @@ import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.OtrPolicyImpl;
 import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.SessionStatus;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.preference.PreferenceManager;
+import android.test.AndroidTestCase;
 import at.tugraz.sw.hoi.messenger.otr.HoiOtrEngine;
 import at.tugraz.sw.hoi.messenger.otr.HoiOtrEngineHost;
 
-public class OtrTest extends junit.framework.TestCase {
+public class OtrTest extends AndroidTestCase {
+
+	private Context context;
+	private SharedPreferences prefs;
+
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		context = getContext();
+		prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		Editor editor = prefs.edit();
+
+		// editor.putString(Configuration.PROPERTY_REG_ID, "");
+		editor.commit();
+	}
 
 	public void testSessionIdEquality() throws Exception {
 		SessionID aliceSessionID2 = getAliceSessionID();
@@ -23,12 +42,19 @@ public class OtrTest extends junit.framework.TestCase {
 	}
 
 	private HoiOtrEngineHost getHostAlice() {
-		return new HoiOtrEngineHost(new OtrPolicyImpl(OtrPolicy.ALLOW_V2
-				| OtrPolicy.ERROR_START_AKE));
+		if (hostAlice_ == null) {
+			hostAlice_ = new HoiOtrEngineHost(new OtrPolicyImpl(
+					OtrPolicy.ALLOW_V2 | OtrPolicy.ERROR_START_AKE), prefs);
+		}
+
+		return hostAlice_;
 	}
 
-	private HoiOtrEngine getUsAlice(HoiOtrEngineHost host) {
-		return new HoiOtrEngine(host);
+	private HoiOtrEngine getUsAlice() {
+		if (usAlice_ == null) {
+			usAlice_ = new HoiOtrEngine(getHostAlice());
+		}
+		return usAlice_;
 	}
 
 	public void testSession() throws Exception {
@@ -37,52 +63,54 @@ public class OtrTest extends junit.framework.TestCase {
 		this.endSession();
 	}
 
-	private at.tugraz.sw.hoi.messenger.otr.HoiOtrEngine usAlice;
+	private HoiOtrEngine usAlice_;
 	private HoiOtrEngine usBob;
-	private HoiOtrEngineHost hostAlice;
+	private HoiOtrEngineHost hostAlice_;
 	private HoiOtrEngineHost hostBob;
 
 	private void startSession() {
-		hostAlice = getHostAlice();
 		hostBob = new HoiOtrEngineHost(new OtrPolicyImpl(OtrPolicy.ALLOW_V2
-				| OtrPolicy.ERROR_START_AKE));
+				| OtrPolicy.ERROR_START_AKE), prefs);
 
-		usAlice = new HoiOtrEngine(hostAlice);
 		usBob = new HoiOtrEngine(hostBob);
 
-		usAlice.startSession(getAliceSessionID());
+		getUsAlice().startSession(getAliceSessionID());
 
 		// Bob receives query, sends D-H commit.
 		usBob.transformReceiving(getBobSessionID(),
-				hostAlice.lastInjectedMessage);
+				getHostAlice().lastInjectedMessage);
 
 		// Alice received D-H Commit, sends D-H key.
-		hostAlice = getHostAlice();
-		usAlice = getUsAlice(hostAlice); // = new HoiOtrEngine(hostAlice);
-		usAlice.transformReceiving(getAliceSessionID(),
+		getUsAlice().transformReceiving(getAliceSessionID(),
 				hostBob.lastInjectedMessage);
 
 		// Bob receives D-H Key, sends reveal signature.
 		usBob.transformReceiving(getBobSessionID(),
-				hostAlice.lastInjectedMessage);
+				getHostAlice().lastInjectedMessage);
 
 		// Alice receives Reveal Signature, sends signature and goes secure.
-		usAlice.transformReceiving(getAliceSessionID(),
+		destroyAlice();
+		getUsAlice().transformReceiving(getAliceSessionID(),
 				hostBob.lastInjectedMessage);
 
 		// Bobs receives Signature, goes secure.
 		usBob.transformReceiving(getBobSessionID(),
-				hostAlice.lastInjectedMessage);
+				getHostAlice().lastInjectedMessage);
 
 		if (usBob.getSessionStatus(getBobSessionID()) != SessionStatus.ENCRYPTED
-				|| usAlice.getSessionStatus(getAliceSessionID()) != SessionStatus.ENCRYPTED)
+				|| getUsAlice().getSessionStatus(getAliceSessionID()) != SessionStatus.ENCRYPTED)
 			fail("Could not establish a secure session.");
+	}
+
+	private void destroyAlice() {
+		usAlice_ = null;
+		hostAlice_ = null;
 	}
 
 	private void exchageMessages() {
 		// We are both secure, send encrypted message.
 		String clearTextMessage = "Hello Bob, this new IM software you installed on my PC the other day says we are talking Off-the-Record, what is that supposed to mean?";
-		String sentMessage = usAlice.transformSending(getAliceSessionID(),
+		String sentMessage = getUsAlice().transformSending(getAliceSessionID(),
 				clearTextMessage);
 
 		// Receive encrypted message.
@@ -98,7 +126,7 @@ public class OtrTest extends junit.framework.TestCase {
 				clearTextMessage);
 
 		// Receive encrypted message.
-		receivedMessage = usAlice.transformReceiving(getAliceSessionID(),
+		receivedMessage = getUsAlice().transformReceiving(getAliceSessionID(),
 				sentMessage);
 
 		if (!clearTextMessage.equals(receivedMessage))
@@ -106,7 +134,7 @@ public class OtrTest extends junit.framework.TestCase {
 
 		// Send encrypted message.
 		clearTextMessage = "Oh, is that all?";
-		sentMessage = usAlice.transformSending(getAliceSessionID(),
+		sentMessage = getUsAlice().transformSending(getAliceSessionID(),
 				clearTextMessage);
 
 		// Receive encrypted message.
@@ -121,7 +149,7 @@ public class OtrTest extends junit.framework.TestCase {
 				clearTextMessage);
 
 		// Receive encrypted message.
-		receivedMessage = usAlice.transformReceiving(getAliceSessionID(),
+		receivedMessage = getUsAlice().transformReceiving(getAliceSessionID(),
 				sentMessage);
 
 		if (!clearTextMessage.equals(receivedMessage))
@@ -130,7 +158,7 @@ public class OtrTest extends junit.framework.TestCase {
 		// Send encrypted message. Test UTF-8 space characters.
 		clearTextMessage = "Oh really?! pouvons-nous parler en français?";
 
-		sentMessage = usAlice.transformSending(getAliceSessionID(),
+		sentMessage = getUsAlice().transformSending(getAliceSessionID(),
 				clearTextMessage);
 
 		// Receive encrypted message.
@@ -142,10 +170,10 @@ public class OtrTest extends junit.framework.TestCase {
 
 	private void endSession() {
 		usBob.endSession(getBobSessionID());
-		usAlice.endSession(getAliceSessionID());
+		getUsAlice().endSession(getAliceSessionID());
 
 		if (usBob.getSessionStatus(getBobSessionID()) != SessionStatus.PLAINTEXT
-				|| usAlice.getSessionStatus(getAliceSessionID()) != SessionStatus.PLAINTEXT)
+				|| getUsAlice().getSessionStatus(getAliceSessionID()) != SessionStatus.PLAINTEXT)
 			fail("Failed to end session.");
 	}
 }
