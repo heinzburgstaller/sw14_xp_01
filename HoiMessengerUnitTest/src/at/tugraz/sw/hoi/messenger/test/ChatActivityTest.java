@@ -17,7 +17,6 @@ import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import at.tugraz.sw.hoi.messenger.AddContactDialog;
 import at.tugraz.sw.hoi.messenger.ChatActivity;
-import at.tugraz.sw.hoi.messenger.EditContactDialog;
 import at.tugraz.sw.hoi.messenger.EditEmailDialog;
 import at.tugraz.sw.hoi.messenger.MainActivity;
 import at.tugraz.sw.hoi.messenger.MainActivity.SectionsPagerAdapter;
