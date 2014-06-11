@@ -132,6 +132,10 @@ public class GUITest extends ActivityInstrumentationTestCase2<MainActivity> {
 						solo.getCurrentActivity().getActionBar().getSelectedTab().getText());
 	}
 	
+	public void testSendMessage(){
+		
+		
+	}
 	@Override
 	public void tearDown() throws Exception {
 	    solo.finishOpenedActivities();

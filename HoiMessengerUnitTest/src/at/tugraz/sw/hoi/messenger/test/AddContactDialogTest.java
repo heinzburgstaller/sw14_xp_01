@@ -24,7 +24,4 @@ public class AddContactDialogTest extends ActivityInstrumentationTestCase2<ChatA
   {
   }
 
-  public void testNewInstance() {
-   
-    }
 }

@@ -1,26 +1,19 @@
-//package at.tugraz.sw.hoi.messenger.test;
-//
-//import android.app.Instrumentation;
-//import android.test.ActivityInstrumentationTestCase2;
-//import android.test.TouchUtils;
-//import android.widget.Button;
-//import android.widget.EditText;
-//import at.tugraz.sw.hoi.messenger.AddContactDialog;
-//import at.tugraz.sw.hoi.messenger.ChatActivity;
-//import at.tugraz.sw.hoi.messenger.EditEmailDialog;
-//import at.tugraz.sw.hoi.messenger.R;
-//
-//
-//
-//public class ChatActivityTest extends ActivityInstrumentationTestCase2<ChatActivity> {
+package at.tugraz.sw.hoi.messenger.test;
+
+import android.test.ActivityInstrumentationTestCase2;
+import at.tugraz.sw.hoi.messenger.ChatActivity;
+
+
+
+public class ChatActivityTest extends ActivityInstrumentationTestCase2<ChatActivity> {
 //
 //  private ChatActivity mActivity;
 //
 //  private static final String TEST_MESSAGE = "Hello Receiver";
 //
-//  public ChatActivityTest() {
-//    super(ChatActivity.class);
-//  }
+  public ChatActivityTest() {
+    super(ChatActivity.class);
+  }
 //
 //  public void setUp() throws Exception {
 //    super.setUp();
@@ -87,4 +80,4 @@
 //    newFragment.getDialog().dismiss();
 //  }
 //
-//}
+}

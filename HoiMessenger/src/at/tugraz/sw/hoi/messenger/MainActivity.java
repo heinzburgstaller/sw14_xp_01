@@ -48,7 +48,7 @@ public class MainActivity extends ActionBarActivity {
     if (item.getTitle().equals(getString(R.string.option_delete_conversation))) {
       String otherEmail;
       if (item.getItemId() < 1) {
-        otherEmail = "mani.sedude@gmail.com";
+        otherEmail = "";
 
       } else {
         String[] columns = new String[] { DataProvider.COL_ID, DataProvider.COL_EMAIL };
@@ -58,7 +58,6 @@ public class MainActivity extends ActionBarActivity {
             DataProvider.COL_ID);
         c.moveToFirst();
         otherEmail = c.getString(c.getColumnIndex(DataProvider.COL_EMAIL));
-
       }
 
       String ownEmail = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext()).getString(

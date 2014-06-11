@@ -4,11 +4,6 @@
     tools:context="at.tugraz.sw.hoi.messenger.MainActivity" >
 
     <item
-        android:id="@+id/action_settings"
-        android:icon="@drawable/abc_ab_solid_dark_holo"
-        android:showAsAction="ifRoom"
-        android:title="@string/action_settings"/>
-    <item
         android:id="@+id/action_change_email"
         android:icon="@drawable/abc_ab_solid_dark_holo"
         android:showAsAction="never"

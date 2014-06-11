@@ -1,13 +1,13 @@
 package at.tugraz.sw.hoi.messenger.test;
-import com.robotium.solo.Solo;
-
 import android.content.ContentResolver;
 import android.content.Context;
 import android.test.ActivityInstrumentationTestCase2;
-import android.widget.ListView;
-import at.tugraz.sw.hoi.messenger.*;
+import at.tugraz.sw.hoi.messenger.ChatActivity;
+import at.tugraz.sw.hoi.messenger.MainActivity;
 import at.tugraz.sw.hoi.messenger.MainActivity.SectionsPagerAdapter;
-import at.tugraz.sw.hoi.messenger.util.*;
+import at.tugraz.sw.hoi.messenger.util.DataProvider;
+
+import com.robotium.solo.Solo;
 
 
 public class ContactsFragmentTest extends ActivityInstrumentationTestCase2<MainActivity> {
@@ -34,13 +34,8 @@ public class ContactsFragmentTest extends ActivityInstrumentationTestCase2<MainA
 	
   protected void tearDown() throws Exception {
     super.tearDown();
+//    solo.finishOpenedActivities();
   }
-  
-  public void testPreconditions() 
-  {
-    assertNotNull("mActivity is null", mActivity);
-  }
-  
   
   public void testAddContact() throws Exception {
 	solo.clickOnText(solo.getString(at.tugraz.sw.hoi.messenger.R.string.title_contacts));
@@ -50,7 +45,7 @@ public class ContactsFragmentTest extends ActivityInstrumentationTestCase2<MainA
 		
 	solo.clickOnImageButton(0);
     solo.enterText(0, "martin.erb");
-    solo.enterText(1, "martin.erb91@gmail.com");
+    solo.enterText(1, "martin.erb@gmail.com");
     solo.clickOnButton(0);
     solo.sleep(500);
     assertEquals(solo.getCurrentActivity() instanceof ChatActivity, true);
@@ -65,43 +60,6 @@ public class ContactsFragmentTest extends ActivityInstrumentationTestCase2<MainA
 	
 	contentResolver.delete(DataProvider.CONTENT_URI_MESSAGES, null, null);
 	contentResolver.delete(DataProvider.CONTENT_URI_PROFILE, null, null);
+	solo.finishOpenedActivities();
   }
-  
-/*
-  public void testNewInstance() {
-    fail("Not yet implemented");
-  }
-
-  public void testContactsFragment() {
-    fail("Not yet implemented");
-  }
-
-  public void testOnCreateViewLayoutInflaterViewGroupBundle() {
-    fail("Not yet implemented");
-  }
-
-  public void testOnCreateContextMenuContextMenuViewContextMenuInfo() {
-    fail("Not yet implemented");
-  }
-
-  public void testOnContextItemSelectedMenuItem() {
-    fail("Not yet implemented");
-  }
-
-  public void testOnCreateLoader() {
-    fail("Not yet implemented");
-  }
-
-  public void testOnLoadFinished() {
-    fail("Not yet implemented");
-  }
-
-  public void testOnLoaderReset() {
-    fail("Not yet implemented");
-  }
-
-  public void testOnClick() {
-    fail("Not yet implemented");
-  }*/
-
 }
