@@ -1,17 +1,7 @@
 package at.tugraz.sw.hoi.messenger.test;
-import android.app.Instrumentation;
 import android.test.ActivityInstrumentationTestCase2;
-import android.test.UiThreadTest;
-import android.view.KeyEvent;
-import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
-import android.widget.TextView;
 import at.tugraz.sw.hoi.messenger.ChatActivity;
-import at.tugraz.sw.hoi.messenger.ContactsFragment;
-import at.tugraz.sw.hoi.messenger.MainActivity;
 import at.tugraz.sw.hoi.messenger.MainActivity.SectionsPagerAdapter;
-
-import junit.framework.TestCase;
 
 
 public class ContactsFragmentTest extends ActivityInstrumentationTestCase2<ChatActivity> {

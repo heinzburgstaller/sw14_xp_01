@@ -1,20 +1,8 @@
 package at.tugraz.sw.hoi.messenger.test;
-import com.robotium.solo.Solo;
-
-import android.app.Fragment;
-import android.app.Instrumentation;
 import android.test.ActivityInstrumentationTestCase2;
-import android.test.UiThreadTest;
-import android.view.KeyEvent;
-import android.widget.Button;
-import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
-import android.widget.TextView;
 import at.tugraz.sw.hoi.messenger.AddContactDialog;
 import at.tugraz.sw.hoi.messenger.MainActivity;
 import at.tugraz.sw.hoi.messenger.MainActivity.SectionsPagerAdapter;
-import at.tugraz.sw.hoi.messenger.R;
-import junit.framework.TestCase;
 
 public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
@@ -55,22 +43,6 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     assertTrue(newFragment.getDialog().isShowing());
 
     newFragment.getDialog().dismiss();
-  }
-
-
-
-  
-  
-  public void testOnCreateOptionsMenuMenu() {
-    fail("Not yet implemented");
-  }
-
-  public void testOnOptionsItemSelectedMenuItem() {
-    fail("Not yet implemented");
-  }
-
-  public void testReRegisterUser() {
-    fail("Not yet implemented");
   }
 
 }
