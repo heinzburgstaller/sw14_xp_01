@@ -1,31 +1,36 @@
 package at.tugraz.sw.hoi.messenger.test;
-import android.app.Instrumentation;
+import com.robotium.solo.Solo;
+
+import android.content.ContentResolver;
+import android.content.Context;
 import android.test.ActivityInstrumentationTestCase2;
-import android.test.UiThreadTest;
-import android.view.KeyEvent;
-import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
-import android.widget.TextView;
-import at.tugraz.sw.hoi.messenger.ChatActivity;
-import at.tugraz.sw.hoi.messenger.ContactsFragment;
-import at.tugraz.sw.hoi.messenger.MainActivity;
+import android.widget.ListView;
+import at.tugraz.sw.hoi.messenger.*;
 import at.tugraz.sw.hoi.messenger.MainActivity.SectionsPagerAdapter;
+import at.tugraz.sw.hoi.messenger.util.*;
 
-import junit.framework.TestCase;
 
 
-public class ContactsFragmentTest extends ActivityInstrumentationTestCase2<ChatActivity> {
+public class ContactsFragmentTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
-	private ChatActivity mActivity;
+	private MainActivity mActivity;
 	private SectionsPagerAdapter mSectionsPagerAdapter;
+	private Solo solo;
+	private Context context;
+	
+	private ContentResolver contentResolver; 
 	
 	public ContactsFragmentTest() {
-		super(ChatActivity.class);
+		super(MainActivity.class);
 	}
 
 	public void setUp() throws Exception {
 		super.setUp();
+		solo = new Solo(getInstrumentation(), getActivity());
 		mActivity = getActivity();
+		contentResolver = getActivity().getContentResolver();
+		contentResolver.delete(DataProvider.CONTENT_URI_MESSAGES, null, null);
+		contentResolver.delete(DataProvider.CONTENT_URI_PROFILE, null, null);
 	}
 	
   protected void tearDown() throws Exception {
@@ -37,7 +42,33 @@ public class ContactsFragmentTest extends ActivityInstrumentationTestCase2<ChatA
     assertNotNull("mActivity is null", mActivity);
   }
   
-
+  
+  public void testAddContact() throws Exception {
+	solo.clickOnText(solo.getString(at.tugraz.sw.hoi.messenger.R.string.title_contacts));
+	solo.sleep(500);
+	assertEquals(solo.getString(at.tugraz.sw.hoi.messenger.R.string.title_contacts), 
+						solo.getCurrentActivity().getActionBar().getSelectedTab().getText());
+		
+	solo.clickOnImageButton(0);
+    solo.enterText(0, "martin.erb");
+    solo.enterText(1, "martin.erb91@gmail.com");
+    solo.clickOnButton(0);
+    solo.sleep(500);
+    assertEquals(solo.getCurrentActivity() instanceof ChatActivity, true);
+    assertEquals(solo.searchText("martin.erb"), true); // check if chatactivty of user is opening
+    solo.goBack(); // go Back from Activity
+    //solo.goBack();
+    solo.sleep(500);
+    
+	solo.clickOnText(solo.getString(at.tugraz.sw.hoi.messenger.R.string.title_contacts));
+	solo.sleep(500);
+	assertEquals(solo.searchText("martin.erb"), true); // check if it is in contactslist
+	
+	contentResolver.delete(DataProvider.CONTENT_URI_MESSAGES, null, null);
+	contentResolver.delete(DataProvider.CONTENT_URI_PROFILE, null, null);
+  }
+  
+/*
   public void testNewInstance() {
     fail("Not yet implemented");
   }
@@ -72,6 +103,6 @@ public class ContactsFragmentTest extends ActivityInstrumentationTestCase2<ChatA
 
   public void testOnClick() {
     fail("Not yet implemented");
-  }
+  }*/
 
 }
