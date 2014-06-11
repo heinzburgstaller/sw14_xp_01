@@ -1,22 +1,25 @@
 package at.tugraz.sw.hoi.messenger.otr;
 
+import java.io.IOException;
 import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
 
 import net.java.otr4j.OtrEngineHost;
+import net.java.otr4j.OtrKeyManager;
 import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.session.SessionID;
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 public class HoiOtrEngineHost implements OtrEngineHost {
 
   private OtrPolicy policy;
   public String lastInjectedMessage;
+  private OtrKeyManager keyManager;
 
-  public HoiOtrEngineHost(OtrPolicy policy) {
+  public HoiOtrEngineHost(OtrPolicy policy, SharedPreferences prefs) throws IOException {
     this.policy = policy;
+    this.keyManager = new HoiOtrKeyManager(prefs);
   }
 
   public OtrPolicy getSessionPolicy(SessionID ctx) {
@@ -38,21 +41,20 @@ public class HoiOtrEngineHost implements OtrEngineHost {
   }
 
   public void sessionStatusChanged(SessionID sessionID) {
-    // don't care.
+    // keyManager.savePublicKey(sessionID,);
   }
 
   @SuppressLint("TrulyRandom")
   public KeyPair getKeyPair(SessionID paramSessionID) {
-    KeyPairGenerator kg;
-    try {
-      kg = KeyPairGenerator.getInstance("DSA");
 
-    } catch (NoSuchAlgorithmException e) {
-      e.printStackTrace();
-      return null;
+    KeyPair kp = keyManager.loadLocalKeyPair(paramSessionID);
+
+    if (kp == null) {
+      keyManager.generateLocalKeyPair(paramSessionID);
+      kp = keyManager.loadLocalKeyPair(paramSessionID);
     }
 
-    return kg.genKeyPair();
-  }
+    return kp;
 
+  }
 }
